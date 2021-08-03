@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "PlayableCharacterController.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "DrawDebugHelpers.h"
 
 // Sets default values
 APlayableCharacterBase::APlayableCharacterBase()
@@ -117,6 +118,24 @@ void APlayableCharacterBase::ReleaseSpace()
 void APlayableCharacterBase::PressLMB()
 {
 	bLMBPressed = true;
+	if(IsValid(PlayerController))
+	{
+		FVector PlayerLocation;
+		FQuat PlayerRotation;
+
+		FTransform PlayerTransform = GetMesh()->GetSocketTransform(FName("AimSocket"));
+		PlayerLocation = PlayerTransform.GetLocation();
+		PlayerRotation = PlayerTransform.GetRotation();
+
+		FVector ShotDirection = -PlayerRotation.Vector();
+
+		//DrawDebugCamera(GetWorld(), PlayerLocation, PlayerRotation, 90, 2, FColor::Red, true);
+
+		FVector End = PlayerLocation + PlayerRotation.Vector() * 20.f;
+		
+		FHitResult Hit;
+		DrawDebugLine(GetWorld(),PlayerLocation, End,FColor::Red,false,-1,0,1);
+	}
 }
 
 void APlayableCharacterBase::ReleaseLMB()
@@ -156,6 +175,28 @@ void APlayableCharacterBase::ReleaseCtrl()
 {
 	bCtrlPressed = false;
 	//GetCharacterMovement()->bOrientRotationToMovement = false;
+}
+
+const void APlayableCharacterBase::FireDebugBeam()
+{
+	if(IsValid(PlayerController))
+	{
+		FVector PlayerLocation;
+		FQuat PlayerRotation;
+
+		FTransform PlayerTransform = GetMesh()->GetSocketTransform(FName("AimSocket"));
+		PlayerLocation = PlayerTransform.GetLocation();
+		PlayerRotation = PlayerTransform.GetRotation();
+
+		FVector ShotDirection = -PlayerRotation.Vector();
+
+		//DrawDebugCamera(GetWorld(), PlayerLocation, PlayerRotation, 90, 2, FColor::Red, true);
+
+		FVector End = PlayerLocation + PlayerRotation.Vector() * 20.f;
+		
+		FHitResult Hit;
+		DrawDebugLine(GetWorld(),PlayerLocation, End,FColor::Red,false,-1,0,1);
+	}
 }
 
 

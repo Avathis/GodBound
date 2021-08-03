@@ -13,5 +13,13 @@ UCLASS()
 class GODBOUND_API UGameplayAbilityBase : public UGameplayAbility
 {
 	GENERATED_BODY()
+
+	UFUNCTION(BlueprintCallable)
+	void FireDebugBeam() const;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AbilityProperties", meta = (AllowPrivateAccess = "true"))
+	float AbilityPower;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AbilityProperties", meta = (AllowPrivateAccess = "true"))
+	float AbilityDuration;
 };

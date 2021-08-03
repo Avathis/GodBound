@@ -46,6 +46,13 @@ private:
 
 	float Speed = 0.f;
 
+	/*UFUNCTIONS*/
+
+	UFUNCTION(BlueprintCallable)
+	const void FireDebugBeam();
+	
+	/*UPROPERTIES*/
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes", meta = (AllowPrivateAccess = "true"))
 	const class UBaseAttributeSet* Attributes ;
 
