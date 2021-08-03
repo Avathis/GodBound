@@ -5,10 +5,12 @@
 #include "CoreMinimal.h"
 
 #include "GameFramework/Character.h"
+#include "AbilitySystemInterface.h"
+#include "AbilitySystemComponent.h"
 #include "PlayableCharacterBase.generated.h"
 
 UCLASS()
-class GODBOUND_API APlayableCharacterBase : public ACharacter
+class GODBOUND_API APlayableCharacterBase : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
@@ -45,7 +47,15 @@ private:
 	float Speed = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes", meta = (AllowPrivateAccess = "true"))
-	class UBaseAttributeSet* Attributes;
+	const class UBaseAttributeSet* Attributes ;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (AllowPrivateAccess = "true"))
+	class UAbilitySystemComponent* AbilitySystemComponent;
+
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override
+	{
+		return AbilitySystemComponent;
+	}
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CameraBoom", meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;

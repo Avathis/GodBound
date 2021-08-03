@@ -28,15 +28,7 @@ APlayableCharacterBase::APlayableCharacterBase()
 	bUseControllerRotationYaw = true;
 	bUseControllerRotationRoll = false;
 
-	Attributes = CreateDefaultSubobject<UBaseAttributeSet>(TEXT("Attributes"));
-	Attributes->Health.SetBaseValue(100);
-	//Attributes->Health.SetCurrentValue(Attributes->Health.GetBaseValue());
-
-	Attributes->Stamina.SetBaseValue(100);
-	//Attributes->Stamina.SetCurrentValue(Attributes->Stamina.GetBaseValue());
-
-	Attributes->Energy.SetBaseValue(100);
-	//Attributes->Energy.SetCurrentValue(Attributes->Energy.GetBaseValue());
+	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 }
 
 // Called when the game starts or when spawned
@@ -44,6 +36,10 @@ void APlayableCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 	PlayerController = Cast<APlayableCharacterController>(GetController());
+	if(IsValid(AbilitySystemComponent))
+	{
+		Attributes = AbilitySystemComponent->GetSet<UBaseAttributeSet>();
+	}
 }
 
 void APlayableCharacterBase::MoveForward(float Value)
