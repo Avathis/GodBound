@@ -48,9 +48,14 @@ private:
 
 	/*UFUNCTIONS*/
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Abilities")
 	const void FireDebugBeam();
-	
+
+	UFUNCTION(BlueprintCallable, Category = "Abilities")
+	void GrantAbility(TSubclassOf<class UGameplayAbilityBase> AbilityClass, int32 Level, int32 InputCode);
+
+	UFUNCTION(BlueprintCallable, Category = "Abilities")
+	void ActivateAbility(int32 InputCode);
 	/*UPROPERTIES*/
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes", meta = (AllowPrivateAccess = "true"))

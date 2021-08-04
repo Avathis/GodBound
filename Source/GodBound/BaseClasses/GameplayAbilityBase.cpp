@@ -8,6 +8,7 @@
 
 void UGameplayAbilityBase::FireDebugBeam() const
 {
+	
 	/*
 	APlayerController PlayerController = UGameplayStatics::GetPlayerController(this,0);
 	if(IsValid(PlayerController))
@@ -29,3 +30,5 @@ void UGameplayAbilityBase::FireDebugBeam() const
 	}
 	*/
 }
+
+

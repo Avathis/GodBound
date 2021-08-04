@@ -3,6 +3,7 @@
 
 #include "PlayableCharacterBase.h"
 #include "GodBound/BaseClasses/Attribtes/BaseAttributeSet.h"
+#include "GodBound/BaseClasses/GameplayAbilityBase.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "PlayableCharacterController.h"
@@ -199,6 +200,27 @@ const void APlayableCharacterBase::FireDebugBeam()
 	}
 }
 
+void APlayableCharacterBase::GrantAbility(TSubclassOf<UGameplayAbilityBase> AbilityClass, int32 Level, int32 InputCode)
+{
+	if(GetLocalRole() == ROLE_Authority && IsValid(AbilitySystemComponent) && IsValid(AbilityClass))
+	{
+		UGameplayAbilityBase* Ability = AbilityClass->GetDefaultObject<UGameplayAbilityBase>();
+		if(IsValid(Ability))
+		{
+			FGameplayAbilitySpec AbilitySpec(Ability,Level,InputCode);
+			AbilitySystemComponent->GiveAbility(AbilitySpec);
+		}
+		
+	}
+}
+
+void APlayableCharacterBase::ActivateAbility(int32 InputCode)
+{
+	if(IsValid(AbilitySystemComponent))
+	{
+		AbilitySystemComponent->AbilityLocalInputPressed(InputCode);
+	}
+}
 
 // Called every frame
 void APlayableCharacterBase::Tick(float DeltaTime)

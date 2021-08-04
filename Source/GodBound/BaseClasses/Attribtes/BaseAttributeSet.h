@@ -39,4 +39,7 @@ public:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Health")
 	FGameplayAttributeData Stamina;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Health")
+	FGameplayAttributeData AbilityPower;
 };
