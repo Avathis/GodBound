@@ -178,25 +178,27 @@ void APlayableCharacterBase::ReleaseCtrl()
 	//GetCharacterMovement()->bOrientRotationToMovement = false;
 }
 
-const void APlayableCharacterBase::FireDebugBeam()
+void APlayableCharacterBase::FireDebugBeam()
 {
 	if(IsValid(PlayerController))
 	{
 		FVector PlayerLocation;
-		FQuat PlayerRotation;
+		FRotator PlayerRotation;
 
-		FTransform PlayerTransform = GetMesh()->GetSocketTransform(FName("AimSocket"));
-		PlayerLocation = PlayerTransform.GetLocation();
-		PlayerRotation = PlayerTransform.GetRotation();
-
+		PlayerController->GetPlayerViewPoint(PlayerLocation, PlayerRotation);
+		FVector SocketLocation = GetMesh()->GetSocketLocation(FName("HandSocket"));
 		FVector ShotDirection = -PlayerRotation.Vector();
 
 		//DrawDebugCamera(GetWorld(), PlayerLocation, PlayerRotation, 90, 2, FColor::Red, true);
 
-		FVector End = PlayerLocation + PlayerRotation.Vector() * 20.f;
+		FVector End = PlayerLocation + PlayerRotation.Vector() * 2000.f;
 		
 		FHitResult Hit;
-		DrawDebugLine(GetWorld(),PlayerLocation, End,FColor::Red,false,-1,0,1);
+		FCollisionParameters TraceParams;
+		GetWorld()->LineTraceSingleByChannel(Hit,PlayerLocation, End, ECC_Visibility);
+		
+		DrawDebugLine(GetWorld(),SocketLocation, Hit.Location,FColor::Red,false,5,0,1);
+		UE_LOG(LogTemp, Warning, TEXT("FIRED"));
 	}
 }
 
