@@ -205,8 +205,14 @@ void APlayableCharacterBase::FireDebugBeam()
 		
 		if(GetWorld()->LineTraceSingleByChannel(Hit,PlayerLocation, End, ECC_Visibility, TraceParams))
 		{
-			GetWorld()->LineTraceSingleByChannel(Hit2, SocketLocation, Hit.Location, ECC_Visibility, TraceParams);
-			DrawDebugLine(GetWorld(), SocketLocation, Hit2.Location, FColor::Silver, false, 5, 0, 1);
+			if(GetWorld()->LineTraceSingleByChannel(Hit2, SocketLocation, Hit.Location, ECC_Visibility, TraceParams))
+			{
+				DrawDebugLine(GetWorld(), SocketLocation, Hit2.Location, FColor::Silver, false, 5, 0, 1);
+			}
+			else
+			{
+				DrawDebugLine(GetWorld(), SocketLocation, End, FColor::Silver, false, 5, 0, 1);
+			}
 		}
 		else
 		{
