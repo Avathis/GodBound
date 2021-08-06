@@ -75,6 +75,8 @@ private:
 	class UCameraComponent* Camera;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Controller", meta = (AllowPrivateAccess = "true"))
 	class APlayableCharacterController* PlayerController;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VisionBlocker", meta = (AllowPrivateAccess = "true"))
+	class UBoxComponent* CameraCollisionBox;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

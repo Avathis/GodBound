@@ -9,6 +9,7 @@
 #include "PlayableCharacterController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "DrawDebugHelpers.h"
+#include "Components/BoxComponent.h"
 
 // Sets default values
 APlayableCharacterBase::APlayableCharacterBase()
@@ -22,6 +23,9 @@ APlayableCharacterBase::APlayableCharacterBase()
 	
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
+
+	CameraCollisionBox = CreateDefaultSubobject<UBoxComponent>("CameraCollisionBox");
+	CameraCollisionBox->SetupAttachment(GetRootComponent());
 
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
 	GetCharacterMovement()->bOrientRotationToMovement = false;
@@ -119,24 +123,6 @@ void APlayableCharacterBase::ReleaseSpace()
 void APlayableCharacterBase::PressLMB()
 {
 	bLMBPressed = true;
-	if(IsValid(PlayerController))
-	{
-		FVector PlayerLocation;
-		FQuat PlayerRotation;
-
-		FTransform PlayerTransform = GetMesh()->GetSocketTransform(FName("AimSocket"));
-		PlayerLocation = PlayerTransform.GetLocation();
-		PlayerRotation = PlayerTransform.GetRotation();
-
-		FVector ShotDirection = -PlayerRotation.Vector();
-
-		//DrawDebugCamera(GetWorld(), PlayerLocation, PlayerRotation, 90, 2, FColor::Red, true);
-
-		FVector End = PlayerLocation + PlayerRotation.Vector() * 20.f;
-		
-		FHitResult Hit;
-		DrawDebugLine(GetWorld(),PlayerLocation, End,FColor::Red,false,-1,0,1);
-	}
 }
 
 void APlayableCharacterBase::ReleaseLMB()
@@ -194,11 +180,42 @@ void APlayableCharacterBase::FireDebugBeam()
 		FVector End = PlayerLocation + PlayerRotation.Vector() * 2000.f;
 		
 		FHitResult Hit;
-		FCollisionParameters TraceParams;
-		GetWorld()->LineTraceSingleByChannel(Hit,PlayerLocation, End, ECC_Visibility);
+		FHitResult Hit2;
+		FCollisionQueryParams TraceParams;
+		FCollisionQueryParams TraceParamsSocket;
+		TArray<AActor*> ActorsToIgnore;
+		CameraCollisionBox->GetOverlappingActors(ActorsToIgnore);
+		for(AActor* Debug : ActorsToIgnore)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s"), *Debug->GetName());
+		}
 		
-		DrawDebugLine(GetWorld(),SocketLocation, Hit.Location,FColor::Red,false,5,0,1);
-		UE_LOG(LogTemp, Warning, TEXT("FIRED"));
+		if(ActorsToIgnore.IsEmpty())
+		{
+			UE_LOG(LogTemp,Warning,TEXT("Its Empty")); 
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("It's not empty"));
+		}
+		TraceParams.AddIgnoredActors(ActorsToIgnore);
+		TraceParams.AddIgnoredActor(this);
+		
+		TraceParamsSocket.AddIgnoredActor(this);
+		
+		if(GetWorld()->LineTraceSingleByChannel(Hit,PlayerLocation, End, ECC_Visibility, TraceParams))
+		{
+			GetWorld()->LineTraceSingleByChannel(Hit2, SocketLocation, Hit.Location, ECC_Visibility, TraceParams);
+			DrawDebugLine(GetWorld(), SocketLocation, Hit2.Location, FColor::Silver, false, 5, 0, 1);
+		}
+		else
+		{
+			//DrawDebugLine(GetWorld(),SocketLocation, Hit.Location,FColor::Red,false,5,0,1);
+			//DrawDebugLine(GetWorld(), PlayerLocation, Hit.Location, FColor::Green, false, 5,0,1);
+		}
+		
+		
+		
 	}
 }
 
