@@ -213,7 +213,6 @@ AActor* APlayableCharacterBase::FireDebugBeam()
 			{
 				//DrawDebugLine(GetWorld(),SocketLocation, End, FColor::Purple,false,5,0,1);
 				DrawDebugLine(GetWorld(), SocketLocation, Hit.Location + GetActorRotation().Vector()*10.f, FColor::Silver, false, 5, 0, 1);
-				AbilitySystemComponent->event
 				UE_LOG(LogTemp, Warning,TEXT("%s"), *Hit2.GetActor()->GetName());
 				
 				return Hit2.GetActor();
