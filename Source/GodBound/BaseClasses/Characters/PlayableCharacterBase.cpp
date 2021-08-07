@@ -164,7 +164,7 @@ void APlayableCharacterBase::ReleaseCtrl()
 	//GetCharacterMovement()->bOrientRotationToMovement = false;
 }
 
-void APlayableCharacterBase::FireDebugBeam()
+AActor* APlayableCharacterBase::FireDebugBeam()
 {
 	if(IsValid(PlayerController))
 	{
@@ -180,11 +180,12 @@ void APlayableCharacterBase::FireDebugBeam()
 		FVector End = PlayerLocation + PlayerRotation.Vector() * 2000.f;
 		
 		FHitResult Hit;
-		FHitResult Hit2;
+		
 		FCollisionQueryParams TraceParams;
 		FCollisionQueryParams TraceParamsSocket;
 		TArray<AActor*> ActorsToIgnore;
 		CameraCollisionBox->GetOverlappingActors(ActorsToIgnore);
+		/*
 		for(AActor* Debug : ActorsToIgnore)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s"), *Debug->GetName());
@@ -198,6 +199,7 @@ void APlayableCharacterBase::FireDebugBeam()
 		{
 			UE_LOG(LogTemp, Warning, TEXT("It's not empty"));
 		}
+		*/
 		TraceParams.AddIgnoredActors(ActorsToIgnore);
 		TraceParams.AddIgnoredActor(this);
 		
@@ -205,24 +207,30 @@ void APlayableCharacterBase::FireDebugBeam()
 		
 		if(GetWorld()->LineTraceSingleByChannel(Hit,PlayerLocation, End, ECC_Visibility, TraceParams))
 		{
-			if(GetWorld()->LineTraceSingleByChannel(Hit2, SocketLocation, Hit.Location, ECC_Visibility, TraceParams))
+			DrawDebugLine(GetWorld(),PlayerLocation, End,FColor::Green,false,5,0,1);
+			FHitResult Hit2;
+			if(GetWorld()->LineTraceSingleByChannel(Hit2, SocketLocation, Hit.Location + GetActorRotation().Vector()*10.f, ECC_Visibility, TraceParamsSocket))
 			{
-				DrawDebugLine(GetWorld(), SocketLocation, Hit2.Location, FColor::Silver, false, 5, 0, 1);
+				//DrawDebugLine(GetWorld(),SocketLocation, End, FColor::Purple,false,5,0,1);
+				DrawDebugLine(GetWorld(), SocketLocation, Hit.Location + GetActorRotation().Vector()*10.f, FColor::Silver, false, 5, 0, 1);
+				AbilitySystemComponent->event
+				UE_LOG(LogTemp, Warning,TEXT("%s"), *Hit2.GetActor()->GetName());
+				
+				return Hit2.GetActor();
 			}
 			else
 			{
-				DrawDebugLine(GetWorld(), SocketLocation, End, FColor::Silver, false, 5, 0, 1);
+				DrawDebugLine(GetWorld(), SocketLocation, Hit.Location, FColor::Red, false, 5, 0, 1);
 			}
 		}
 		else
 		{
+			
 			//DrawDebugLine(GetWorld(),SocketLocation, Hit.Location,FColor::Red,false,5,0,1);
 			//DrawDebugLine(GetWorld(), PlayerLocation, Hit.Location, FColor::Green, false, 5,0,1);
 		}
-		
-		
-		
 	}
+	return nullptr;
 }
 
 void APlayableCharacterBase::GrantAbility(TSubclassOf<UGameplayAbilityBase> AbilityClass, int32 Level, int32 InputCode)

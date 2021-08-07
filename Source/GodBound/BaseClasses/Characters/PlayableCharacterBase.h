@@ -49,7 +49,7 @@ private:
 	/*UFUNCTIONS*/
 
 	UFUNCTION(BlueprintCallable, Category = "Abilities")
-	void FireDebugBeam();
+	AActor* FireDebugBeam();
 
 	UFUNCTION(BlueprintCallable, Category = "Abilities")
 	void GrantAbility(TSubclassOf<class UGameplayAbilityBase> AbilityClass, int32 Level, int32 InputCode);
