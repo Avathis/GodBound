@@ -15,7 +15,7 @@ class GODBOUND_API UTestingAnimInstance : public UAnimInstance
 	GENERATED_BODY()
 	public:
 	virtual void NativeInitializeAnimation() override;
-    
+		
 	UFUNCTION(BlueprintCallable, Category = AnimationProperties)
 	void UpdateAnimationProperties();
     	
