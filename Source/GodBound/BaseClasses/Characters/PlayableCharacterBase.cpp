@@ -214,7 +214,7 @@ AActor* APlayableCharacterBase::FireDebugBeam()
 			if(GetWorld()->LineTraceSingleByChannel(Hit2, SocketLocation, Hit.Location + UKismetMathLibrary::FindLookAtRotation(SocketLocation,Hit.Location).Vector()*10.f, ECC_Visibility, TraceParamsSocket))
 			{
 				//DrawDebugLine(GetWorld(),SocketLocation, End, FColor::Purple,false,5,0,1);
-				DrawDebugLine(GetWorld(), SocketLocation, Hit2.Location + GetActorRotation().Vector()*10.f, FColor::Silver, false, 5, 0, 1);
+				DrawDebugLine(GetWorld(), SocketLocation, Hit2.Location + UKismetMathLibrary::FindLookAtRotation(SocketLocation,Hit.Location).Vector()*10.f, FColor::Silver, false, 5, 0, 1);
 				UE_LOG(LogTemp, Warning,TEXT("%s"), *Hit2.GetActor()->GetName());
 				
 				return Hit2.GetActor();
