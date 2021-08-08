@@ -42,4 +42,5 @@ public:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Health")
 	FGameplayAttributeData AbilityPower;
+
 };
