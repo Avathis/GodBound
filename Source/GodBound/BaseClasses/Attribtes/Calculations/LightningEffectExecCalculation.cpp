@@ -3,22 +3,38 @@
 
 #include "LightningEffectExecCalculation.h"
 
-ULightningEffectExecCalculation::ULightningEffectExecCalculation()
+struct FLightningDamageStatics
 {
-	RelevantAttributesToCapture.Add(LightningDamageStatics().AbilityPowerDef);
-	RelevantAttributesToCapture.Add(LightningDamageStatics().EnergyDef);
-}
+	DECLARE_ATTRIBUTE_CAPTUREDEF(Energy);
+	DECLARE_ATTRIBUTE_CAPTUREDEF(Stamina);
+	DECLARE_ATTRIBUTE_CAPTUREDEF(Health);
+	DECLARE_ATTRIBUTE_CAPTUREDEF(AbilityPower);
 
-const FLightningDamageStatics& ULightningEffectExecCalculation::LightningDamageStatics()
+	FLightningDamageStatics()
+	{
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UBaseAttributeSet, Stamina, Source, true);
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UBaseAttributeSet, Energy, Source, false);
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UBaseAttributeSet, Health, Source, false);
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UBaseAttributeSet, AbilityPower, Source, false);
+	}
+};
+
+const FLightningDamageStatics& LightningDamageStatics()
 {
 	static FLightningDamageStatics Statics;
 	return Statics;
 }
 
+ULightningEffectExecCalculation::ULightningEffectExecCalculation()
+{
+	RelevantAttributesToCapture.Add(LightningDamageStatics().AbilityPowerDef);
+	RelevantAttributesToCapture.Add(LightningDamageStatics().EnergyDef);
+	RelevantAttributesToCapture.Add(LightningDamageStatics().HealthDef);
+}
 
 void ULightningEffectExecCalculation::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams, FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
 {
-	Super::Execute_Implementation(ExecutionParams, OutExecutionOutput);
+	//Super::Execute_Implementation(ExecutionParams, OutExecutionOutput);
 	UAbilitySystemComponent* TargetABSC = ExecutionParams.GetTargetAbilitySystemComponent();
 	UAbilitySystemComponent* SourceABSC = ExecutionParams.GetSourceAbilitySystemComponent();
 
@@ -35,14 +51,15 @@ void ULightningEffectExecCalculation::Execute_Implementation(const FGameplayEffe
 	EvaluateParameters.TargetTags = TargetTags;
 
 	float BaseDamage = 0.f;
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(FLightningDamageStatics().AbilityPowerDef, EvaluateParameters,BaseDamage);
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(LightningDamageStatics().AbilityPowerDef, EvaluateParameters,BaseDamage);
 
 	float Electricity = 0.f;
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(FLightningDamageStatics().EnergyDef, EvaluateParameters, Electricity);
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(LightningDamageStatics().EnergyDef, EvaluateParameters, Electricity);
 
-	float DamageDone = BaseDamage+Electricity;
+	float DamageDone = BaseDamage-Electricity;
 
 	DamageDone*=-1.f;
 
 	OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(LightningDamageStatics().HealthProperty,EGameplayModOp::Additive,DamageDone));
+	UE_LOG(LogTemp, Warning, TEXT("ClassFinished %f"), DamageDone);
 }
