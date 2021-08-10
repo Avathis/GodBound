@@ -3,3 +3,7 @@
 
 #include "Hephaestus.h"
 
+void AHephaestus::ReleaseFireBall_Implementation()
+{
+	
+}

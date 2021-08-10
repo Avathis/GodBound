@@ -165,7 +165,7 @@ void APlayableCharacterBase::ReleaseCtrl()
 	//GetCharacterMovement()->bOrientRotationToMovement = false;
 }
 
-AActor* APlayableCharacterBase::FireDebugBeam()
+FHitResult APlayableCharacterBase::FireDebugBeam()
 {
 	if(IsValid(PlayerController))
 	{
@@ -217,7 +217,7 @@ AActor* APlayableCharacterBase::FireDebugBeam()
 				DrawDebugLine(GetWorld(), SocketLocation, Hit2.Location + UKismetMathLibrary::FindLookAtRotation(SocketLocation,Hit.Location).Vector()*10.f, FColor::Silver, false, 5, 0, 1);
 				UE_LOG(LogTemp, Warning,TEXT("%s"), *Hit2.GetActor()->GetName());
 				
-				return Hit2.GetActor();
+				return Hit2;
 			}
 			else
 			{
@@ -231,7 +231,8 @@ AActor* APlayableCharacterBase::FireDebugBeam()
 			//DrawDebugLine(GetWorld(), PlayerLocation, Hit.Location, FColor::Green, false, 5,0,1);
 		}
 	}
-	return nullptr;
+	FHitResult Hit;
+	return Hit;
 }
 
 void APlayableCharacterBase::GrantAbility(TSubclassOf<UGameplayAbilityBase> AbilityClass, int32 Level, int32 InputCode)

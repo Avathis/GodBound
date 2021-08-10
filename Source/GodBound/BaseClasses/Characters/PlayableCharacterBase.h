@@ -18,6 +18,15 @@ public:
 	// Sets default values for this character's properties
 	APlayableCharacterBase();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CameraBoom", meta = (AllowPrivateAccess = "true"))
+	class USpringArmComponent* CameraBoom;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera", meta = (AllowPrivateAccess = "true"))
+	class UCameraComponent* Camera;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Controller", meta = (AllowPrivateAccess = "true"))
+	class APlayableCharacterController* PlayerController;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VisionBlocker", meta = (AllowPrivateAccess = "true"))
+	class UBoxComponent* CameraCollisionBox;
+
 private:
 	void MoveForward(float Value);
 	void MoveRight(float Value);
@@ -49,7 +58,7 @@ private:
 	/*UFUNCTIONS*/
 
 	UFUNCTION(BlueprintCallable, Category = "Abilities")
-	AActor* FireDebugBeam();
+	FHitResult FireDebugBeam();
 
 	UFUNCTION(BlueprintCallable, Category = "Abilities")
 	void GrantAbility(TSubclassOf<class UGameplayAbilityBase> AbilityClass, int32 Level, int32 InputCode);
@@ -69,14 +78,7 @@ private:
 		return AbilitySystemComponent;
 	}
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CameraBoom", meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* CameraBoom;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera", meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* Camera;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Controller", meta = (AllowPrivateAccess = "true"))
-	class APlayableCharacterController* PlayerController;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VisionBlocker", meta = (AllowPrivateAccess = "true"))
-	class UBoxComponent* CameraCollisionBox;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -13,5 +13,8 @@ UCLASS()
 class GODBOUND_API AHephaestus : public APlayableCharacterBase
 {
 	GENERATED_BODY()
-	
+	public:
+	UFUNCTION(BlueprintNativeEvent)
+	void ReleaseFireBall();
+	void ReleaseFireBall_Implementation();
 };

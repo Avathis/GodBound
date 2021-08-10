@@ -13,5 +13,11 @@ UCLASS()
 class GODBOUND_API AZeus : public APlayableCharacterBase
 {
 	GENERATED_BODY()
+	FVector LightningStrike();
+protected:
+	void BeginPlay() override;
+public:
+	void Tick(float DeltaSeconds) override;
+	void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	
 };
