@@ -18,6 +18,8 @@ public:
 	// Sets default values for this character's properties
 	APlayableCharacterBase();
 
+	FVector TraceFromCamera();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CameraBoom", meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera", meta = (AllowPrivateAccess = "true"))

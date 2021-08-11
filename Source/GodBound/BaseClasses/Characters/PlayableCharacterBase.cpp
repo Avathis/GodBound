@@ -235,6 +235,29 @@ FHitResult APlayableCharacterBase::FireDebugBeam()
 	return Hit;
 }
 
+FVector APlayableCharacterBase::TraceFromCamera()
+{
+	FHitResult Hit;
+	FVector PlayerLocation;
+	FRotator PlayerRotation;
+
+	PlayerController->GetPlayerViewPoint(PlayerLocation, PlayerRotation);
+	FVector End = PlayerLocation + PlayerRotation.Vector() * 4000.f;
+	FCollisionQueryParams TraceParams;
+	TArray<AActor*> ActorsToIgnore;
+	CameraCollisionBox->GetOverlappingActors(ActorsToIgnore);
+	TraceParams.AddIgnoredActors(ActorsToIgnore);
+	TraceParams.AddIgnoredActor(this);
+
+	if(GetWorld()->LineTraceSingleByChannel(Hit,PlayerLocation, End, ECC_Visibility, TraceParams))
+	{
+		return Hit.Location;
+	}
+	return End;
+	
+}
+
+
 void APlayableCharacterBase::GrantAbility(TSubclassOf<UGameplayAbilityBase> AbilityClass, int32 Level, int32 InputCode)
 {
 	if(GetLocalRole() == ROLE_Authority && IsValid(AbilitySystemComponent) && IsValid(AbilityClass))
