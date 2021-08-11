@@ -2,8 +2,10 @@
 
 
 #include "Projectile.h"
+
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -16,6 +18,12 @@ AProjectile::AProjectile()
 	SphereComponent->SetupAttachment(StaticMesh);
 	MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>("MovementComponent");
 }
+
+float AProjectile::GetAngle(float Distance)
+{
+	return UKismetMathLibrary::Asin(Distance*10/UKismetMathLibrary::Sqrt(1000))/2;
+}
+
 
 // Called when the game starts or when spawned
 void AProjectile::BeginPlay()

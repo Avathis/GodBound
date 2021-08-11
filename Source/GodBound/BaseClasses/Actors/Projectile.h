@@ -15,6 +15,10 @@ public:
 	// Sets default values for this actor's properties
 	AProjectile();
 
+	
+	UFUNCTION(Blueprintcallable)
+	static float GetAngle(float Distance);
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Projectile")
 	UStaticMeshComponent* StaticMesh;
 
