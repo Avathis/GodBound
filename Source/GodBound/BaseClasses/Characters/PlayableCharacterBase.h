@@ -18,6 +18,7 @@ public:
 	// Sets default values for this character's properties
 	APlayableCharacterBase();
 
+	UFUNCTION(BlueprintCallable)
 	FVector TraceFromCamera();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CameraBoom", meta = (AllowPrivateAccess = "true"))
