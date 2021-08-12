@@ -9,6 +9,34 @@
 #include "AbilitySystemComponent.h"
 #include "PlayableCharacterBase.generated.h"
 
+UENUM(BlueprintType)
+enum class GBAbilityInputID : uint8
+{
+	//0
+	None			UMETA(DisplayName = "None"),
+	//1 Confirm
+	Confirm			UMETA(DisplayName = "Confirm"),
+	//2 Cancel
+	Cancel			UMETA(DisplayName = "Cancel"),
+	//3 Shift
+	Sprint			UMETA(DisplayName = "Sprint"),
+	//4 Space
+	Jump			UMETA(DisplayName = "Jump"),
+	//5 
+	Dash			UMETA(DisplayName = "Dash"),
+	//6 LMB
+	Ability1		UMETA(DisplayName = "Ability1"),
+	//7 RMB
+	Ability2		UMETA(DisplayName = "Ability2"),
+	//8 Q
+	Ability3		UMETA(DisplayName = "Ability3"),
+	//9 E
+	Ability4		UMETA(DisplayName = "Ability4"),
+	//10 R
+	Ability5		UMETA(DisplayName = "Ability5"),
+	//
+};
+
 UCLASS()
 class GODBOUND_API APlayableCharacterBase : public ACharacter, public IAbilitySystemInterface
 {
