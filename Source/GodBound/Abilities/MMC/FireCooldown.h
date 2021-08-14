@@ -6,6 +6,7 @@
 #include "GameplayModMagnitudeCalculation.h"
 #include "FireCooldown.generated.h"
 
+
 /**
  * 
  */
@@ -13,5 +14,12 @@ UCLASS()
 class GODBOUND_API UFireCooldown : public UGameplayModMagnitudeCalculation
 {
 	GENERATED_BODY()
-	
+
+	UFireCooldown();
+
+	float CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const override;
+
+	FGameplayEffectAttributeCaptureDefinition OverHeatDef;
+
+	FGameplayEffectAttributeCaptureDefinition HealthDef;
 };

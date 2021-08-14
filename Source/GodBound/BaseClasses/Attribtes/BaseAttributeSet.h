@@ -11,6 +11,12 @@
  * 
  */
 
+#define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
+GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
+GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
+GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
+GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
+
 
 UCLASS()
 class GODBOUND_API UBaseAttributeSet : public UAttributeSet
@@ -20,27 +26,31 @@ class GODBOUND_API UBaseAttributeSet : public UAttributeSet
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Health")
 	FGameplayAttributeData Health;
-	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(UBaseAttributeSet,Health);
-	GAMEPLAYATTRIBUTE_VALUE_GETTER(Health);
-	GAMEPLAYATTRIBUTE_VALUE_SETTER(Health);
-	GAMEPLAYATTRIBUTE_VALUE_INITTER(Health);
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Health);
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Health")
 	FGameplayAttributeData MaxHealth;
-	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(UBaseAttributeSet,MaxHealth);
-    GAMEPLAYATTRIBUTE_VALUE_GETTER(MaxHealth);
-    GAMEPLAYATTRIBUTE_VALUE_SETTER(MaxHealth);
-    GAMEPLAYATTRIBUTE_VALUE_INITTER(MaxHealth);
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, MaxHealth);
 
 	
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Health")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Energy")
 	FGameplayAttributeData Energy;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Energy);
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Health")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Endurance")
 	FGameplayAttributeData Stamina;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Stamina);
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Health")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Strength")
 	FGameplayAttributeData AbilityPower;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, AbilityPower);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Energy")
+	FGameplayAttributeData OverHeat;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, OverHeat);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Energy")
+	FGameplayAttributeData OverCharge;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, OverCharge);
 };
