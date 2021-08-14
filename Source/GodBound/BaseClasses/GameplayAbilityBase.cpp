@@ -6,29 +6,29 @@
 #include "Characters/PlayableCharacterBase.h"
 #include "Kismet/GameplayStatics.h"
 
-void UGameplayAbilityBase::FireDebugBeam() const
+
+const FGameplayTagContainer* UGameplayAbilityBase::GetCooldownTags() const
 {
-	
-	/*
-	APlayerController PlayerController = UGameplayStatics::GetPlayerController(this,0);
-	if(IsValid(PlayerController))
+	FGameplayTagContainer* MutableTags = const_cast<FGameplayTagContainer*>(&TempCooldownTags);
+	const FGameplayTagContainer* ParentTags = Super::GetCooldownTags();
+	if (ParentTags)
 	{
-		FVector PlayerLocation;
-		FQuat PlayerRotation;
-		FTransform PlayerTransform = GetMesh()->GetSocketTransform(FName("AimSocket"));
-		PlayerLocation = PlayerTransform.GetLocation();
-		PlayerRotation = PlayerTransform.GetRotation();
-
-		FVector ShotDirection = -PlayerRotation.Vector();
-
-		//DrawDebugCamera(GetWorld(), PlayerLocation, PlayerRotation, 90, 2, FColor::Red, true);
-
-		FVector End = PlayerLocation + PlayerRotation.Vector() * 20.f;
-		
-		FHitResult Hit;
-		DrawDebugLine(GetWorld(),PlayerLocation, End,FColor::Red,false,-1,0,1);
+		MutableTags->AppendTags(*ParentTags);
 	}
-	*/
+	MutableTags->AppendTags(CooldownTags);
+	return MutableTags;
+
 }
 
+void UGameplayAbilityBase::ApplyCooldown(const FGameplayAbilitySpecHandle Handle,
+	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) const
+{
+	UGameplayEffect* CooldownGE = GetCooldownGameplayEffect();
+	if (CooldownGE)
+	{
+		FGameplayEffectSpecHandle SpecHandle = MakeOutgoingGameplayEffectSpec(CooldownGE->GetClass(), GetAbilityLevel());
+		SpecHandle.Data.Get()->DynamicGrantedTags.AppendTags(CooldownTags);
+		ApplyGameplayEffectSpecToOwner(Handle, ActorInfo, ActivationInfo, SpecHandle);
+	}
+}
 
