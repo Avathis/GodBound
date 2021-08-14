@@ -17,7 +17,7 @@ class GODBOUND_API UFireCooldown : public UGameplayModMagnitudeCalculation
 
 	UFireCooldown();
 
-	float CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const override;
+	virtual float CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const override;
 
 	FGameplayEffectAttributeCaptureDefinition OverHeatDef;
 

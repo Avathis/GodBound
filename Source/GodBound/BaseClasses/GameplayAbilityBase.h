@@ -14,9 +14,9 @@ class GODBOUND_API UGameplayAbilityBase : public UGameplayAbility
 {
 	GENERATED_BODY()
 
-	const FGameplayTagContainer* GetCooldownTags() const override;
+	virtual const FGameplayTagContainer* GetCooldownTags() const override;
 
-	void ApplyCooldown(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) const override;
+	virtual void ApplyCooldown(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) const override;
 
 	public:
 	

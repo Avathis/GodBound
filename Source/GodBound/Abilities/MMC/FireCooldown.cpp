@@ -17,7 +17,7 @@ float UFireCooldown::CalculateBaseMagnitude_Implementation(const FGameplayEffect
 {
 	const UGameplayAbilityBase* Ability = Cast<UGameplayAbilityBase>(Spec.GetContext().GetAbilityInstance_NotReplicated());
 
-	float CD = Ability->CooldownDuration;
+	const float CD = 0.5f;
 	
 	const FGameplayTagContainer* SourceTags = Spec.CapturedSourceTags.GetAggregatedTags();
 
@@ -27,6 +27,6 @@ float UFireCooldown::CalculateBaseMagnitude_Implementation(const FGameplayEffect
 	float OverHeat = 0.f;
 	GetCapturedAttributeMagnitude(OverHeatDef, Spec, Params, OverHeat);
 
-	return OverHeat/Ability->CooldownDuration;
+	return 10.f;
 }
 
