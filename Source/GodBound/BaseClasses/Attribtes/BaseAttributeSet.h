@@ -51,6 +51,14 @@ public:
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, OverHeat);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Energy")
+	FGameplayAttributeData OverHeatMax;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, OverHeatMax);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Energy")
 	FGameplayAttributeData OverCharge;
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, OverCharge);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Energy")
+	FGameplayAttributeData OverChargeMax;
+	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, OverChargeMax);
 };
