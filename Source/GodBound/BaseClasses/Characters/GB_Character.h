@@ -95,14 +95,14 @@ private:
 	FHitResult FireDebugBeam();
 
 	UFUNCTION(BlueprintCallable, Category = "Abilities")
-	void GrantAbility(TSubclassOf<class UGameplayAbilityBase> AbilityClass, int32 Level, int32 InputCode);
+	void GrantAbility(TSubclassOf<class UGB_GameplayAbility> AbilityClass, int32 Level, int32 InputCode);
 
 	UFUNCTION(BlueprintCallable, Category = "Abilities")
 	void ActivateAbility(int32 InputCode);
 	/*UPROPERTIES*/
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes", meta = (AllowPrivateAccess = "true"))
-	const class UBaseAttributeSet* Attributes ;
+	const class UGB_AttributeSet* Attributes ;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (AllowPrivateAccess = "true"))
 	class UAbilitySystemComponent* AbilitySystemComponent;

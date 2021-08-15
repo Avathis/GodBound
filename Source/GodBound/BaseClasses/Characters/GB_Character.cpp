@@ -2,8 +2,8 @@
 
 
 #include "GB_Character.h"
-#include "GodBound/BaseClasses/Attribtes/BaseAttributeSet.h"
-#include "GodBound/BaseClasses/GameplayAbilityBase.h"
+#include "GodBound/BaseClasses/Characters/Attributes/GB_AttributeSet.h"
+#include "GodBound/BaseClasses/GB_GameplayAbility.h"
 #include "Components/GB_SpringArmComponent.h"
 #include "Components/GB_CameraComponent.h"
 #include "Components/GB_CharacterMovementComponent.h"
@@ -45,7 +45,7 @@ void AGB_Character::BeginPlay()
 	PlayerController = Cast<AGB_PlayerController>(GetController());
 	if(IsValid(AbilitySystemComponent))
 	{
-		Attributes = AbilitySystemComponent->GetSet<UBaseAttributeSet>();
+		Attributes = AbilitySystemComponent->GetSet<UGB_AttributeSet>();
 	}
 }
 
@@ -258,11 +258,11 @@ FVector AGB_Character::TraceFromCamera()
 }
 
 
-void AGB_Character::GrantAbility(TSubclassOf<UGameplayAbilityBase> AbilityClass, int32 Level, int32 InputCode)
+void AGB_Character::GrantAbility(TSubclassOf<UGB_GameplayAbility> AbilityClass, int32 Level, int32 InputCode)
 {
 	if(GetLocalRole() == ROLE_Authority && IsValid(AbilitySystemComponent) && IsValid(AbilityClass))
 	{
-		UGameplayAbilityBase* Ability = AbilityClass->GetDefaultObject<UGameplayAbilityBase>();
+		UGB_GameplayAbility* Ability = AbilityClass->GetDefaultObject<UGB_GameplayAbility>();
 		if(IsValid(Ability))
 		{
 			FGameplayAbilitySpec AbilitySpec(Ability,Level,InputCode);
