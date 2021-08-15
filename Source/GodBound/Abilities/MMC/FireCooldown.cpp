@@ -2,6 +2,7 @@
 
 
 #include "FireCooldown.h"
+<<<<<<< HEAD
 #include "GodBound/BaseClasses/Attribtes/BaseAttributeSet.h"
 #include "GodBound/BaseClasses/GameplayAbilityBase.h"
 
@@ -29,4 +30,6 @@ float UFireCooldown::CalculateBaseMagnitude_Implementation(const FGameplayEffect
 
 	return 10.f;
 }
+=======
+>>>>>>> parent of 8853fd0 (yes)
 

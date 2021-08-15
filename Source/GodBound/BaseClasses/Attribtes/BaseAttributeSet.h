@@ -11,12 +11,6 @@
  * 
  */
 
-#define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
-GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
-GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
-GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
-GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
-
 
 UCLASS()
 class GODBOUND_API UBaseAttributeSet : public UAttributeSet
@@ -26,30 +20,30 @@ class GODBOUND_API UBaseAttributeSet : public UAttributeSet
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Health")
 	FGameplayAttributeData Health;
-	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Health);
+	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(UBaseAttributeSet,Health);
+	GAMEPLAYATTRIBUTE_VALUE_GETTER(Health);
+	GAMEPLAYATTRIBUTE_VALUE_SETTER(Health);
+	GAMEPLAYATTRIBUTE_VALUE_INITTER(Health);
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Health")
 	FGameplayAttributeData MaxHealth;
-	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, MaxHealth);
+	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(UBaseAttributeSet,MaxHealth);
+    GAMEPLAYATTRIBUTE_VALUE_GETTER(MaxHealth);
+    GAMEPLAYATTRIBUTE_VALUE_SETTER(MaxHealth);
+    GAMEPLAYATTRIBUTE_VALUE_INITTER(MaxHealth);
 
 	
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Energy")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Health")
 	FGameplayAttributeData Energy;
-	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Energy);
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Endurance")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Health")
 	FGameplayAttributeData Stamina;
-	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, Stamina);
 
-	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Strength")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Health")
 	FGameplayAttributeData AbilityPower;
-	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, AbilityPower);
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Energy")
-	FGameplayAttributeData OverHeat;
-	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, OverHeat);
-
+<<<<<<< HEAD
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Energy")
 	FGameplayAttributeData OverHeatMax;
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, OverHeatMax);
@@ -61,4 +55,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Energy")
 	FGameplayAttributeData OverChargeMax;
 	ATTRIBUTE_ACCESSORS(UBaseAttributeSet, OverChargeMax);
+=======
+>>>>>>> parent of 8853fd0 (yes)
 };

@@ -6,7 +6,6 @@
 #include "GameplayModMagnitudeCalculation.h"
 #include "FireCooldown.generated.h"
 
-
 /**
  * 
  */
@@ -14,6 +13,7 @@ UCLASS()
 class GODBOUND_API UFireCooldown : public UGameplayModMagnitudeCalculation
 {
 	GENERATED_BODY()
+<<<<<<< HEAD
 
 	UFireCooldown();
 
@@ -22,4 +22,7 @@ class GODBOUND_API UFireCooldown : public UGameplayModMagnitudeCalculation
 	FGameplayEffectAttributeCaptureDefinition OverHeatDef;
 
 	FGameplayEffectAttributeCaptureDefinition HealthDef;
+=======
+	
+>>>>>>> parent of 8853fd0 (yes)
 };
