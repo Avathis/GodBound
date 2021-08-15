@@ -28,6 +28,9 @@ AGB_Character::AGB_Character()
 
 	CameraCollisionBox = CreateDefaultSubobject<UBoxComponent>("CameraCollisionBox");
 	CameraCollisionBox->SetupAttachment(GetRootComponent());
+	CameraCollisionBox->SetRelativeLocation(FVector(-100.000000,140.000000,30.000000));
+	CameraCollisionBox->SetBoxExtent(FVector(32.000000,32.000000,32.000000));
+	//CameraCollisionBox->SetScale
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 	
