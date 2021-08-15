@@ -8,7 +8,7 @@
 #include "AbilitySystemInterface.h"
 #include "AbilitySystemComponent.h"
 #include "PlayableCharacterBase.generated.h"
-
+/*
 UENUM(BlueprintType)
 enum class GBAbilityInputID : uint8
 {
@@ -36,7 +36,7 @@ enum class GBAbilityInputID : uint8
 	Ability5		UMETA(DisplayName = "Ability5"),
 	//
 };
-
+*/
 UCLASS()
 class GODBOUND_API APlayableCharacterBase : public ACharacter, public IAbilitySystemInterface
 {

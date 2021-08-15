@@ -6,6 +6,7 @@
 #include "GodBound/BaseClasses/GameplayAbilityBase.h"
 #include "Components/GB_SpringArmComponent.h"
 #include "Components/GB_CameraComponent.h"
+#include "Components/GB_CharacterMovementComponent.h"
 #include "GB_PlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "DrawDebugHelpers.h"
@@ -27,7 +28,6 @@ AGB_Character::AGB_Character()
 
 	CameraCollisionBox = CreateDefaultSubobject<UBoxComponent>("CameraCollisionBox");
 	CameraCollisionBox->SetupAttachment(GetRootComponent());
-
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 	

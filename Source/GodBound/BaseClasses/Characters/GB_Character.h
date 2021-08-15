@@ -56,6 +56,10 @@ public:
 	class AGB_PlayerController* PlayerController;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VisionBlocker", meta = (AllowPrivateAccess = "true"))
 	class UBoxComponent* CameraCollisionBox;
+	/*
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+	class UGB_CharacterMovementComponent* CharacterMovementComponent;
+	*/
 
 private:
 	void MoveForward(float Value);

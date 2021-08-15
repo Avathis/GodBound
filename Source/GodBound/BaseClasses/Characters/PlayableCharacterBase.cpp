@@ -291,7 +291,7 @@ void APlayableCharacterBase::Tick(float DeltaTime)
 void APlayableCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	AbilitySystemComponent->BindAbilityActivationToInputComponent(PlayerInputComponent,FGameplayAbilityInputBinds(FString("ConfirmTarget"), FString("CancelTarget"), FString("GBAbilityInputID"), static_cast<int32>(GBAbilityInputID::Confirm), static_cast<int32>(GBAbilityInputID::Cancel)));
+	//AbilitySystemComponent->BindAbilityActivationToInputComponent(PlayerInputComponent,FGameplayAbilityInputBinds(FString("ConfirmTarget"), FString("CancelTarget"), FString("GBAbilityInputID"), static_cast<int32>(GBAbilityInputID::Confirm), static_cast<int32>(GBAbilityInputID::Cancel)));
 	PlayerInputComponent->BindAxis(FName("MoveForward"),this, &APlayableCharacterBase::MoveForward);
 	PlayerInputComponent->BindAxis(FName("MoveRight"),this, &APlayableCharacterBase::MoveRight);
 	
