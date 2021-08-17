@@ -13,5 +13,5 @@ UCLASS()
 class GODBOUND_API UGB_FireAbility : public UGB_GameplayAbility
 {
 	GENERATED_BODY()
-	
+
 };
