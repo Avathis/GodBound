@@ -2,7 +2,7 @@
 
 
 #include "TestingAnimInstance.h"
-#include "GodBound/BaseClasses/Characters/PlayableCharacterBase.h"
+#include "GodBound/BaseClasses/Characters/GB_Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 void UTestingAnimInstance::NativeInitializeAnimation()
@@ -12,7 +12,7 @@ void UTestingAnimInstance::NativeInitializeAnimation()
 		Pawn = TryGetPawnOwner();
 		if(Pawn)
 		{
-			MainCharacter = Cast<APlayableCharacterBase>(Pawn);
+			MainCharacter = Cast<AGB_Character>(Pawn);
 		}
 	}
 }
@@ -33,7 +33,7 @@ void UTestingAnimInstance::UpdateAnimationProperties()
 
 		if(!MainCharacter)
 		{
-			MainCharacter = Cast<APlayableCharacterBase>(Pawn);
+			MainCharacter = Cast<AGB_Character>(Pawn);
 		}
 
 	}

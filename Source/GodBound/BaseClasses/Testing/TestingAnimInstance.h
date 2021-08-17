@@ -32,6 +32,6 @@ class GODBOUND_API UTestingAnimInstance : public UAnimInstance
 	class APawn* Pawn;
     	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
-	class APlayableCharacterBase* MainCharacter;
+	class AGB_Character* MainCharacter;
 	
 };
