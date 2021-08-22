@@ -33,6 +33,8 @@ AGB_Character::AGB_Character()
 	//CameraCollisionBox->SetScale
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
 	GetCharacterMovement()->bOrientRotationToMovement = false;
+
+	//Movement
 	
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = true;
@@ -166,6 +168,15 @@ void AGB_Character::ReleaseCtrl()
 {
 	bCtrlPressed = false;
 	//GetCharacterMovement()->bOrientRotationToMovement = false;
+}
+
+void AGB_Character::StartSprinting()
+{
+	
+}
+
+void AGB_Character::StopSprinting()
+{
 }
 
 FHitResult AGB_Character::FireDebugBeam()

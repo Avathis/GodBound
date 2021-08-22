@@ -92,6 +92,12 @@ private:
 	/*UFUNCTIONS*/
 
 	UFUNCTION(BlueprintCallable, Category = "Abilities")
+	void StartSprinting();
+
+	UFUNCTION(BlueprintCallable, Category = "Abilities")
+	void StopSprinting();
+	
+	UFUNCTION(BlueprintCallable, Category = "Abilities")
 	FHitResult FireDebugBeam();
 
 	UFUNCTION(BlueprintCallable, Category = "Abilities")

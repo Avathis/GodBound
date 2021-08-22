@@ -18,6 +18,8 @@ class GODBOUND_API UGB_GameplayAbility : public UGameplayAbility
 	virtual void ApplyCooldown(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) const override;
 
 	public:
+
+	UGB_GameplayAbility();
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Cooldown", meta = (AllowPrivateAccess = "true"))
 	FScalableFloat CooldownDuration;

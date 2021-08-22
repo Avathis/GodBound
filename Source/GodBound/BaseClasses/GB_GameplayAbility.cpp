@@ -3,6 +3,14 @@
 
 #include "GB_GameplayAbility.h"
 
+
+UGB_GameplayAbility::UGB_GameplayAbility()
+{
+	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
+
+	ActivationBlockedTags.AddTag(FGameplayTag::RequestGameplayTag(FName("State.Dead")));
+}
+
 const FGameplayTagContainer* UGB_GameplayAbility::GetCooldownTags() const
 {
 	FGameplayTagContainer* MutableTags = const_cast<FGameplayTagContainer*>(&TempCooldownTags);
@@ -27,3 +35,4 @@ void UGB_GameplayAbility::ApplyCooldown(const FGameplayAbilitySpecHandle Handle,
 		ApplyGameplayEffectSpecToOwner(Handle, ActorInfo, ActivationInfo, SpecHandle);
 	}
 }
+
