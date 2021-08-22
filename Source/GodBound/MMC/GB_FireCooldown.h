@@ -13,5 +13,12 @@ UCLASS()
 class GODBOUND_API UGB_FireCooldown : public UGameplayModMagnitudeCalculation
 {
 	GENERATED_BODY()
-	
+
+	UGB_FireCooldown();
+
+	virtual float CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const override;
+
+	FGameplayEffectAttributeCaptureDefinition OverHeatDef;
+
+	FGameplayEffectAttributeCaptureDefinition HealthDef;
 };
