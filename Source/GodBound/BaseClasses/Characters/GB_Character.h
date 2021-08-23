@@ -43,7 +43,7 @@ class GODBOUND_API AGB_Character : public ACharacter, public IAbilitySystemInter
 
 public:
 	// Sets default values for this character's properties
-	AGB_Character();
+	AGB_Character(const FObjectInitializer& ObjectInitializer);
 
 	UFUNCTION(BlueprintCallable)
 	FVector TraceFromCamera();
@@ -111,9 +111,9 @@ private:
 	const class UGB_AttributeSet* Attributes ;
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (AllowPrivateAccess = "true"))
-	class UAbilitySystemComponent* AbilitySystemComponent;
+	class UGB_AbilitySystemComponent* AbilitySystemComponent;
 
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override
+	virtual UGB_AbilitySystemComponent* GetAbilitySystemComponent() const override
 	{
 		return AbilitySystemComponent;
 	}

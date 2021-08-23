@@ -3,3 +3,7 @@
 
 #include "GB_CharacterMovementComponent.h"
 
+UGB_CharacterMovementComponent::UGB_CharacterMovementComponent(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+{
+	
+}

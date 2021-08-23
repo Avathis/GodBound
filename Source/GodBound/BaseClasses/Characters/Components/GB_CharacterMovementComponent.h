@@ -13,5 +13,5 @@ UCLASS()
 class GODBOUND_API UGB_CharacterMovementComponent : public UCharacterMovementComponent
 {
 	GENERATED_BODY()
-	
+	UGB_CharacterMovementComponent(const FObjectInitializer& ObjectInitializer);
 };
