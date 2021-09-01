@@ -56,6 +56,7 @@ void AGB_Character::BeginPlay()
 
 void AGB_Character::MoveForward(float Value)
 {
+	ForwardAxis = Value;
 	if(PlayerController && Value != 0)
 	{
 		// find out which way is forward
@@ -70,6 +71,7 @@ void AGB_Character::MoveForward(float Value)
 
 void AGB_Character::MoveRight(float Value)
 {
+	RightAxis = Value;
 	if(PlayerController && Value != 0)
 	{
 		// find out which way is right

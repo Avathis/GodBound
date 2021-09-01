@@ -60,7 +60,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", meta = (AllowPrivateAccess = "true"))
 	class UGB_CharacterMovementComponent* CharacterMovementComponent;
 	*/
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float ForwardAxis = 0;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	float RightAxis = 0;
+	
 private:
 	void MoveForward(float Value);
 	void MoveRight(float Value);
