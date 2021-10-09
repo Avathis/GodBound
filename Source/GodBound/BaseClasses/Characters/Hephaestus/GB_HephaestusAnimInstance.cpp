@@ -3,6 +3,7 @@
 
 #include "GB_HephaestusAnimInstance.h"
 #include "GodBound/BaseClasses/Characters/GB_Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 void UGB_HephaestusAnimInstance::NativeInitializeAnimation()
 {
@@ -28,6 +29,11 @@ void UGB_HephaestusAnimInstance::UpdateAnimationProperties()
 		Pawn = TryGetPawnOwner();
 		if(Pawn)
 		{
+			FVector Speed = Pawn->GetVelocity();
+			FVector LateralSpeed = FVector(Speed.X, Speed.Y, 0.f);
+			MovementSpeed = LateralSpeed.Size();
+
+			bIsInAir = Pawn->GetMovementComponent()->IsFalling();
 			MainCharacter = Cast<AGB_Character>(Pawn);
 			if(MainCharacter)
 			{

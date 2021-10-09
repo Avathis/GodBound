@@ -22,6 +22,15 @@ class GODBOUND_API UGB_HephaestusAnimInstance : public UAnimInstance
 		
 	UFUNCTION(BlueprintCallable, Category = AnimationProperties)
 	void UpdateAnimationProperties();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
+	float MovementSpeed;
+    	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
+	bool bIsInAir;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement)
+	bool bDied;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
 	class AGB_Character* MainCharacter;
@@ -29,9 +38,9 @@ class GODBOUND_API UGB_HephaestusAnimInstance : public UAnimInstance
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
 	class APawn* Pawn;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement)
 	float ForwardAxis;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement)
 	float RightAxis;
 };
