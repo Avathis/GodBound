@@ -58,7 +58,7 @@ void AGB_Character::MoveForward(float Value)
 {
 	ForwardAxis = Value;
 	UE_LOG(LogTemp,Warning,TEXT("ForwardAxis: %f"),Value);
-	/*
+	
 	if(PlayerController && Value != 0)
 	{
 		// find out which way is forward
@@ -69,14 +69,14 @@ void AGB_Character::MoveForward(float Value)
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		AddMovementInput(Direction, Value);
 	}
-	*/
+	
 }
 
 void AGB_Character::MoveRight(float Value)
 {
 	RightAxis = Value;
 	UE_LOG(LogTemp,Warning,TEXT("RightAxis: %f"),Value);
-	/*
+	
 	if(PlayerController && Value != 0)
 	{
 		// find out which way is right
@@ -88,7 +88,7 @@ void AGB_Character::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
-	*/
+	
 }
 
 void AGB_Character::TurnRight(float Value)
