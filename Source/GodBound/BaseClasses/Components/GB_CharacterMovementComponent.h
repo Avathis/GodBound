@@ -6,6 +6,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GB_CharacterMovementComponent.generated.h"
 
+UENUM(BlueprintType)
 enum class EMovementState : uint8
 {
 	EMS_Idle,
@@ -24,4 +25,7 @@ class GODBOUND_API UGB_CharacterMovementComponent : public UCharacterMovementCom
 public:
 	UGB_CharacterMovementComponent(const FObjectInitializer& ObjectInitializer);
 	EMovementState MovementType = EMovementState::EMS_Walking;
+
+	UFUNCTION(BlueprintCallable)
+	void ChangeMovementState(EMovementState NewMovementState);
 };

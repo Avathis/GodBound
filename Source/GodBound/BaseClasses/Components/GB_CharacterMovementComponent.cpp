@@ -7,3 +7,24 @@ UGB_CharacterMovementComponent::UGB_CharacterMovementComponent(const FObjectInit
 {
 	
 }
+
+void UGB_CharacterMovementComponent::ChangeMovementState(EMovementState NewMovementState)
+{
+	MovementType = NewMovementState;
+	switch (MovementType)
+	{
+	case EMovementState::EMS_Idle: break;
+	case EMovementState::EMS_Walking:
+		{
+			MaxWalkSpeed = 650;
+			break;
+		}
+	case EMovementState::EMS_Sprinting:
+		{
+			MaxWalkSpeed = 900;
+			break;
+		}
+	case EMovementState::EMS_AbilitySprint: break;
+	default: ;
+	}
+}
