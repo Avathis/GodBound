@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
-#include "GodBound/BaseClasses/Characters/Components/GB_AbilitySystemComponent.h"
+#include "GodBound/BaseClasses/Components/GB_AbilitySystemComponent.h"
 #include "GB_TargetDummy.generated.h"
 
 UCLASS()

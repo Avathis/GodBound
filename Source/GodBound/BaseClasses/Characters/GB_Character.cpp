@@ -2,11 +2,11 @@
 
 
 #include "GB_Character.h"
-#include "GodBound/BaseClasses/Characters/Attributes/GB_AttributeSet.h"
+#include "GodBound/BaseClasses/Attributes/GB_AttributeSet.h"
 #include "GodBound/BaseClasses/GB_GameplayAbility.h"
-#include "Components/GB_SpringArmComponent.h"
-#include "Components/GB_CameraComponent.h"
-#include "Components/GB_CharacterMovementComponent.h"
+#include "GodBound/BaseClasses/Components/GB_SpringArmComponent.h"
+#include "GodBound/BaseClasses/Components/GB_CameraComponent.h"
+#include "GodBound/BaseClasses/Components/GB_CharacterMovementComponent.h"
 #include "GB_PlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "DrawDebugHelpers.h"
@@ -57,7 +57,7 @@ void AGB_Character::BeginPlay()
 void AGB_Character::MoveForward(float Value)
 {
 	ForwardAxis = Value;
-	UE_LOG(LogTemp,Warning,TEXT("ForwardAxis: %f"),Value);
+	//UE_LOG(LogTemp,Warning,TEXT("ForwardAxis: %f"),Value);
 	
 	if(PlayerController && Value != 0)
 	{
@@ -71,23 +71,55 @@ void AGB_Character::MoveForward(float Value)
 	}
 	
 }
-
-void AGB_Character::MoveRight(float Value)
+void AGB_Character::OnRight(float Value)
 {
 	RightAxis = Value;
-	UE_LOG(LogTemp,Warning,TEXT("RightAxis: %f"),Value);
+	//UE_LOG(LogTemp,Warning,TEXT("RightAxis: %f"),Value);
 	
 	if(PlayerController && Value != 0)
 	{
 		// find out which way is right
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0, Rotation.Yaw, 0);
-	
-		// get right vector 
-		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-		// add movement in that direction
-		AddMovementInput(Direction, Value);
+		switch (Cast<UGB_CharacterMovementComponent>(GetMovementComponent())->MovementType)
+		{
+		case EMovementState::EMS_Idle:
+			{
+				break;
+			}
+
+		case EMovementState::EMS_Walking:
+			{
+				MoveRight(Value);
+			}
+
+		case EMovementState::EMS_Sprinting:
+			{
+				break;
+			}
+
+		case EMovementState::EMS_AbilitySprint:
+			{
+				break;
+			}
+
+		default:
+			{
+				break;
+			}
+		}
+		
 	}
+}
+
+
+void AGB_Character::MoveRight(float Value)
+{
+	const FRotator Rotation = Controller->GetControlRotation();
+	const FRotator YawRotation(0, Rotation.Yaw, 0);
+	
+	// get right vector 
+	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+	// add movement in that direction
+	AddMovementInput(Direction, Value);
 	
 }
 
@@ -102,7 +134,7 @@ void AGB_Character::TurnRight(float Value)
 
 void AGB_Character::TurnRightAtRate(float Value)
 {
-	
+	AddControllerYawInput(Value * BaseTurnRate * GetWorld()->GetDeltaSeconds());
 }
 
 void AGB_Character::LookUp(float Value)
@@ -116,7 +148,7 @@ void AGB_Character::LookUp(float Value)
 
 void AGB_Character::LookUpAtRate(float Value)
 {
-	
+	AddControllerPitchInput(Value * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
 void AGB_Character::Interact()

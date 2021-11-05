@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
-#include "Components/GB_AbilitySystemComponent.h"
+#include "GodBound/BaseClasses/Components/GB_AbilitySystemComponent.h"
 #include "GB_Character.generated.h"
 
 UENUM(BlueprintType)
@@ -66,8 +66,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float RightAxis = 0;
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
+	float BaseTurnRate = 45.f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
+	float BaseLookUpRate = 45.f;
+	
 private:
 	void MoveForward(float Value);
+	void OnRight(float Value);
 	void MoveRight(float Value);
 	void TurnRight(float Value);
 	void TurnRightAtRate(float Value);

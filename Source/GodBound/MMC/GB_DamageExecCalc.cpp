@@ -2,7 +2,7 @@
 
 
 #include "GB_DamageExecCalc.h"
-#include "GodBound/BaseClasses/Characters/Attributes/GB_AttributeSet.h"
+#include "GodBound/BaseClasses/Attributes/GB_AttributeSet.h"
 
 struct FDamageStatics
 {

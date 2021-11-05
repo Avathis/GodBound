@@ -2,7 +2,7 @@
 
 
 #include "GB_FireCooldown.h"
-#include "GodBound/BaseClasses/Characters/Attributes/GB_AttributeSet.h"
+#include "GodBound/BaseClasses/Attributes/GB_AttributeSet.h"
 #include "GodBound/BaseClasses/GB_GameplayAbility.h"
 
 UGB_FireCooldown::UGB_FireCooldown()

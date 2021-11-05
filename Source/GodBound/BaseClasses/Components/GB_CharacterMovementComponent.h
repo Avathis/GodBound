@@ -6,6 +6,14 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GB_CharacterMovementComponent.generated.h"
 
+enum class EMovementState : uint8
+{
+	EMS_Idle,
+	EMS_Walking,
+	EMS_Sprinting,
+	EMS_AbilitySprint
+};
+
 /**
  * 
  */
@@ -13,5 +21,7 @@ UCLASS()
 class GODBOUND_API UGB_CharacterMovementComponent : public UCharacterMovementComponent
 {
 	GENERATED_BODY()
+public:
 	UGB_CharacterMovementComponent(const FObjectInitializer& ObjectInitializer);
+	EMovementState MovementType = EMovementState::EMS_Walking;
 };

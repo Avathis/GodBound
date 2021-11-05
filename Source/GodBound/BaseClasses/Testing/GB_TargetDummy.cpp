@@ -2,7 +2,7 @@
 
 
 #include "GB_TargetDummy.h"
-#include "GodBound/BaseClasses/Characters/Attributes/GB_AttributeSet.h"
+#include "GodBound/BaseClasses/Attributes/GB_AttributeSet.h"
 
 // Sets default values
 AGB_TargetDummy::AGB_TargetDummy()
