@@ -3,9 +3,9 @@
 
 #include "GB_Sprint.h"
 #include "GodBound/BaseClasses/Characters/GB_Character.h"
-#include "GodBound/BaseClasses/Components/GB_CharacterMovementComponent.h"
+//#include "GodBound/BaseClasses/Components/GB_CharacterMovementComponent.h"
 
-void UGB_Sprint::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
+/*void UGB_Sprint::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
 	if (HasAuthorityOrPredictionKey(ActorInfo, &ActivationInfo))
 	{
@@ -14,6 +14,7 @@ void UGB_Sprint::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const 
 			EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		}
 	}
+	
 	AGB_Character * Character = CastChecked<AGB_Character>(ActorInfo->AvatarActor.Get());
 	if(Character)
 	{
@@ -23,11 +24,12 @@ void UGB_Sprint::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const 
 			MovementComponent->ChangeMovementState(EMovementState::EMS_Sprinting);
 		}
 	}
+	
 }
 
 void UGB_Sprint::InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
 {
-	
+	CancelAbility(Handle, ActorInfo, ActivationInfo,false);
 }
 
 void UGB_Sprint::CancelAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateCancelAbility)
@@ -39,6 +41,7 @@ void UGB_Sprint::CancelAbility(const FGameplayAbilitySpecHandle Handle, const FG
 	}
 	
 	Super::CancelAbility(Handle, ActorInfo, ActivationInfo, bReplicateCancelAbility);
+	
 	AGB_Character* Character = Cast<AGB_Character>(ActorInfo->OwnerActor);
 	if(Character)
 	{
@@ -48,6 +51,8 @@ void UGB_Sprint::CancelAbility(const FGameplayAbilitySpecHandle Handle, const FG
 			MovementComponent->ChangeMovementState(EMovementState::EMS_Walking);
 		}
 	}
+	
 }
+*/
 
 
