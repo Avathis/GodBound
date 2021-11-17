@@ -73,41 +73,11 @@ public:
 	float BaseLookUpRate = 45.f;
 	
 private:
-	void MoveForward(float Value);
-	void OnRight(float Value);
-	void MoveRight(float Value);
-	void TurnRight(float Value);
-	void TurnRightAtRate(float Value);
-	void LookUp(float Value);
-	void LookUpAtRate(float Value);
-
-	void PressSpace();
-	void ReleaseSpace();
-	void PressShift();
-	void ReleaseShift();
-	void PressLMB();
-	void ReleaseLMB();
-	void PressRMB();
-	void ReleaseRMB();
-	void Interact();
-	void PressCtrl();
-	void ReleaseCtrl();
-
-	bool bShiftPressed = false;
-	bool bSpacePressed = false;
-	bool bLMBPressed = false;
-	bool bRMBPressed = false;
-	bool bCtrlPressed = false;
+	
 
 	float Speed = 0.f;
 
-	/*UFUNCTIONS*/
-
-	UFUNCTION(BlueprintCallable, Category = "Abilities")
-	void StartSprinting();
-
-	UFUNCTION(BlueprintCallable, Category = "Abilities")
-	void StopSprinting();
+	
 	
 	UFUNCTION(BlueprintCallable, Category = "Abilities")
 	FHitResult FireDebugBeam();
@@ -119,16 +89,7 @@ private:
 	void ActivateAbility(int32 InputCode);
 	/*UPROPERTIES*/
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes", meta = (AllowPrivateAccess = "true"))
-	const class UGB_AttributeSet* Attributes ;
-
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (AllowPrivateAccess = "true"))
-	class UGB_AbilitySystemComponent* AbilitySystemComponent;
-
-	virtual UGB_AbilitySystemComponent* GetAbilitySystemComponent() const override
-	{
-		return AbilitySystemComponent;
-	}
+	
 	
 	
 protected:
@@ -141,5 +102,16 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes", meta = (AllowPrivateAccess = "true"))
+	const class UGB_AttributeSet* Attributes ;
+
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (AllowPrivateAccess = "true"))
+	class UGB_AbilitySystemComponent* AbilitySystemComponent;
+
+	virtual UGB_AbilitySystemComponent* GetAbilitySystemComponent() const override
+	{
+		return AbilitySystemComponent;
+	}
 
 };

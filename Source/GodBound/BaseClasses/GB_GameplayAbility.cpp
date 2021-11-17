@@ -2,6 +2,7 @@
 
 
 #include "GB_GameplayAbility.h"
+#include "GodBound/BaseClasses/Characters/GB_Character.h"
 
 
 UGB_GameplayAbility::UGB_GameplayAbility()
@@ -9,6 +10,8 @@ UGB_GameplayAbility::UGB_GameplayAbility()
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 
 	ActivationBlockedTags.AddTag(FGameplayTag::RequestGameplayTag(FName("State.Dead")));
+
+	PlayerCharacter = Cast<AGB_Character>(GetAvatarActorFromActorInfo());
 }
 
 const FGameplayTagContainer* UGB_GameplayAbility::GetCooldownTags() const

@@ -35,4 +35,7 @@ class GODBOUND_API UGB_GameplayAbility : public UGameplayAbility
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AbilityProperties", meta = (AllowPrivateAccess = "true"))
 	float AbilityDuration;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AbilityProperties", meta = (AllowPrivateAccess = "true"))
+	class AGB_Character* PlayerCharacter;
 };

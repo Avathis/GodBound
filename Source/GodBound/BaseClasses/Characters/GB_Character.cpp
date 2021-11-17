@@ -4,8 +4,8 @@
 #include "GB_Character.h"
 #include "GodBound/BaseClasses/Attributes/GB_AttributeSet.h"
 #include "GodBound/BaseClasses/GB_GameplayAbility.h"
-#include "GodBound/BaseClasses/Components/GB_SpringArmComponent.h"
-#include "GodBound/BaseClasses/Components/GB_CameraComponent.h"
+
+
 #include "GodBound/BaseClasses/Components/GB_CharacterMovementComponent.h"
 #include "GB_PlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -19,17 +19,7 @@ AGB_Character::AGB_Character(const FObjectInitializer& ObjectInitializer) : Supe
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	
-	CameraBoom = CreateDefaultSubobject<UGB_SpringArmComponent>(TEXT("CameraBoom"));
-	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->bUsePawnControlRotation = false;
 	
-	Camera = CreateDefaultSubobject<UGB_CameraComponent>(TEXT("Camera"));
-	Camera->SetupAttachment(CameraBoom, UGB_SpringArmComponent::SocketName);
-
-	CameraCollisionBox = CreateDefaultSubobject<UBoxComponent>("CameraCollisionBox");
-	CameraCollisionBox->SetupAttachment(GetRootComponent());
-	CameraCollisionBox->SetRelativeLocation(FVector(-100.000000,140.000000,30.000000));
-	CameraCollisionBox->SetBoxExtent(FVector(32.000000,32.000000,32.000000));
 	//CameraCollisionBox->SetScale
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
 	GetCharacterMovement()->bOrientRotationToMovement = false;
@@ -54,170 +44,7 @@ void AGB_Character::BeginPlay()
 	}
 }
 
-void AGB_Character::MoveForward(float Value)
-{
-	ForwardAxis = Value;
-	//UE_LOG(LogTemp,Warning,TEXT("ForwardAxis: %f"),Value);
-	
-	if(PlayerController && Value != 0)
-	{
-		// find out which way is forward
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-		// get forward vector
-		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-		AddMovementInput(Direction, Value);
-	}
-	
-}
-void AGB_Character::OnRight(float Value)
-{
-	RightAxis = Value;
-	//UE_LOG(LogTemp,Warning,TEXT("RightAxis: %f"),Value);
-	
-	if(PlayerController && Value != 0)
-	{
-		// find out which way is right
-		switch (Cast<UGB_CharacterMovementComponent>(GetMovementComponent())->MovementType)
-		{
-		case EMovementState::EMS_Idle:
-			{
-				break;
-			}
-
-		case EMovementState::EMS_Walking:
-			{
-				MoveRight(Value);
-			}
-
-		case EMovementState::EMS_Sprinting:
-			{
-				break;
-			}
-
-		case EMovementState::EMS_AbilitySprint:
-			{
-				break;
-			}
-
-		default:
-			{
-				break;
-			}
-		}
-		
-	}
-}
-
-
-void AGB_Character::MoveRight(float Value)
-{
-	const FRotator Rotation = Controller->GetControlRotation();
-	const FRotator YawRotation(0, Rotation.Yaw, 0);
-	
-	// get right vector 
-	const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-	// add movement in that direction
-	AddMovementInput(Direction, Value);
-	
-}
-
-void AGB_Character::TurnRight(float Value)
-{
-	if (Value != 0.f && Controller && Controller->IsLocalPlayerController())
-	{
-		APlayerController* const PC = CastChecked<APlayerController>(Controller);
-		PC->AddYawInput(Value);
-	}
-}
-
-void AGB_Character::TurnRightAtRate(float Value)
-{
-	AddControllerYawInput(Value * BaseTurnRate * GetWorld()->GetDeltaSeconds());
-}
-
-void AGB_Character::LookUp(float Value)
-{
-	if (Value != 0.f && Controller && Controller->IsLocalPlayerController())
-	{
-		APlayerController* const PC = CastChecked<APlayerController>(Controller);
-		PC->AddPitchInput(Value);
-	}
-}
-
-void AGB_Character::LookUpAtRate(float Value)
-{
-	AddControllerPitchInput(Value * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
-}
-
-void AGB_Character::Interact()
-{
-	
-}
-
-void AGB_Character::PressSpace()
-{
-	bSpacePressed = true;
-}
-
-void AGB_Character::ReleaseSpace()
-{
-	bSpacePressed = false;
-}
-
-void AGB_Character::PressLMB()
-{
-	bLMBPressed = true;
-}
-
-void AGB_Character::ReleaseLMB()
-{
-	bLMBPressed = false;
-}
-
-void AGB_Character::PressRMB()
-{
-	bRMBPressed = true;
-}
-
-void AGB_Character::ReleaseRMB()
-{
-	bRMBPressed = false;
-}
-
-void AGB_Character::PressShift()
-{
-	bShiftPressed = true;
-}
-
-void AGB_Character::ReleaseShift()
-{
-	bShiftPressed = false;
-}
-
-void AGB_Character::PressCtrl()
-{
-	bCtrlPressed = true;
-	GetCharacterMovement()->bOrientRotationToMovement = !GetCharacterMovement()->bOrientRotationToMovement;
-	bUseControllerRotationYaw = !bUseControllerRotationYaw;
-	//CameraBoom->bUsePawnControlRotation = !CameraBoom->bUsePawnControlRotation;
-}
-
-void AGB_Character::ReleaseCtrl()
-{
-	bCtrlPressed = false;
-	//GetCharacterMovement()->bOrientRotationToMovement = false;
-}
-
-void AGB_Character::StartSprinting()
-{
-	
-}
-
-void AGB_Character::StopSprinting()
-{
-}
 
 FHitResult AGB_Character::FireDebugBeam()
 {
@@ -345,28 +172,6 @@ void AGB_Character::Tick(float DeltaTime)
 void AGB_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	AbilitySystemComponent->BindAbilityActivationToInputComponent(PlayerInputComponent,FGameplayAbilityInputBinds(FString("ConfirmTarget"), FString("CancelTarget"), FString("GBAbilityInputID"), static_cast<int32>(GBAbilityInputID::Confirm), static_cast<int32>(GBAbilityInputID::Cancel)));
-	PlayerInputComponent->BindAxis(FName("MoveForward"),this, &AGB_Character::MoveForward);
-	PlayerInputComponent->BindAxis(FName("MoveRight"),this, &AGB_Character::MoveRight);
 	
-	PlayerInputComponent->BindAxis(FName("LookUp"), this, &AGB_Character::LookUp);
-	PlayerInputComponent->BindAxis(FName("LookUpAR"),this, &AGB_Character::LookUpAtRate);
-	PlayerInputComponent->BindAxis(FName("Turn"),this, &AGB_Character::TurnRight);
-	PlayerInputComponent->BindAxis(FName("TurnAR"),this, &AGB_Character::TurnRightAtRate);
-
-	
-	PlayerInputComponent->BindAction(FName("Shift"),IE_Pressed,this,&AGB_Character::PressShift);
-	PlayerInputComponent->BindAction(FName("ReShift"),IE_Pressed,this,&AGB_Character::ReleaseShift);
-	
-	PlayerInputComponent->BindAction(FName("Space"),IE_Pressed,this,&AGB_Character::PressSpace);
-	PlayerInputComponent->BindAction(FName("ReSpace"),IE_Pressed,this,&AGB_Character::ReleaseSpace);
-	
-	PlayerInputComponent->BindAction(FName("LMB"),IE_Pressed,this,&AGB_Character::PressLMB);
-	PlayerInputComponent->BindAction(FName("ReLMB"),IE_Pressed,this,&AGB_Character::ReleaseLMB);
-	
-	PlayerInputComponent->BindAction(FName("RMB"),IE_Pressed,this,&AGB_Character::PressRMB);
-	PlayerInputComponent->BindAction(FName("ReRMB"),IE_Pressed,this,&AGB_Character::ReleaseRMB);
-
-	PlayerInputComponent->BindAction(FName("Control"), IE_Pressed, this, &AGB_Character::PressCtrl);
 }
 
