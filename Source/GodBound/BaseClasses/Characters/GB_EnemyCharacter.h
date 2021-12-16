@@ -13,5 +13,15 @@ UCLASS()
 class GODBOUND_API AGB_EnemyCharacter : public AGB_Character
 {
 	GENERATED_BODY()
+
+	protected:
+	virtual void BeginPlay() override;
+
+	public:
+	AGB_EnemyCharacter(const FObjectInitializer& ObjectInitializer);
+	
+	virtual void Tick(float DeltaSeconds) override;
+
+	//void ShowHealthBar();
 	
 };

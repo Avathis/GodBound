@@ -36,7 +36,7 @@ enum class GBAbilityInputID : uint8
 	//
 };
 
-UCLASS()
+UCLASS(config=Game)
 class GODBOUND_API AGB_Character : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
@@ -113,5 +113,8 @@ public:
 	{
 		return AbilitySystemComponent;
 	}
+
+	UFUNCTION(BlueprintCallable)
+	float GetHealthPercentage();
 
 };

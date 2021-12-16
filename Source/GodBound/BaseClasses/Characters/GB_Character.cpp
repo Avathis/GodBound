@@ -42,6 +42,7 @@ void AGB_Character::BeginPlay()
 	{
 		Attributes = AbilitySystemComponent->GetSet<UGB_AttributeSet>();
 	}
+	
 }
 
 
@@ -173,5 +174,14 @@ void AGB_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	
+}
+
+float AGB_Character::GetHealthPercentage()
+{
+	if(Attributes)
+	{
+		return Attributes->GetHealth()/Attributes->GetMaxHealth();
+	}
+	return 1.f;
 }
 
