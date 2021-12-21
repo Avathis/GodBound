@@ -1,28 +1,28 @@
-D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RiderGameControlExtension\Private\RiderGameControlExtension.cpp
+C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RiderGameControlExtension\Private\RiderGameControlExtension.cpp
 /I .
-/I D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RiderGameControlExtension\Private
-/I D:\Code\GodBound\Plugins\Developer\RiderLink\Source
-/I D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RD\src
-/I D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RD\src\rd_core_cpp
-/I D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RD\src\rd_core_cpp\src\main
-/I D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_cpp
-/I D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_cpp\src\main
-/I D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_cpp\src\main\util
-/I D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RD\src\rd_gen_cpp\src
-/I D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RD\thirdparty
-/I D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RD\thirdparty\ordered-map\include
-/I D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RD\thirdparty\optional\tl
-/I D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RD\thirdparty\variant\include
-/I D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RD\thirdparty\string-view-lite\include
-/I D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include
-/I D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RD\thirdparty\clsocket\src
-/I D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RD\thirdparty\CTPL\include
+/I C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RiderGameControlExtension\Private
+/I C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source
+/I C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RD\src
+/I C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RD\src\rd_core_cpp
+/I C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RD\src\rd_core_cpp\src\main
+/I C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_cpp
+/I C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_cpp\src\main
+/I C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_cpp\src\main\util
+/I C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RD\src\rd_gen_cpp\src
+/I C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RD\thirdparty
+/I C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RD\thirdparty\ordered-map\include
+/I C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RD\thirdparty\optional\tl
+/I C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RD\thirdparty\variant\include
+/I C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RD\thirdparty\string-view-lite\include
+/I C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RD\thirdparty\spdlog\include
+/I C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RD\thirdparty\clsocket\src
+/I C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RD\thirdparty\CTPL\include
 /I Runtime
 /I Runtime\TraceLog\Public
 /I Runtime\Core\Public
-/I D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RiderLink\Public\Model\Library
-/I D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RiderLink\Public\Model\RdEditorProtocol
-/I D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RiderLink\Public
+/I C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RiderLink\Public\Model\Library
+/I C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RiderLink\Public\Model\RdEditorProtocol
+/I C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RiderLink\Public
 /I ..\Intermediate\Build\Win64\UnrealEditor\Inc\HeadMountedDisplay
 /I Runtime\HeadMountedDisplay\Public
 /I ..\Intermediate\Build\Win64\UnrealEditor\Inc\AugmentedReality
@@ -255,7 +255,7 @@ D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RiderGameControlExtension\Pr
 /I Developer\DeveloperToolSettings\Public
 /I Runtime\Windows
 /I Runtime\Windows\XAudio2\Public
-/I D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RiderGameControlExtension\Public
+/I C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RiderGameControlExtension\Public
 /I ThirdParty\PhysX3\PxShared\include
 /I ThirdParty\PhysX3\PxShared\include\cudamanager
 /I ThirdParty\PhysX3\PxShared\include\filebuf
@@ -267,17 +267,17 @@ D:\Code\GodBound\Plugins\Developer\RiderLink\Source\RiderGameControlExtension\Pr
 /I ThirdParty\PhysX3\PhysX_3.4\Include\common
 /I ThirdParty\PhysX3\PhysX_3.4\Include\extensions
 /I ThirdParty\PhysX3\PhysX_3.4\Include\geometry
-/I "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.26.28801\INCLUDE"
+/I "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\INCLUDE"
 /I "C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\ucrt"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\shared"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\um"
-/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.18362.0\winrt"
-/FI"D:\Code\GodBound\Intermediate\Build\Win64\GodBoundEditor\Development\UnrealEd\SharedPCH.UnrealEd.RTTI.ShadowErrors.h"
-/FI"D:\Code\GodBound\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderGameControlExtension\Definitions.RiderGameControlExtension.h"
-/Yu"D:\Code\GodBound\Intermediate\Build\Win64\GodBoundEditor\Development\UnrealEd\SharedPCH.UnrealEd.RTTI.ShadowErrors.h"
-/Fp"D:\Code\GodBound\Intermediate\Build\Win64\GodBoundEditor\Development\UnrealEd\SharedPCH.UnrealEd.RTTI.ShadowErrors.h.pch"
-/Fo"D:\Code\GodBound\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderGameControlExtension\RiderGameControlExtension.cpp.obj"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\ucrt"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\shared"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\um"
+/I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\winrt"
+/FI"C:\GameProjects\GodBound\Intermediate\Build\Win64\GodBoundEditor\Development\UnrealEd\SharedPCH.UnrealEd.RTTI.ShadowErrors.h"
+/FI"C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderGameControlExtension\Definitions.RiderGameControlExtension.h"
+/Yu"C:\GameProjects\GodBound\Intermediate\Build\Win64\GodBoundEditor\Development\UnrealEd\SharedPCH.UnrealEd.RTTI.ShadowErrors.h"
+/Fp"C:\GameProjects\GodBound\Intermediate\Build\Win64\GodBoundEditor\Development\UnrealEd\SharedPCH.UnrealEd.RTTI.ShadowErrors.h.pch"
+/Fo"C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderGameControlExtension\RiderGameControlExtension.cpp.obj"
 /Zc:inline
 /nologo
 /Oi
