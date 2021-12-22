@@ -19,6 +19,7 @@ class GODBOUND_API UGB_GameplayAbility : public UGameplayAbility
 
 	public:
 
+	
 	UGB_GameplayAbility();
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Cooldown", meta = (AllowPrivateAccess = "true"))

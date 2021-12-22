@@ -22,6 +22,9 @@ class GODBOUND_API AGB_EnemyCharacter : public AGB_Character
 	
 	virtual void Tick(float DeltaSeconds) override;
 
-	//void ShowHealthBar();
+	
+
+	FDelegateHandle HealthChangedDelegateHandle;
+	//FDelegateHandle ;
 	
 };
