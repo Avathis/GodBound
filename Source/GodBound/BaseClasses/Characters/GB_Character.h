@@ -96,6 +96,16 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	FDelegateHandle HealthChangedDelegateHandle;
+	FDelegateHandle MaxHealthChangedDelegateHandle;
+	FDelegateHandle HealthRegenRateChangedDelegateHandle;
+	FDelegateHandle EnergyChangedDelegateHandle;
+	FDelegateHandle MaxEnergyChangedDelegateHandle;
+	FDelegateHandle EnergyRegenRateChangedDelegateHandle;
+	FDelegateHandle StaminaChangedDelegateHandle;
+	FDelegateHandle MaxStaminaChangedDelegateHandle;
+	FDelegateHandle StaminaRegenRateChangedDelegateHandle;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -114,7 +124,44 @@ public:
 		return AbilitySystemComponent;
 	}
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+    float GetHealth() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+    float GetMaxHealth() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+    float GetHealthRegenRate() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+    float GetEnergy() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+    float GetMaxEnergy() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+    float GetEnergyRegenRate() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+    float GetStamina() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+    float GetMaxStamina() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+    float GetStaminaRegenRate() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	float GetHealthPercentage();
+
+	virtual void HealthChanged(const FOnAttributeChangeData& Data);
+	virtual void MaxHealthChanged(const FOnAttributeChangeData& Data);
+	virtual void HealthRegenRateChanged(const FOnAttributeChangeData& Data);
+	virtual void EnergyChanged(const FOnAttributeChangeData& Data);
+	virtual void MaxEnergyChanged(const FOnAttributeChangeData& Data);
+	virtual void EnergyRegenRateChanged(const FOnAttributeChangeData& Data);
+	virtual void StaminaChanged(const FOnAttributeChangeData& Data);
+	virtual void MaxStaminaChanged(const FOnAttributeChangeData& Data);
+	virtual void StaminaRegenRateChanged(const FOnAttributeChangeData& Data);
 
 };

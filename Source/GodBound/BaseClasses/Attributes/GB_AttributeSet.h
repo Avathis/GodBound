@@ -30,16 +30,37 @@ class GODBOUND_API UGB_AttributeSet : public UAttributeSet
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Health")
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UGB_AttributeSet, MaxHealth);
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Health")
+	FGameplayAttributeData HealthRegenRate;
+	ATTRIBUTE_ACCESSORS(UGB_AttributeSet, HealthRegenRate);
+	
 
 	
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Energy")
 	FGameplayAttributeData Energy;
 	ATTRIBUTE_ACCESSORS(UGB_AttributeSet, Energy);
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Energy")
+	FGameplayAttributeData MaxEnergy;
+	ATTRIBUTE_ACCESSORS(UGB_AttributeSet,  MaxEnergy);
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Energy")
+	FGameplayAttributeData EnergyRecoverRate;
+	ATTRIBUTE_ACCESSORS(UGB_AttributeSet,  EnergyRecoverRate);
+	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Endurance")
 	FGameplayAttributeData Stamina;
 	ATTRIBUTE_ACCESSORS(UGB_AttributeSet, Stamina);
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Endurance")
+	FGameplayAttributeData MaxStamina;
+	ATTRIBUTE_ACCESSORS(UGB_AttributeSet, MaxStamina);
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Endurance")
+	FGameplayAttributeData StaminaRecoverRate;
+	ATTRIBUTE_ACCESSORS(UGB_AttributeSet, StaminaRecoverRate);
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Strength")
 	FGameplayAttributeData AbilityPower;

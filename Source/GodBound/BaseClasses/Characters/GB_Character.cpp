@@ -41,11 +41,14 @@ void AGB_Character::BeginPlay()
 	if(IsValid(AbilitySystemComponent))
 	{
 		Attributes = AbilitySystemComponent->GetSet<UGB_AttributeSet>();
+		HealthChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetHealthAttribute()).AddUObject(this, &AGB_Character::HealthChanged);
+		MaxHealthChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetMaxHealthAttribute()).AddUObject(this, &AGB_Character::MaxHealthChanged);
+		StaminaChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetStaminaAttribute()).AddUObject(this, &AGB_Character::StaminaChanged);
+		MaxStaminaChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetMaxStaminaAttribute()).AddUObject(this, &AGB_Character::MaxStaminaChanged);
+		EnergyChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetEnergyAttribute()).AddUObject(this, &AGB_Character::EnergyChanged);
+		MaxEnergyChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetMaxEnergyAttribute()).AddUObject(this, &AGB_Character::MaxEnergyChanged);
 	}
-	
 }
-
-
 
 FHitResult AGB_Character::FireDebugBeam()
 {
@@ -176,6 +179,51 @@ void AGB_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	
 }
 
+float AGB_Character::GetHealth() const
+{
+	return Attributes->GetHealth();
+}
+
+float AGB_Character::GetMaxHealth() const
+{
+	return Attributes->GetMaxHealth();
+}
+
+float AGB_Character::GetHealthRegenRate() const
+{
+	return Attributes->GetHealthRegenRate();
+}
+
+float AGB_Character::GetEnergy() const
+{
+	return Attributes->GetEnergy();
+}
+
+float AGB_Character::GetMaxEnergy() const
+{
+	return Attributes->GetMaxEnergy();
+}
+
+float AGB_Character::GetEnergyRegenRate() const
+{
+	return Attributes->GetEnergyRecoverRate();
+}
+
+float AGB_Character::GetStamina() const
+{
+	return Attributes->GetStamina();
+}
+
+float AGB_Character::GetMaxStamina() const
+{
+	return Attributes->GetMaxStamina();
+}
+
+float AGB_Character::GetStaminaRegenRate() const
+{
+	return Attributes->GetStaminaRecoverRate();
+}
+
 float AGB_Character::GetHealthPercentage()
 {
 	if(Attributes)
@@ -183,5 +231,41 @@ float AGB_Character::GetHealthPercentage()
 		return Attributes->GetHealth()/Attributes->GetMaxHealth();
 	}
 	return 1.f;
+}
+
+void AGB_Character::HealthChanged(const FOnAttributeChangeData& Data)
+{
+}
+
+void AGB_Character::MaxHealthChanged(const FOnAttributeChangeData& Data)
+{
+}
+
+void AGB_Character::HealthRegenRateChanged(const FOnAttributeChangeData& Data)
+{
+}
+
+void AGB_Character::EnergyChanged(const FOnAttributeChangeData& Data)
+{
+}
+
+void AGB_Character::MaxEnergyChanged(const FOnAttributeChangeData& Data)
+{
+}
+
+void AGB_Character::EnergyRegenRateChanged(const FOnAttributeChangeData& Data)
+{
+}
+
+void AGB_Character::StaminaChanged(const FOnAttributeChangeData& Data)
+{
+}
+
+void AGB_Character::MaxStaminaChanged(const FOnAttributeChangeData& Data)
+{
+}
+
+void AGB_Character::StaminaRegenRateChanged(const FOnAttributeChangeData& Data)
+{
 }
 
