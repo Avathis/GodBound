@@ -10,7 +10,11 @@
 #include "GB_PlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "DrawDebugHelpers.h"
+#include "Blueprint/UserWidget.h"
 #include "Components/BoxComponent.h"
+#include "Components/WidgetComponent.h"
+#include "GodBound/BaseClasses/UI/GB_HealthWidget.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
@@ -31,6 +35,13 @@ AGB_Character::AGB_Character(const FObjectInitializer& ObjectInitializer) : Supe
 	bUseControllerRotationRoll = false;
 
 	AbilitySystemComponent = CreateDefaultSubobject<UGB_AbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+
+	UIHealthBarComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("UIHealthBar"));
+	UIHealthBarComponent->SetupAttachment(RootComponent);
+	UIHealthBarComponent->SetRelativeLocation(FVector(0, 0, 120));
+	UIHealthBarComponent->SetWidgetSpace(EWidgetSpace::Screen);
+	UIHealthBarComponent->SetDrawSize(FVector2D(500, 500));
+	
 }
 
 // Called when the game starts or when spawned
@@ -47,6 +58,11 @@ void AGB_Character::BeginPlay()
 		MaxStaminaChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetMaxStaminaAttribute()).AddUObject(this, &AGB_Character::MaxStaminaChanged);
 		EnergyChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetEnergyAttribute()).AddUObject(this, &AGB_Character::EnergyChanged);
 		MaxEnergyChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetMaxEnergyAttribute()).AddUObject(this, &AGB_Character::MaxEnergyChanged);
+	}
+	InitializeHealthBar();
+	if(this == Cast<AGB_Character>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0))&& UIHealthBar)
+	{
+		UIHealthBar->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
 
@@ -165,6 +181,29 @@ void AGB_Character::ActivateAbility(int32 InputCode)
 	}
 }
 
+void AGB_Character::InitializeHealthBar()
+{
+	if(UIHealthBar || !IsValid(AbilitySystemComponent))
+	{
+		return;
+	}
+	AGB_PlayerController* MainController = Cast<AGB_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(),0));
+
+	if(MainController)
+	{
+		if(UIHealthBarClass)
+		{
+			UIHealthBar = CreateWidget<UGB_HealthWidget>(MainController, UIHealthBarClass);
+			if(UIHealthBar && UIHealthBarComponent)
+			{
+				UIHealthBarComponent->SetWidget(UIHealthBar);
+
+				UIHealthBar->SetHealthPercentage(GetHealth() / GetMaxHealth());
+			}
+		}
+	}
+}
+
 // Called every frame
 void AGB_Character::Tick(float DeltaTime)
 {
@@ -235,6 +274,11 @@ float AGB_Character::GetHealthPercentage()
 
 void AGB_Character::HealthChanged(const FOnAttributeChangeData& Data)
 {
+	float Health = Data.NewValue;
+	if(UIHealthBar)
+	{
+		UIHealthBar->SetHealthPercentage(Health/GetMaxHealth());
+	}
 }
 
 void AGB_Character::MaxHealthChanged(const FOnAttributeChangeData& Data)

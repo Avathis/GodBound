@@ -106,6 +106,20 @@ protected:
 	FDelegateHandle MaxStaminaChangedDelegateHandle;
 	FDelegateHandle StaminaRegenRateChangedDelegateHandle;
 
+	//HealthBar
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "EnemyHealthBar")
+	TSubclassOf<class UGB_HealthWidget> UIHealthBarClass;
+
+	UPROPERTY()
+	UGB_HealthWidget* UIHealthBar;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "EnemyHealthBar")
+	class UWidgetComponent* UIHealthBarComponent;
+
+	UFUNCTION()
+	void InitializeHealthBar();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
