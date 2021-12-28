@@ -25,7 +25,11 @@ void UGB_CharacterMovementComponent::ChangeMovementState(EMovementState NewMovem
 			UE_LOG(LogTemp,Warning,TEXT("Sprinting"))
 			break;
 		}
-	case EMovementState::EMS_AbilitySprint: break;
+	case EMovementState::EMS_AbilitySprint:
+		{
+			MaxWalkSpeed = 1500; 
+			break;
+		}
 	default: ;
 	}
 }
