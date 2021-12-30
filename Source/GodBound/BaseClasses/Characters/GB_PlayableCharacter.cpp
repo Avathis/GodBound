@@ -4,6 +4,7 @@
 #include "GB_PlayableCharacter.h"
 
 #include "Components/BoxComponent.h"
+#include "GB_PlayerController.h"
 #include "GodBound/BaseClasses/Components/GB_CameraComponent.h"
 #include "GodBound/BaseClasses/Components/GB_CharacterMovementComponent.h"
 #include "GodBound/BaseClasses/Components/GB_SpringArmComponent.h"
@@ -138,6 +139,29 @@ void AGB_PlayableCharacter::LookUpAtRate(float Value)
 void AGB_PlayableCharacter::Interact()
 {
 	
+}
+
+FHitResult AGB_PlayableCharacter::HitTraceFromCamera(float MaxRange)
+{
+	FHitResult Hit;
+	FVector PlayerLocation;
+	FRotator PlayerRotation;
+
+	PlayerController->GetPlayerViewPoint(PlayerLocation, PlayerRotation);
+	FVector End = PlayerLocation + PlayerRotation.Vector() * MaxRange;
+	FCollisionQueryParams TraceParams;
+	TArray<AActor*> ActorsToIgnore;
+	CameraCollisionBox->GetOverlappingActors(ActorsToIgnore);
+	TraceParams.AddIgnoredActors(ActorsToIgnore);
+	TraceParams.AddIgnoredActor(this);
+
+	if(GetWorld()->LineTraceSingleByChannel(Hit,PlayerLocation, End, ECC_Visibility, TraceParams))
+	{
+		return Hit;
+		
+		//UE_LOG(LogTemp, Warning, TEXT("%i"),Hit.bBlockingHit);
+	}
+	return Hit;
 }
 
 void AGB_PlayableCharacter::PressCtrl()

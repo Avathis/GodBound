@@ -34,5 +34,8 @@ class GODBOUND_API AGB_PlayableCharacter : public AGB_Character
 	bool bCtrlPressed;
 
 	void Interact();
+
+	UFUNCTION(Blueprintcallable)
+	FHitResult HitTraceFromCamera(float MaxRange = 4000.f);
 	
 };

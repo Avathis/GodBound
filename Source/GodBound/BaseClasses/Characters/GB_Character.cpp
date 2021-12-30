@@ -153,6 +153,7 @@ FVector AGB_Character::TraceFromCamera()
 	if(GetWorld()->LineTraceSingleByChannel(Hit,PlayerLocation, End, ECC_Visibility, TraceParams))
 	{
 		return Hit.Location;
+		//UE_LOG(LogTemp, Warning, TEXT("%i"),Hit.bBlockingHit);
 	}
 	return End;
 	
