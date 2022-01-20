@@ -3,3 +3,13 @@
 
 #include "GB_LightningCost.h"
 
+UGB_LightningCost::UGB_LightningCost()
+{
+    
+}
+
+
+float UGB_LightningCost::CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const
+{
+    return 0.f;
+}

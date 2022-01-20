@@ -27,9 +27,6 @@ float UGB_FireCooldown::CalculateBaseMagnitude_Implementation(const FGameplayEff
 	float OverHeat = 0.f;
 	GetCapturedAttributeMagnitude(OverHeatDef, Spec, Params, OverHeat);
 
-	if(OverHeat>100)
-	{
-		return 0.f;
-	}
-	return CD - CD*OverHeat/100;
+	
+	return CD - CD*OverHeat/100/OverHeat>=100?4:2;
 }

@@ -81,4 +81,18 @@ class GODBOUND_API UGB_AttributeSet : public UAttributeSet
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Energy")
 	FGameplayAttributeData OverChargeMax;
 	ATTRIBUTE_ACCESSORS(UGB_AttributeSet, OverChargeMax);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Resistance")
+	FGameplayAttributeData HeatResistance;
+	ATTRIBUTE_ACCESSORS(UGB_AttributeSet, HeatResistance);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Resistance")
+	FGameplayAttributeData ColdResistance;
+	ATTRIBUTE_ACCESSORS(UGB_AttributeSet, ColdResistance);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Resistance")
+	FGameplayAttributeData PhysicalResistance;
+	ATTRIBUTE_ACCESSORS(UGB_AttributeSet, PhysicalResistance);
+
+	
 };
