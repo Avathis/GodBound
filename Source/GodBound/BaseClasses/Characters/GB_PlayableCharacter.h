@@ -20,16 +20,16 @@ class GODBOUND_API AGB_PlayableCharacter : public AGB_Character
 	AGB_PlayableCharacter(const FObjectInitializer& ObjectInitializer);
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
-	void MoveForward(float Value);
-	void OnRight(float Value);
-	void MoveRight(float Value);
-	void TurnRight(float Value);
-	void TurnRightAtRate(float Value);
-	void LookUp(float Value);
-	void LookUpAtRate(float Value);
+	virtual void MoveForward(float Value);
+	virtual void OnRight(float Value);
+	virtual void MoveRight(float Value);
+	virtual void TurnRight(float Value);
+	virtual void TurnRightAtRate(float Value);
+	virtual void LookUp(float Value);
+	virtual void LookUpAtRate(float Value);
 
-	void PressCtrl();
-	void ReleaseCtrl();
+	virtual void PressCtrl();
+	virtual void ReleaseCtrl();
 
 	bool bCtrlPressed;
 
@@ -37,5 +37,8 @@ class GODBOUND_API AGB_PlayableCharacter : public AGB_Character
 
 	UFUNCTION(Blueprintcallable)
 	FHitResult HitTraceFromCamera(float MaxRange = 4000.f);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
+	class AGB_Weapon* ActiveWeapon;
 	
 };

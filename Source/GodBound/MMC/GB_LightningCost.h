@@ -18,4 +18,6 @@ class GODBOUND_API UGB_LightningCost : public UGameplayModMagnitudeCalculation
 	float CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec)const override;
 
 	FGameplayEffectAttributeCaptureDefinition OverChargeDef;
+	FGameplayEffectAttributeCaptureDefinition OverChargeMaxDef;
+	
 };

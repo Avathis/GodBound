@@ -13,5 +13,7 @@ UCLASS()
 class GODBOUND_API AGB_Hephaestus : public AGB_PlayableCharacter
 {
 	GENERATED_BODY()
-	
+	public:
+	void OnRight(float Value) override;
+	void MoveRight(float Value) override;
 };

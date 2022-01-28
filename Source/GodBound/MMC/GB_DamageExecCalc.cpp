@@ -20,7 +20,7 @@ struct FDamageStatics
 	}
 };
 
-const FDamageStatics& OverHeatStatics()
+const FDamageStatics& DamageStatics()
 {
 	static FDamageStatics Statics;
 	return Statics;
