@@ -63,4 +63,3 @@
 "C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\RD.cpp.obj"
 "C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\Default.rc2.res"
 /OUT:"C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\UnrealEditor-RD.lib"
-/INCLUDE:IMPLEMENT_MODULE_RD

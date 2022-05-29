@@ -10,4 +10,3 @@
 "C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderBlueprintExtension\Module.RiderBlueprintExtension.cpp.obj"
 "C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderBlueprintExtension\Default.rc2.res"
 /OUT:"C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderBlueprintExtension\UnrealEditor-RiderBlueprintExtension.lib"
-/INCLUDE:IMPLEMENT_MODULE_RiderBlueprintExtension

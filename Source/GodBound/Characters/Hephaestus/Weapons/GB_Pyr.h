@@ -13,7 +13,7 @@ class GODBOUND_API AGB_Pyr : public AGB_Weapon
 	
 public:	
 	// Sets default values for this actor's properties
-	AGB_Pyr();
+	AGB_Pyr();	
 
 protected:
 	// Called when the game starts or when spawned
