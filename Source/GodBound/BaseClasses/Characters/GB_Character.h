@@ -33,7 +33,8 @@ enum class GBAbilityInputID : uint8
 	Ability4		UMETA(DisplayName = "Ability4"),
 	//10 R
 	Ability5		UMETA(DisplayName = "Ability5"),
-	//
+	// 11
+	Control			UMETA(DisplayName = "Control")
 };
 
 UCLASS(config=Game)

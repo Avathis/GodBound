@@ -36,7 +36,7 @@ void AGB_PlayableCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	PlayerInputComponent->BindAxis(FName("Turn"),this, &AGB_PlayableCharacter::TurnRight);
 	PlayerInputComponent->BindAxis(FName("TurnAR"),this, &AGB_PlayableCharacter::TurnRightAtRate);
 	
-	PlayerInputComponent->BindAction(FName("Control"), IE_Pressed, this, &AGB_PlayableCharacter::PressCtrl);
+	//PlayerInputComponent->BindAction(FName("Control"), IE_Pressed, this, &AGB_PlayableCharacter::PressCtrl);
 }
 
 void AGB_PlayableCharacter::MoveForward(float Value)

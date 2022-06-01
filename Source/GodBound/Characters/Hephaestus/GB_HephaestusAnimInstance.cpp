@@ -27,19 +27,28 @@ void UGB_HephaestusAnimInstance::UpdateAnimationProperties()
 	if(!Pawn)
 	{
 		Pawn = TryGetPawnOwner();
-		if(Pawn)
+	}
+	if(Pawn)
+	{
+		FVector Speed = Pawn->GetVelocity();
+		FVector LateralSpeed = FVector(Speed.X, Speed.Y, 0.f);
+		MovementSpeed = LateralSpeed.Size();
+		bIsInAir = Pawn->GetMovementComponent()->IsFalling();
+		MainCharacter = Cast<AGB_Character>(Pawn);
+		if(MainCharacter)
 		{
-			FVector Speed = Pawn->GetVelocity();
-			FVector LateralSpeed = FVector(Speed.X, Speed.Y, 0.f);
-			MovementSpeed = LateralSpeed.Size();
-
-			bIsInAir = Pawn->GetMovementComponent()->IsFalling();
-			MainCharacter = Cast<AGB_Character>(Pawn);
-			if(MainCharacter)
-			{
-				ForwardAxis = MainCharacter->ForwardAxis;
-				RightAxis = MainCharacter->RightAxis;
-			}
+			ForwardAxis = MainCharacter->ForwardAxis;
+			RightAxis = MainCharacter->RightAxis;
 		}
 	}
+	
 }
+
+void UGB_HephaestusAnimInstance::CheckForState(FGameplayTag TagToCheck)
+{
+	if(MainCharacter)
+	{
+		bIsInCombat = MainCharacter->GetAbilitySystemComponent()->HasMatchingGameplayTag(TagToCheck);
+	}
+}
+
