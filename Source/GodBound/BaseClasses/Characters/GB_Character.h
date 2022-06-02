@@ -49,6 +49,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FVector TraceFromCamera();
 
+	UFUNCTION(BlueprintCallable)
+	virtual void EnterCombat();
+
+	UFUNCTION(BlueprintCallable)
+	virtual void ExitCombat();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CameraBoom", meta = (AllowPrivateAccess = "true"))
 	class UGB_SpringArmComponent* CameraBoom;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera", meta = (AllowPrivateAccess = "true"))

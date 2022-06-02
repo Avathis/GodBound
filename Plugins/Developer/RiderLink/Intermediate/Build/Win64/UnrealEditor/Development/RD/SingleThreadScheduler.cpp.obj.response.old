@@ -19,7 +19,8 @@ C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_
 /I Runtime
 /I Runtime\TraceLog\Public
 /I Runtime\Core\Public
-/I "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.30.30705\INCLUDE"
+/I ThirdParty\mimalloc\include
+/I "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\INCLUDE"
 /I "C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\ucrt"
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\shared"
@@ -27,9 +28,11 @@ C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_
 /I "C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\winrt"
 /FI"C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\Definitions.h"
 /Fo"C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\SingleThreadScheduler.cpp.obj"
+/sourceDependencies C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RD\SingleThreadScheduler.cpp.json
 /Zc:inline
 /nologo
 /Oi
+/FC
 /c
 /Gw
 /Gy
@@ -47,6 +50,7 @@ C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Source\RD\src\rd_framework_
 /GF
 /errorReport:prompt
 /EHsc
+/DPLATFORM_EXCEPTIONS_DISABLED=0
 /Z7
 /MD
 /bigobj

@@ -6,8 +6,7 @@
 /NAME:"UnrealEditor-RiderLoggingExtension-0002.dll"
 /IGNORE:4221
 /NODEFAULTLIB
-"D:\Code\GodBound\Intermediate\Build\Win64\GodBoundEditor\Development\Core\SharedPCH.Core.RTTI.ShadowErrors.h.obj"
-"D:\Code\GodBound\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLoggingExtension\Module.RiderLoggingExtension.cpp.obj"
-"D:\Code\GodBound\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLoggingExtension\Default.rc2.res"
-/OUT:"D:\Code\GodBound\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLoggingExtension\UnrealEditor-RiderLoggingExtension-0002.lib"
-/INCLUDE:IMPLEMENT_MODULE_RiderLoggingExtension
+"C:\GameProjects\GodBound\Intermediate\Build\Win64\GodBoundEditor\Development\Core\SharedPCH.Core.RTTI.ShadowErrors.h.obj"
+"C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLoggingExtension\Module.RiderLoggingExtension.cpp.obj"
+"C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLoggingExtension\Default.rc2.res"
+/OUT:"C:\GameProjects\GodBound\Plugins\Developer\RiderLink\Intermediate\Build\Win64\UnrealEditor\Development\RiderLoggingExtension\UnrealEditor-RiderLoggingExtension-0002.lib"

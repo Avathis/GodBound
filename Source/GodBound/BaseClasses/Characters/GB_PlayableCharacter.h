@@ -35,6 +35,10 @@ class GODBOUND_API AGB_PlayableCharacter : public AGB_Character
 
 	void Interact();
 
+	virtual void EnterCombat() override;
+
+	virtual void ExitCombat() override;
+
 	UFUNCTION(Blueprintcallable)
 	FHitResult HitTraceFromCamera(float MaxRange = 4000.f);
 

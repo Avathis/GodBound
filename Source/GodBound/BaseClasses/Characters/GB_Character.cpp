@@ -219,6 +219,16 @@ void AGB_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	
 }
 
+void AGB_Character::EnterCombat()
+{
+
+}
+
+void AGB_Character::ExitCombat()
+{
+
+}
+
 float AGB_Character::GetHealth() const
 {
 	return Attributes->GetHealth();

@@ -24,7 +24,7 @@ class GODBOUND_API UGB_HephaestusAnimInstance : public UAnimInstance
 	void UpdateAnimationProperties();
 
 	UFUNCTION(BlueprintCallable, Category = animationProperties)
-	void CheckForState(struct FGameplayTag TagToCheck);
+	bool CheckForState(struct FGameplayTag TagToCheck);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
 	float MovementSpeed;

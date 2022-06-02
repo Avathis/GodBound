@@ -44,11 +44,11 @@ void UGB_HephaestusAnimInstance::UpdateAnimationProperties()
 	
 }
 
-void UGB_HephaestusAnimInstance::CheckForState(FGameplayTag TagToCheck)
+bool UGB_HephaestusAnimInstance::CheckForState(FGameplayTag TagToCheck)
 {
 	if(MainCharacter)
 	{
-		bIsInCombat = MainCharacter->GetAbilitySystemComponent()->HasMatchingGameplayTag(TagToCheck);
+		return MainCharacter->GetAbilitySystemComponent()->HasMatchingGameplayTag(TagToCheck) ? true : false;
 	}
 }
 

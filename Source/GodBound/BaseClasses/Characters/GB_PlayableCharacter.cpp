@@ -177,3 +177,15 @@ void AGB_PlayableCharacter::ReleaseCtrl()
 	bCtrlPressed = false;
 	//GetCharacterMovement()->bOrientRotationToMovement = false;
 }
+
+void AGB_PlayableCharacter::EnterCombat()
+{
+	GetCharacterMovement()->bOrientRotationToMovement = false;
+	bUseControllerRotationYaw = true;
+}
+
+void AGB_PlayableCharacter::ExitCombat()
+{
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	bUseControllerRotationYaw = false;
+}
