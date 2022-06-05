@@ -55,6 +55,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	virtual void ExitCombat();
 
+	UFUNCTION(BlueprintCallable)
+	virtual UGB_CharacterMovementComponent* GetAdvMovementComponent();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CameraBoom", meta = (AllowPrivateAccess = "true"))
 	class UGB_SpringArmComponent* CameraBoom;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera", meta = (AllowPrivateAccess = "true"))
@@ -63,10 +66,10 @@ public:
 	class AGB_PlayerController* PlayerController;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VisionBlocker", meta = (AllowPrivateAccess = "true"))
 	class UBoxComponent* CameraCollisionBox;
-	/*
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", meta = (AllowPrivateAccess = "true"))
-	class UGB_CharacterMovementComponent* CharacterMovementComponent;
-	*/
+	UGB_CharacterMovementComponent* CharacterMovementComponent;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float ForwardAxis = 0;
 	
@@ -105,6 +108,8 @@ protected:
 
 	FDelegateHandle HealthChangedDelegateHandle;
 	FDelegateHandle MaxHealthChangedDelegateHandle;
+	FDelegateHandle SpeedChangedDelegateHandle;
+	FDelegateHandle MaxSpeedChangedDelegateHandle;
 	FDelegateHandle HealthRegenRateChangedDelegateHandle;
 	FDelegateHandle EnergyChangedDelegateHandle;
 	FDelegateHandle MaxEnergyChangedDelegateHandle;
@@ -152,6 +157,12 @@ public:
     float GetMaxHealth() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
+	float GetSpeed() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+	float GetMaxSpeed() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
     float GetHealthRegenRate() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
@@ -177,6 +188,8 @@ public:
 
 	virtual void HealthChanged(const FOnAttributeChangeData& Data);
 	virtual void MaxHealthChanged(const FOnAttributeChangeData& Data);
+	virtual void SpeedChanged(const FOnAttributeChangeData& Data);
+	virtual void MaxSpeedChanged(const FOnAttributeChangeData& Data);
 	virtual void HealthRegenRateChanged(const FOnAttributeChangeData& Data);
 	virtual void EnergyChanged(const FOnAttributeChangeData& Data);
 	virtual void MaxEnergyChanged(const FOnAttributeChangeData& Data);

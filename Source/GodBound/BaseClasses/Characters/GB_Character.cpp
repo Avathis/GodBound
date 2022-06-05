@@ -48,16 +48,20 @@ AGB_Character::AGB_Character(const FObjectInitializer& ObjectInitializer) : Supe
 void AGB_Character::BeginPlay()
 {
 	Super::BeginPlay();
+	CharacterMovementComponent = Cast<UGB_CharacterMovementComponent>(GetMovementComponent());
 	PlayerController = Cast<AGB_PlayerController>(GetController());
 	if(IsValid(AbilitySystemComponent))
 	{
 		Attributes = AbilitySystemComponent->GetSet<UGB_AttributeSet>();
 		HealthChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetHealthAttribute()).AddUObject(this, &AGB_Character::HealthChanged);
 		MaxHealthChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetMaxHealthAttribute()).AddUObject(this, &AGB_Character::MaxHealthChanged);
+		SpeedChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetSpeedAttribute()).AddUObject(this, &AGB_Character::SpeedChanged);
+		MaxSpeedChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetMaxSpeedAttribute()).AddUObject(this, &AGB_Character::MaxSpeedChanged);
 		StaminaChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetStaminaAttribute()).AddUObject(this, &AGB_Character::StaminaChanged);
 		MaxStaminaChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetMaxStaminaAttribute()).AddUObject(this, &AGB_Character::MaxStaminaChanged);
 		EnergyChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetEnergyAttribute()).AddUObject(this, &AGB_Character::EnergyChanged);
 		MaxEnergyChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetMaxEnergyAttribute()).AddUObject(this, &AGB_Character::MaxEnergyChanged);
+
 	}
 	InitializeHealthBar();
 	if(this == Cast<AGB_Character>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0))&& UIHealthBar)
@@ -229,6 +233,11 @@ void AGB_Character::ExitCombat()
 
 }
 
+UGB_CharacterMovementComponent* AGB_Character::GetAdvMovementComponent()
+{
+	return CharacterMovementComponent;
+}
+
 float AGB_Character::GetHealth() const
 {
 	return Attributes->GetHealth();
@@ -237,6 +246,16 @@ float AGB_Character::GetHealth() const
 float AGB_Character::GetMaxHealth() const
 {
 	return Attributes->GetMaxHealth();
+}
+
+float AGB_Character::GetSpeed() const
+{
+	return Attributes->GetSpeed();
+}
+
+float AGB_Character::GetMaxSpeed() const
+{
+	return Attributes->GetMaxSpeed();
 }
 
 float AGB_Character::GetHealthRegenRate() const
@@ -294,6 +313,16 @@ void AGB_Character::HealthChanged(const FOnAttributeChangeData& Data)
 
 void AGB_Character::MaxHealthChanged(const FOnAttributeChangeData& Data)
 {
+}
+
+void AGB_Character::SpeedChanged(const FOnAttributeChangeData& Data)
+{
+
+}
+
+void AGB_Character::MaxSpeedChanged(const FOnAttributeChangeData& Data)
+{
+	GetAdvMovementComponent()->MaxWalkSpeed = Data.NewValue;
 }
 
 void AGB_Character::HealthRegenRateChanged(const FOnAttributeChangeData& Data)

@@ -164,6 +164,8 @@ FHitResult AGB_PlayableCharacter::HitTraceFromCamera(float MaxRange)
 	return Hit;
 }
 
+
+//LEGACY
 void AGB_PlayableCharacter::PressCtrl()
 {
 	bCtrlPressed = true;

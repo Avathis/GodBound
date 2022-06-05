@@ -5,7 +5,15 @@
 
 UGB_CharacterMovementComponent::UGB_CharacterMovementComponent(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
-	
+	WalkMovementSpeed = 650;
+	RunMovementSpeed = 900;
+	AbilitySprintMovementSpeed = 1500;
+
+}
+
+EMovementState UGB_CharacterMovementComponent::GetMovementType()
+{
+	return MovementType;
 }
 
 void UGB_CharacterMovementComponent::ChangeMovementState(EMovementState NewMovementState)
@@ -16,20 +24,24 @@ void UGB_CharacterMovementComponent::ChangeMovementState(EMovementState NewMovem
 	case EMovementState::EMS_Idle: break;
 	case EMovementState::EMS_Walking:
 		{
-			MaxWalkSpeed = 650;
+		MaxWalkSpeed = WalkMovementSpeed;
 			break;
 		}
 	case EMovementState::EMS_Sprinting:
 		{
-			MaxWalkSpeed = 900;
-			UE_LOG(LogTemp,Warning,TEXT("Sprinting"))
+			MaxWalkSpeed = RunMovementSpeed;
+			//UE_LOG(LogTemp,Warning,TEXT("Sprinting"))
 			break;
 		}
 	case EMovementState::EMS_AbilitySprint:
 		{
-			MaxWalkSpeed = 1500; 
+			MaxWalkSpeed = AbilitySprintMovementSpeed; 
 			break;
 		}
+	case EMovementState::EMS_HephaestusChargeSprint:
+	{
+		break;
+	}
 	default: ;
 	}
 }

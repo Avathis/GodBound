@@ -50,5 +50,6 @@ bool UGB_HephaestusAnimInstance::CheckForState(FGameplayTag TagToCheck)
 	{
 		return MainCharacter->GetAbilitySystemComponent()->HasMatchingGameplayTag(TagToCheck) ? true : false;
 	}
+	return false;
 }
 

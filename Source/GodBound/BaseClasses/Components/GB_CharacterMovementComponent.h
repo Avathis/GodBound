@@ -12,7 +12,9 @@ enum class EMovementState : uint8
 	EMS_Idle,
 	EMS_Walking,
 	EMS_Sprinting,
-	EMS_AbilitySprint
+	EMS_Jumping,
+	EMS_AbilitySprint,
+	EMS_HephaestusChargeSprint
 };
 
 /**
@@ -27,5 +29,17 @@ public:
 	EMovementState MovementType = EMovementState::EMS_Walking;
 
 	UFUNCTION(BlueprintCallable)
+	EMovementState GetMovementType();
+
+	UFUNCTION(BlueprintCallable)
 	void ChangeMovementState(EMovementState NewMovementState);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MovementSpeed")
+		float WalkMovementSpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MovementSpeed")
+		float RunMovementSpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MovementSpeed")
+		float AbilitySprintMovementSpeed;
 };

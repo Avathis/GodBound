@@ -30,13 +30,18 @@ class GODBOUND_API UGB_AttributeSet : public UAttributeSet
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Health")
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UGB_AttributeSet, MaxHealth);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Speed")
+	FGameplayAttributeData Speed;
+	ATTRIBUTE_ACCESSORS(UGB_AttributeSet, Speed);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Speed")
+	FGameplayAttributeData MaxSpeed;
+	ATTRIBUTE_ACCESSORS(UGB_AttributeSet, MaxSpeed);
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Health")
 	FGameplayAttributeData HealthRegenRate;
-	ATTRIBUTE_ACCESSORS(UGB_AttributeSet, HealthRegenRate);
-	
-
-	
+	ATTRIBUTE_ACCESSORS(UGB_AttributeSet, HealthRegenRate);	
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category = "Energy")
 	FGameplayAttributeData Energy;

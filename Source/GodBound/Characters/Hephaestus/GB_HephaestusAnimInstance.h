@@ -40,6 +40,9 @@ class GODBOUND_API UGB_HephaestusAnimInstance : public UAnimInstance
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement)
 	bool bIsInCombat;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWRite, Category = Movement)
+	bool bIsInSpecialSprint;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
 	class APawn* Pawn;
