@@ -19,6 +19,7 @@ EMovementState UGB_CharacterMovementComponent::GetMovementType()
 void UGB_CharacterMovementComponent::ChangeMovementState(EMovementState NewMovementState)
 {
 	MovementType = NewMovementState;
+	/*
 	switch (MovementType)
 	{
 	case EMovementState::EMS_Idle: break;
@@ -44,4 +45,5 @@ void UGB_CharacterMovementComponent::ChangeMovementState(EMovementState NewMovem
 	}
 	default: ;
 	}
+	*/
 }

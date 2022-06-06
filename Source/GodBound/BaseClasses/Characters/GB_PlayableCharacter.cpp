@@ -60,7 +60,8 @@ void AGB_PlayableCharacter::OnRight(float Value)
 {
 	RightAxis = Value;
 	//UE_LOG(LogTemp,Warning,TEXT("RightAxis: %f"),Value);
-	
+	MoveRight(Value);
+	/*
 	if(PlayerController && Value != 0)
 	{
 		// find out which way is right
@@ -93,6 +94,7 @@ void AGB_PlayableCharacter::OnRight(float Value)
 		}
 		
 	}
+*/
 }
 
 

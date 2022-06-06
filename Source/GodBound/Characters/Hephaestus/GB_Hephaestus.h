@@ -9,11 +9,32 @@
 /**
  * 
  */
+
+ //OOC - Out of Combat
+ //M   - Mage
+ //B   - Blacksmith
+ //W   - Weapons
+ //F   - Fighter/Brawl
+
+UENUM(BlueprintType)
+enum class EHephaestusSet : uint8
+{
+	EHS_OOC,
+	EHS_M,
+	EHS_B,
+	EHS_W,
+	EHS_F
+};
+
 UCLASS()
 class GODBOUND_API AGB_Hephaestus : public AGB_PlayableCharacter
 {
 	GENERATED_BODY()
 	public:
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
+	EHephaestusSet CombatSet;
 
 	void OnMoveForward(float Value);
 	void MoveForward(float Value) override;
