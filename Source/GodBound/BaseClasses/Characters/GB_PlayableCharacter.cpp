@@ -76,7 +76,7 @@ void AGB_PlayableCharacter::OnRight(float Value)
 			{
 				MoveRight(Value);
 			}
-
+Ftrace
 		case EMovementState::EMS_Sprinting:
 			{
 				break;

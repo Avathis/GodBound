@@ -302,6 +302,33 @@ float AGB_Character::GetHealthPercentage()
 	return 1.f;
 }
 
+float AGB_Character::GetStaminaPercentage()
+{
+	if (Attributes)
+	{
+		return Attributes->GetStamina() / Attributes->GetMaxHealth();
+	}
+	return 0.f;
+}
+
+float AGB_Character::GetOverHeatPercentage()
+{
+	if (Attributes)
+	{
+		return Attributes->GetOverHeat() / Attributes->GetOverHeatMax();
+	}
+	return 0.f;
+}
+
+float AGB_Character::GetEnergyPercentage()
+{
+	if (Attributes)
+	{
+		return Attributes->GetEnergy() / Attributes->GetMaxEnergy();
+	}
+	return 0.f;
+}
+
 void AGB_Character::HealthChanged(const FOnAttributeChangeData& Data)
 {
 	float Health = Data.NewValue;

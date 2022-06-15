@@ -186,6 +186,16 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	float GetHealthPercentage();
 
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+		float GetOverHeatPercentage();
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+		float GetStaminaPercentage();
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+		float GetEnergyPercentage();
+
+
 	virtual void HealthChanged(const FOnAttributeChangeData& Data);
 	virtual void MaxHealthChanged(const FOnAttributeChangeData& Data);
 	virtual void SpeedChanged(const FOnAttributeChangeData& Data);
