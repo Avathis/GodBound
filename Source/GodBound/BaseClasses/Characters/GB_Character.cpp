@@ -61,8 +61,9 @@ void AGB_Character::BeginPlay()
 		MaxStaminaChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetMaxStaminaAttribute()).AddUObject(this, &AGB_Character::MaxStaminaChanged);
 		EnergyChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetEnergyAttribute()).AddUObject(this, &AGB_Character::EnergyChanged);
 		MaxEnergyChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetMaxEnergyAttribute()).AddUObject(this, &AGB_Character::MaxEnergyChanged);
-
+		AbilitySystemComponent->InitAbilityActorInfo(this, this); // Possibly change to InitializeComponent();
 	}
+	
 	InitializeHealthBar();
 	if(this == Cast<AGB_Character>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0))&& UIHealthBar)
 	{
