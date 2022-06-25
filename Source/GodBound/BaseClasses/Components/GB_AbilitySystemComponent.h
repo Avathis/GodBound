@@ -13,5 +13,10 @@ UCLASS()
 class GODBOUND_API UGB_AbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
+public:
+
+		UGB_AbilitySystemComponent();
+
+		
 	
 };

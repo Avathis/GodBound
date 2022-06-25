@@ -12,6 +12,7 @@ UGB_GameplayAbility::UGB_GameplayAbility()
 	ActivationBlockedTags.AddTag(FGameplayTag::RequestGameplayTag(FName("State.Dead")));
 
 	PlayerCharacter = Cast<AGB_Character>(GetAvatarActorFromActorInfo());
+
 }
 
 const FGameplayTagContainer* UGB_GameplayAbility::GetCooldownTags() const

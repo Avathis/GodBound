@@ -3,3 +3,6 @@
 
 #include "GB_AbilitySystemComponent.h"
 
+UGB_AbilitySystemComponent::UGB_AbilitySystemComponent()
+{
+}

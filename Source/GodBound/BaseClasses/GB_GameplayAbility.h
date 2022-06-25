@@ -9,6 +9,13 @@
 /**
  * 
  */
+
+UENUM(BlueprintType)
+enum class AbilityUpgrades : uint8
+{
+	Normal
+};
+
 UCLASS()
 class GODBOUND_API UGB_GameplayAbility : public UGameplayAbility
 {

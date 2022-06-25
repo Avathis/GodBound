@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
 #include "GodBound/BaseClasses/Components/GB_AbilitySystemComponent.h"
+#include "GodBound/BaseClasses/GB_AbilitySet.h"
 #include "GB_Character.generated.h"
 
 UENUM(BlueprintType)
@@ -33,7 +34,11 @@ enum class GBAbilityInputID : uint8
 	Ability4		UMETA(DisplayName = "Ability4"),
 	//10 R
 	Ability5		UMETA(DisplayName = "Ability5"),
-	// 11
+	//11 C
+	Ability6		UMETA(DisplayName = "Ability6"),
+	//12 X
+	Ability7		UMETA(DisplayName = "Ability7"),
+	// 13
 	Control			UMETA(DisplayName = "Control")
 };
 
@@ -145,11 +150,16 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (AllowPrivateAccess = "true"))
 	class UGB_AbilitySystemComponent* AbilitySystemComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AbilitySets")
+	TArray<UGB_AbilitySet*> CombatAbilitySets;
+
 	virtual UGB_AbilitySystemComponent* GetAbilitySystemComponent() const override
 	{
 		return AbilitySystemComponent;
 	}
-
+	
+	
+	
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
     float GetHealth() const;
 
