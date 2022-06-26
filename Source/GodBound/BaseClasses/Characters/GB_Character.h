@@ -61,6 +61,13 @@ public:
 	virtual void ExitCombat();
 
 	UFUNCTION(BlueprintCallable)
+	static void UnequipAbilitySet(FGBAbilitySet_GrantedHandles& AbilitySetHandle);
+
+	UFUNCTION(BlueprintCallable)
+	static FGBAbilitySet_GrantedHandles EquipAbilitySet(UGB_AbilitySystemComponent* GBASC, const UGB_AbilitySet* AbilitySet, UObject* SourceObject);
+
+
+	UFUNCTION(BlueprintCallable)
 	virtual UGB_CharacterMovementComponent* GetAdvMovementComponent();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CameraBoom", meta = (AllowPrivateAccess = "true"))
@@ -86,6 +93,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate = 45.f;
+
+
 	
 private:
 	

@@ -7,7 +7,9 @@
 #include "GameplayTagContainer.h"
 #include "GameplayAbilitySpec.h"
 #include "GameplayEffectTypes.h"
+#include <GameplayAbilities/Public/AbilitySystemInterface.h>
 #include "GB_AbilitySet.generated.h"
+
 
 class UGB_AbilitySystemComponent;
 class UGB_GameplayAbility;
@@ -91,13 +93,26 @@ struct FGBAbilitySet_GrantedHandles
 
 public:
 
+	bool IsValid() const
+	{
+		return AbilitySystemComponent.IsValid();
+	}
+
 	void AddAbilitySpecHandle(const FGameplayAbilitySpecHandle& Handle);
 	void AddGameplayEffectHandle(const FActiveGameplayEffectHandle& Handle);
 	void AddAttributeSet(UAttributeSet* Set);
 
 	void TakeFromAbilitySystem(UGB_AbilitySystemComponent* GB_ASC);
+	TWeakObjectPtr<UGB_AbilitySystemComponent> AbilitySystemComponent = nullptr;
 
-protected:
+	
+	void Reset()
+	{
+		AbilitySpecHandles.Reset();
+		GameplayEffectHandles.Reset();
+		GrantedAttributeSets.Reset();
+		AbilitySystemComponent.Reset();
+	}
 
 	// Handles to the granted abilities.
 	UPROPERTY()
@@ -112,8 +127,6 @@ protected:
 		TArray<TObjectPtr<UAttributeSet>> GrantedAttributeSets;
 };
 
-
-
 UCLASS(BlueprintType, Const)
 class GODBOUND_API UGB_AbilitySet : public UPrimaryDataAsset
 {
@@ -124,8 +137,12 @@ public:
 
 	// Grants the ability set to the specified ability system component.
 	// The returned handles can be used later to take away anything that was granted.
-	void GiveToAbilitySystem(UGB_AbilitySystemComponent* GBASC, FGBAbilitySet_GrantedHandles* OutGrantedHandles, UObject* SourceObject = nullptr) const;
+	FGBAbilitySet_GrantedHandles GiveToAbilitySystem(UGB_AbilitySystemComponent* GBASC, UObject* SourceObject = nullptr) const;
+	FGBAbilitySet_GrantedHandles GiveAbilitySetToInterface(TScriptInterface<IAbilitySystemInterface> AbilitySystemInterface, UObject* OverrideSourceObject = nullptr) const;
 
+	static void TakeAbilitySet(FGBAbilitySet_GrantedHandles& AbilitySetHandle);
+	//UFUNCTION(BlueprintCallable, DisplayName = "GiveSetToAbilitySystem", meta = (ScriptName = "GiveSetToAbilitySystem"))
+	//FGBAbilitySet_GrantedHandles GiveSetToAbilitySystem(UGB_AbilitySystemComponent* GBASC, UObject* SourceObject = nullptr);
 protected:
 
 	// Gameplay abilities to grant when this ability set is granted.

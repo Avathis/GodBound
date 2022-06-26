@@ -10,15 +10,18 @@ UGB_AbilitySet::UGB_AbilitySet(const FObjectInitializer& ObjectInitializer) : Su
 {
 }
 
-void UGB_AbilitySet::GiveToAbilitySystem(UGB_AbilitySystemComponent* GBASC, FGBAbilitySet_GrantedHandles* OutGrantedHandles, UObject* SourceObject) const
+FGBAbilitySet_GrantedHandles UGB_AbilitySet::GiveToAbilitySystem(UGB_AbilitySystemComponent* GBASC, UObject* SourceObject) const
 {
 	check(GBASC);
 
 	if (!GBASC->IsOwnerActorAuthoritative())
 	{
 		// Must be authoritative to give or take ability sets.
-		return;
+		return FGBAbilitySet_GrantedHandles();
 	}
+
+	FGBAbilitySet_GrantedHandles OutGrantedHandles;
+	OutGrantedHandles.AbilitySystemComponent = GBASC;
 
 	// Grant the gameplay abilities.
 	for (int32 AbilityIndex = 0; AbilityIndex < GrantedGameplayAbilities.Num(); ++AbilityIndex)
@@ -39,11 +42,7 @@ void UGB_AbilitySet::GiveToAbilitySystem(UGB_AbilitySystemComponent* GBASC, FGBA
 		AbilitySpec.InputID = AbilityToGrant.InputID;
 
 		const FGameplayAbilitySpecHandle AbilitySpecHandle = GBASC->GiveAbility(AbilitySpec);
-
-		if (OutGrantedHandles)
-		{
-			OutGrantedHandles->AddAbilitySpecHandle(AbilitySpecHandle);
-		}
+		OutGrantedHandles.AddAbilitySpecHandle(AbilitySpecHandle);
 	}
 
 	// Grant the gameplay effects.
@@ -59,11 +58,7 @@ void UGB_AbilitySet::GiveToAbilitySystem(UGB_AbilitySystemComponent* GBASC, FGBA
 
 		const UGameplayEffect* GameplayEffect = EffectToGrant.GameplayEffect->GetDefaultObject<UGameplayEffect>();
 		const FActiveGameplayEffectHandle GameplayEffectHandle = GBASC->ApplyGameplayEffectToSelf(GameplayEffect, EffectToGrant.EffectLevel, GBASC->MakeEffectContext());
-
-		if (OutGrantedHandles)
-		{
-			OutGrantedHandles->AddGameplayEffectHandle(GameplayEffectHandle);
-		}
+		OutGrantedHandles.AddGameplayEffectHandle(GameplayEffectHandle);
 	}
 
 	// Grant the attribute sets.
@@ -79,13 +74,49 @@ void UGB_AbilitySet::GiveToAbilitySystem(UGB_AbilitySystemComponent* GBASC, FGBA
 
 		UAttributeSet* NewSet = NewObject<UAttributeSet>(GBASC->GetOwner(), SetToGrant.AttributeSet);
 		GBASC->AddAttributeSetSubobject(NewSet);
+		OutGrantedHandles.AddAttributeSet(NewSet);
+	}
+	return OutGrantedHandles;
+}
 
-		if (OutGrantedHandles)
+FGBAbilitySet_GrantedHandles UGB_AbilitySet::GiveAbilitySetToInterface(TScriptInterface<IAbilitySystemInterface> AbilitySystemInterface, UObject* OverrideSourceObject) const
+{
+	UGB_AbilitySystemComponent* GBASC = Cast<UGB_AbilitySystemComponent>(AbilitySystemInterface.GetObject());
+	return GiveToAbilitySystem(GBASC, OverrideSourceObject);
+}
+
+void UGB_AbilitySet::TakeAbilitySet(FGBAbilitySet_GrantedHandles& AbilitySetHandle)
+{
+	if (!AbilitySetHandle.IsValid())
+	{
+		return;
+	}
+
+	if (!AbilitySetHandle.AbilitySystemComponent->IsOwnerActorAuthoritative())
+	{
+		// Must be authoritative to give or take ability sets.
+		return;
+	}
+
+	for (const FGameplayAbilitySpecHandle& Handle : AbilitySetHandle.AbilitySpecHandles)
+	{
+		if (Handle.IsValid())
 		{
-			OutGrantedHandles->AddAttributeSet(NewSet);
+			AbilitySetHandle.AbilitySystemComponent->ClearAbility(Handle);
 		}
 	}
+
+	for (const FActiveGameplayEffectHandle& Handle : AbilitySetHandle.GameplayEffectHandles)
+	{
+		if (Handle.IsValid())
+		{
+			AbilitySetHandle.AbilitySystemComponent->RemoveActiveGameplayEffect(Handle);
+		}
+	}
+
+	AbilitySetHandle.Reset();
 }
+
 
 void FGBAbilitySet_GrantedHandles::AddAbilitySpecHandle(const FGameplayAbilitySpecHandle& Handle)
 {
@@ -143,3 +174,17 @@ void FGBAbilitySet_GrantedHandles::TakeFromAbilitySystem(UGB_AbilitySystemCompon
 	GameplayEffectHandles.Reset();
 	GrantedAttributeSets.Reset();
 }
+/*
+void FAbilitySetStatic::UnequipAbilitySet(FGBAbilitySet_GrantedHandles& AbilitySetHandle)
+{
+	if (AbilitySetHandle.IsValid())
+	{
+		UGB_AbilitySet::TakeAbilitySet(AbilitySetHandle);
+	}
+}
+
+FGBAbilitySet_GrantedHandles FAbilitySetStatic::EquipAbilitySet(TScriptInterface<IAbilitySystemInterface> AbilitySystemInterface, const UGB_AbilitySet* AbilitySet, UObject* SourceObject)
+{
+	return AbilitySet->GiveAbilitySetToInterface(AbilitySystemInterface, SourceObject);
+}
+*/

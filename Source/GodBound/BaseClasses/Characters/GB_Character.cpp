@@ -4,8 +4,6 @@
 #include "GB_Character.h"
 #include "GodBound/BaseClasses/Attributes/GB_AttributeSet.h"
 #include "GodBound/BaseClasses/GB_GameplayAbility.h"
-
-
 #include "GodBound/BaseClasses/Components/GB_CharacterMovementComponent.h"
 #include "GB_PlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -22,8 +20,7 @@ AGB_Character::AGB_Character(const FObjectInitializer& ObjectInitializer) : Supe
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	
-	
+
 	//CameraCollisionBox->SetScale
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
 	GetCharacterMovement()->bOrientRotationToMovement = false;
@@ -232,6 +229,19 @@ void AGB_Character::EnterCombat()
 void AGB_Character::ExitCombat()
 {
 
+}
+
+void AGB_Character::UnequipAbilitySet(FGBAbilitySet_GrantedHandles& AbilitySetHandle)
+{
+	if (AbilitySetHandle.IsValid())
+	{
+		UGB_AbilitySet::TakeAbilitySet(AbilitySetHandle);
+	}
+}
+
+FGBAbilitySet_GrantedHandles AGB_Character::EquipAbilitySet(UGB_AbilitySystemComponent* GBASC, const UGB_AbilitySet* AbilitySet, UObject* SourceObject)
+{
+	return AbilitySet->GiveToAbilitySystem(GBASC, SourceObject);
 }
 
 UGB_CharacterMovementComponent* AGB_Character::GetAdvMovementComponent()
