@@ -61,7 +61,10 @@ public:
 	virtual void ExitCombat();
 
 	UFUNCTION(BlueprintCallable)
-	static void UnequipAbilitySet(FGBAbilitySet_GrantedHandles& AbilitySetHandle);
+	static void UnequipAbilitySet(FGBAbilitySet_GrantedHandles AbilitySetHandle);
+
+	UFUNCTION(BlueprintCallable)
+	static FGBAbilitySet_GrantedHandles ChangeAbilitySet(UGB_AbilitySystemComponent* GBASC, const UGB_AbilitySet* AbilitySet, UObject* SourceObject, FGBAbilitySet_GrantedHandles FormerAbilitySet);
 
 	UFUNCTION(BlueprintCallable)
 	static FGBAbilitySet_GrantedHandles EquipAbilitySet(UGB_AbilitySystemComponent* GBASC, const UGB_AbilitySet* AbilitySet, UObject* SourceObject);

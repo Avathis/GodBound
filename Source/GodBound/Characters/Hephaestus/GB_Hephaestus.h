@@ -33,8 +33,11 @@ class GODBOUND_API AGB_Hephaestus : public AGB_PlayableCharacter
 	public:
 
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat Mode")
 	EHephaestusSet CombatSet;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWRite, Category = "Combat Mode")
+	TMap<EHephaestusSet, UGB_AbilitySet*> AbilitySetsInMode;
 
 	void OnMoveForward(float Value);
 	void MoveForward(float Value) override;

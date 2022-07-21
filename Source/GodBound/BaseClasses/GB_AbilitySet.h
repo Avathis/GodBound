@@ -87,9 +87,9 @@ public:
  *	Data used to store handles to what has been granted by the ability set.
  */
 USTRUCT(BlueprintType)
-struct FGBAbilitySet_GrantedHandles
+struct GODBOUND_API FGBAbilitySet_GrantedHandles
 {
-	GENERATED_BODY()
+	GENERATED_USTRUCT_BODY()
 
 public:
 
@@ -115,15 +115,15 @@ public:
 	}
 
 	// Handles to the granted abilities.
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 		TArray<FGameplayAbilitySpecHandle> AbilitySpecHandles;
 
 	// Handles to the granted gameplay effects.
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 		TArray<FActiveGameplayEffectHandle> GameplayEffectHandles;
 
 	// Pointers to the granted attribute sets
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 		TArray<TObjectPtr<UAttributeSet>> GrantedAttributeSets;
 };
 
@@ -137,6 +137,7 @@ public:
 
 	// Grants the ability set to the specified ability system component.
 	// The returned handles can be used later to take away anything that was granted.
+	UFUNCTION(BlueprintCallable)
 	FGBAbilitySet_GrantedHandles GiveToAbilitySystem(UGB_AbilitySystemComponent* GBASC, UObject* SourceObject = nullptr) const;
 	FGBAbilitySet_GrantedHandles GiveAbilitySetToInterface(TScriptInterface<IAbilitySystemInterface> AbilitySystemInterface, UObject* OverrideSourceObject = nullptr) const;
 

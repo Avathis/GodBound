@@ -231,12 +231,18 @@ void AGB_Character::ExitCombat()
 
 }
 
-void AGB_Character::UnequipAbilitySet(FGBAbilitySet_GrantedHandles& AbilitySetHandle)
+void AGB_Character::UnequipAbilitySet(FGBAbilitySet_GrantedHandles AbilitySetHandle)
 {
 	if (AbilitySetHandle.IsValid())
 	{
 		UGB_AbilitySet::TakeAbilitySet(AbilitySetHandle);
 	}
+}
+
+FGBAbilitySet_GrantedHandles AGB_Character::ChangeAbilitySet(UGB_AbilitySystemComponent* GBASC, const UGB_AbilitySet* AbilitySet, UObject* SourceObject, FGBAbilitySet_GrantedHandles FormerAbilitySet)
+{
+	UnequipAbilitySet(FormerAbilitySet);
+	return EquipAbilitySet(GBASC,AbilitySet, SourceObject);
 }
 
 FGBAbilitySet_GrantedHandles AGB_Character::EquipAbilitySet(UGB_AbilitySystemComponent* GBASC, const UGB_AbilitySet* AbilitySet, UObject* SourceObject)
