@@ -99,5 +99,13 @@ class GODBOUND_API UGB_AttributeSet : public UAttributeSet
 	FGameplayAttributeData PhysicalResistance;
 	ATTRIBUTE_ACCESSORS(UGB_AttributeSet, PhysicalResistance);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Resistance")
+	FGameplayAttributeData LightningResistance;
+	ATTRIBUTE_ACCESSORS(UGB_AttributeSet, LightningResistance);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Resistance")
+	FGameplayAttributeData Armor;
+	ATTRIBUTE_ACCESSORS(UGB_AttributeSet, Armor);
+
 	
 };
