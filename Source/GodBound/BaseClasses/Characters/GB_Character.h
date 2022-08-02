@@ -209,6 +209,12 @@ public:
 	float GetHealthPercentage();
 
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
+		float GetOverHeat();
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+		float GetMaxOverHeat();
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
 		float GetOverHeatPercentage();
 
 	UFUNCTION(BlueprintCallable, Category = "Attributes")

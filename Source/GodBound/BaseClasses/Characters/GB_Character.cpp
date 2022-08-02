@@ -346,6 +346,24 @@ float AGB_Character::GetEnergyPercentage()
 	return 0.f;
 }
 
+float AGB_Character::GetOverHeat()
+{
+	if (Attributes)
+	{
+		return Attributes->GetOverHeat();
+	}
+	return 0.f;
+}
+
+float AGB_Character::GetMaxOverHeat()
+{
+	if (Attributes)
+	{
+		return Attributes->GetOverHeatMax();
+	}
+	return 0.f;
+}
+
 void AGB_Character::HealthChanged(const FOnAttributeChangeData& Data)
 {
 	float Health = Data.NewValue;

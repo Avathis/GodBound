@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GodBound/BaseClasses/Characters/GB_PlayableCharacter.h"
+#include "GodBound/BaseClasses/BaseTypes.h"
 #include "GB_Hephaestus.generated.h"
 
 /**
@@ -16,15 +17,7 @@
  //W   - Weapons
  //F   - Fighter/Brawl
 
-UENUM(BlueprintType)
-enum class EHephaestusSet : uint8
-{
-	EHS_OOC,
-	EHS_M,
-	EHS_B,
-	EHS_W,
-	EHS_F
-};
+
 
 UCLASS()
 class GODBOUND_API AGB_Hephaestus : public AGB_PlayableCharacter

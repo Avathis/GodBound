@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+#include "GodBound/BaseClasses/BaseTypes.h"
 #include "GB_HephaestusAnimInstance.generated.h"
 
 /**
@@ -34,6 +35,9 @@ class GODBOUND_API UGB_HephaestusAnimInstance : public UAnimInstance
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement)
 	bool bDied;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement)
+	EHephaestusSet CombatSet;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
 	class AGB_Character* MainCharacter;

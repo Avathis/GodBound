@@ -15,6 +15,12 @@ UGB_GameplayAbility::UGB_GameplayAbility()
 
 }
 
+float UGB_GameplayAbility::GetGameplayEffectSpecHandle()
+{
+	
+	return 1.0f;
+}
+
 const FGameplayTagContainer* UGB_GameplayAbility::GetCooldownTags() const
 {
 	FGameplayTagContainer* MutableTags = const_cast<FGameplayTagContainer*>(&TempCooldownTags);
