@@ -4,11 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
+#include "GodBound/GB_GameplayEffectTypes.h"
 #include "GB_GameplayAbility.generated.h"
 
 /**
  * 
  */
+
 
 UENUM(BlueprintType)
 enum class AbilityUpgrades : uint8
@@ -25,6 +27,9 @@ class GODBOUND_API UGB_GameplayAbility : public UGameplayAbility
 	virtual void ApplyCooldown(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) const override;
 
 	public:
+
+	UFUNCTION(BlueprintCallable)
+	FGameplayEffectSpecHandle SetContextEffectStrength(float EffectStrength, FGameplayEffectSpecHandle GameplayEffectSpec);
 
 	
 	UGB_GameplayAbility();

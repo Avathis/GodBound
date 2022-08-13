@@ -5,6 +5,20 @@
 #include "GodBound/BaseClasses/Characters/GB_Character.h"
 
 
+
+FGameplayEffectSpecHandle UGB_GameplayAbility::SetContextEffectStrength(float EffectStrength, FGameplayEffectSpecHandle GameplayEffectSpec)
+{
+	if (GameplayEffectSpec.Data) 
+	{
+		FGB_GameplayEffectContext* GBEffectContext = static_cast<FGB_GameplayEffectContext*>(GameplayEffectSpec.Data->GetContext().Get());
+		if (GBEffectContext)
+		{
+			GBEffectContext->SetEffectStrength(EffectStrength);
+		}
+	}
+	return GameplayEffectSpec;
+}
+
 UGB_GameplayAbility::UGB_GameplayAbility()
 {
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;

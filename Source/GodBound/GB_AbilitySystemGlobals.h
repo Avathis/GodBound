@@ -13,4 +13,6 @@ UCLASS()
 class GODBOUND_API UGB_AbilitySystemGlobals : public UAbilitySystemGlobals
 {
 	GENERATED_BODY()
+
+		virtual FGameplayEffectContext* AllocGameplayEffectContext() const override;
 };
