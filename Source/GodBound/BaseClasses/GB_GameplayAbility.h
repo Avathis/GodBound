@@ -52,8 +52,8 @@ class GODBOUND_API UGB_GameplayAbility : public UGameplayAbility
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AbilityProperties", meta = (AllowPrivateAccess = "true"))
 	FScalableFloat AbilityDuration;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AbilityProperties", meta = (AllowPrivateAccess = "true"))
-	class AGB_Character* PlayerCharacter;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AbilityProperties", meta = (AllowPrivateAccess = "true"))
+	//class AGB_Character* PlayerCharacter;
 
 	UFUNCTION(BlueprintCallable)
 		float GetGameplayEffectSpecHandle();
