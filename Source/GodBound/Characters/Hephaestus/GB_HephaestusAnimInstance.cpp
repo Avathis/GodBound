@@ -2,6 +2,7 @@
 
 
 #include "GB_HephaestusAnimInstance.h"
+/*
 #include "GodBound/BaseClasses/Characters/GB_Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -43,13 +44,5 @@ void UGB_HephaestusAnimInstance::UpdateAnimationProperties()
 	}
 	
 }
-
-bool UGB_HephaestusAnimInstance::CheckForState(FGameplayTag TagToCheck)
-{
-	if(MainCharacter)
-	{
-		return MainCharacter->GetAbilitySystemComponent()->HasMatchingGameplayTag(TagToCheck) ? true : false;
-	}
-	return false;
-}
+*/
 

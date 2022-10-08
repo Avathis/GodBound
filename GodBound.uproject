@@ -35,10 +35,6 @@
 			"Enabled": false
 		},
 		{
-			"Name": "RiderLink",
-			"Enabled": false
-		},
-		{
 			"Name": "AnimationLocomotionLibrary",
 			"Enabled": true
 		},

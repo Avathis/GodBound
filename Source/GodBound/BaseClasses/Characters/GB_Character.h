@@ -100,14 +100,7 @@ public:
 
 	
 private:
-	
-
 	float Speed = 0.f;
-
-	
-	
-	UFUNCTION(BlueprintCallable, Category = "Abilities")
-	FHitResult FireDebugBeam();
 
 	UFUNCTION(BlueprintCallable, Category = "Abilities")
 	void GrantAbility(TSubclassOf<class UGB_GameplayAbility> AbilityClass, int32 Level, int32 InputCode);
@@ -115,9 +108,6 @@ private:
 	UFUNCTION(BlueprintCallable, Category = "Abilities")
 	void ActivateAbility(int32 InputCode);
 	/*UPROPERTIES*/
-
-	
-	
 	
 protected:
 	// Called when the game starts or when spawned

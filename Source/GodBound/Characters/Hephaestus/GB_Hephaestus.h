@@ -31,22 +31,9 @@ class GODBOUND_API AGB_Hephaestus : public AGB_PlayableCharacter
 
 	UPROPERTY(EditAnywhere, BlueprintReadWRite, Category = "Combat Mode")
 	TMap<EHephaestusSet, UGB_AbilitySet*> AbilitySetsInMode;
-
-	void OnMoveForward(float Value);
-	void MoveForward(float Value) override;
-
-	void OnRight(float Value) override;
-	void MoveRight(float Value) override;
-
-	virtual void OnLookUp(float Value);
-	void LookUp(float Value)override;
-
-	virtual void OnTurnRight(float Value);
-	void TurnRight(float Value)override;
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		float ChargeTurnRate = 10.f;
 
-	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 };

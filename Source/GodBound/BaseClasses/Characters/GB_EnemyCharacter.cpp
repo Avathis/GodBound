@@ -2,10 +2,6 @@
 
 
 #include "GB_EnemyCharacter.h"
-
-#include "Blueprint/UserWidget.h"
-
-#include "Components/SphereComponent.h"
 #include "GodBound/BaseClasses/Components/GB_CharacterMovementComponent.h"
 
 

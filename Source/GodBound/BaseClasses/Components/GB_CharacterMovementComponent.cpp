@@ -20,33 +20,6 @@ EMovementState UGB_CharacterMovementComponent::GetMovementType()
 void UGB_CharacterMovementComponent::ChangeMovementState(EMovementState NewMovementState)
 {
 	MovementType = NewMovementState;
-	/*
-	switch (MovementType)
-	{
-	case EMovementState::EMS_Idle: break;
-	case EMovementState::EMS_Walking:
-		{
-		MaxWalkSpeed = WalkMovementSpeed;
-			break;
-		}
-	case EMovementState::EMS_Sprinting:
-		{
-			MaxWalkSpeed = RunMovementSpeed;
-			//UE_LOG(LogTemp,Warning,TEXT("Sprinting"))
-			break;
-		}
-	case EMovementState::EMS_AbilitySprint:
-		{
-			MaxWalkSpeed = AbilitySprintMovementSpeed; 
-			break;
-		}
-	case EMovementState::EMS_HephaestusChargeSprint:
-	{
-		break;
-	}
-	default: ;
-	}
-	*/
 }
 
 float UGB_CharacterMovementComponent::GetMaxSpeed() const
@@ -56,11 +29,6 @@ float UGB_CharacterMovementComponent::GetMaxSpeed() const
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s() No Owner"), *FString(__FUNCTION__));
 		return Super::GetMaxSpeed();
-	}
-
-	if (Owner->GetAbilitySystemComponent()->HasMatchingGameplayTag(FGameplayTag::RequestGameplayTag(FName("State.Debuff.Stun"))))
-	{
-		return 0.0f;
 	}
 
 	if (RequestToStartSprinting)
