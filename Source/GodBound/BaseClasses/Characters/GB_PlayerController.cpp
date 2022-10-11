@@ -2,7 +2,10 @@
 
 
 #include "GB_PlayerController.h"
+
+#include "AbilitySystemComponent.h"
 #include "Blueprint/UserWidget.h"
+#include "GodBound/Player/GB_PlayerState.h"
 
 void AGB_PlayerController::BeginPlay()
 {
@@ -17,5 +20,15 @@ void AGB_PlayerController::BeginPlay()
 	{
 		HUDOverlay->AddToViewport();
 		HUDOverlay->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
+void AGB_PlayerController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+	AGB_PlayerState* PS = GetPlayerState<AGB_PlayerState>();
+	if(PS)
+	{
+		PS->GetAbilitySystemComponent()->InitAbilityActorInfo(PS, InPawn);
 	}
 }

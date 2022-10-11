@@ -136,8 +136,14 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "EnemyHealthBar")
 	class UWidgetComponent* UIHealthBarComponent;
 
+	
+
 	UFUNCTION()
 	void InitializeHealthBar();
+/*
+	UGB_AbilitySystemComponent* AbilitySystemComponent;
+	const class UGB_AttributeSet* AttributeSet;*/
+	//const TWeakObjectPtr<class UGB_AttributeSet> AttributeSet;
 
 public:	
 	// Called every frame
@@ -147,10 +153,10 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes", meta = (AllowPrivateAccess = "true"))
-	const class UGB_AttributeSet* Attributes ;
+	const class UGB_AttributeSet* AttributeSet ;
 
-	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Abilities", meta = (AllowPrivateAccess = "true"))
-	class UGB_AbilitySystemComponent* AbilitySystemComponent;
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Abilities", meta = (AllowPrivateAccess = "true"))
+	UGB_AbilitySystemComponent* AbilitySystemComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AbilitySets")
 	TArray<UGB_AbilitySet*> CombatAbilitySets;
@@ -159,7 +165,8 @@ public:
 	{
 		return AbilitySystemComponent;
 	}
-	
+
+	UGB_HealthWidget* GetHealthWidget();
 	
 	
 	UFUNCTION(BlueprintCallable, Category = "Attributes")

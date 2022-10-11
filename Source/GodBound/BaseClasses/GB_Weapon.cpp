@@ -13,6 +13,7 @@ AGB_Weapon::AGB_Weapon()
 	
 	MeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
 	MeshComponent->SetupAttachment(GetRootComponent());
+	SetRootComponent(MeshComponent);
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));
 }
 

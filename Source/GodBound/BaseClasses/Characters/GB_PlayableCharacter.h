@@ -19,6 +19,7 @@ class GODBOUND_API AGB_PlayableCharacter : public AGB_Character
 	public:
 	AGB_PlayableCharacter(const FObjectInitializer& ObjectInitializer);
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+	virtual void PossessedBy(AController* NewController) override;
 
 	virtual void MoveForward(float Value);
 	virtual void MoveRight(float Value);
@@ -41,5 +42,12 @@ class GODBOUND_API AGB_PlayableCharacter : public AGB_Character
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	UWidgetComponent* OverheadWidget;
+
+protected:
+	void BindASCInput();
+
+	bool ASCInputBound = false;
+	
+	virtual void OnRep_PlayerState() override;
 	
 };

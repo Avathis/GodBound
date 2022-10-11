@@ -18,6 +18,9 @@ public:
 	virtual void BeginPlay() override;
 protected:
 	virtual void Tick(float DeltaSeconds) override;
+
+	UFUNCTION()
+	virtual void OnSphereOverLap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AddedComponents", meta = (AllowPrivateAccess = true))
 	class USphereComponent* AreaSphere;

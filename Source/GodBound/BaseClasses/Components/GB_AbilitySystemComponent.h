@@ -16,7 +16,5 @@ class GODBOUND_API UGB_AbilitySystemComponent : public UAbilitySystemComponent
 public:
 
 		UGB_AbilitySystemComponent();
-
-		
 	
 };

@@ -6,3 +6,4 @@
 UGB_AbilitySystemComponent::UGB_AbilitySystemComponent()
 {
 }
+

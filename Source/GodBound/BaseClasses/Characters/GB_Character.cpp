@@ -31,8 +31,6 @@ AGB_Character::AGB_Character(const FObjectInitializer& ObjectInitializer) : Supe
 	bUseControllerRotationYaw = true;
 	bUseControllerRotationRoll = false;
 
-	AbilitySystemComponent = CreateDefaultSubobject<UGB_AbilitySystemComponent>(TEXT("AbilitySystemComponent"));
-
 	UIHealthBarComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("UIHealthBar"));
 	UIHealthBarComponent->SetupAttachment(RootComponent);
 	UIHealthBarComponent->SetRelativeLocation(FVector(0, 0, 120));
@@ -47,19 +45,7 @@ void AGB_Character::BeginPlay()
 	Super::BeginPlay();
 	CharacterMovementComponent = Cast<UGB_CharacterMovementComponent>(GetMovementComponent());
 	PlayerController = Cast<AGB_PlayerController>(GetController());
-	if(IsValid(AbilitySystemComponent))
-	{
-		Attributes = AbilitySystemComponent->GetSet<UGB_AttributeSet>();
-		HealthChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetHealthAttribute()).AddUObject(this, &AGB_Character::HealthChanged);
-		MaxHealthChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetMaxHealthAttribute()).AddUObject(this, &AGB_Character::MaxHealthChanged);
-		SpeedChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetSpeedAttribute()).AddUObject(this, &AGB_Character::SpeedChanged);
-		MaxSpeedChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetMaxSpeedAttribute()).AddUObject(this, &AGB_Character::MaxSpeedChanged);
-		StaminaChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetStaminaAttribute()).AddUObject(this, &AGB_Character::StaminaChanged);
-		MaxStaminaChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetMaxStaminaAttribute()).AddUObject(this, &AGB_Character::MaxStaminaChanged);
-		EnergyChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetEnergyAttribute()).AddUObject(this, &AGB_Character::EnergyChanged);
-		MaxEnergyChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attributes->GetMaxEnergyAttribute()).AddUObject(this, &AGB_Character::MaxEnergyChanged);
-		AbilitySystemComponent->InitAbilityActorInfo(this, this); // Possibly change to InitializeComponent();
-	}
+	
 	
 	InitializeHealthBar();
 	if(this == Cast<AGB_Character>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0))&& UIHealthBar)
@@ -94,7 +80,7 @@ FVector AGB_Character::TraceFromCamera()
 
 void AGB_Character::GrantAbility(TSubclassOf<UGB_GameplayAbility> AbilityClass, int32 Level, int32 InputCode)
 {
-	if(GetLocalRole() == ROLE_Authority && IsValid(AbilitySystemComponent) && IsValid(AbilityClass))
+	if(GetLocalRole() == ROLE_Authority && AbilitySystemComponent && IsValid(AbilityClass))
 	{
 		UGB_GameplayAbility* Ability = AbilityClass->GetDefaultObject<UGB_GameplayAbility>();
 		if(IsValid(Ability))
@@ -108,7 +94,7 @@ void AGB_Character::GrantAbility(TSubclassOf<UGB_GameplayAbility> AbilityClass, 
 
 void AGB_Character::ActivateAbility(int32 InputCode)
 {
-	if(IsValid(AbilitySystemComponent))
+	if(AbilitySystemComponent)
 	{
 		AbilitySystemComponent->AbilityLocalInputPressed(InputCode);
 	}
@@ -116,7 +102,7 @@ void AGB_Character::ActivateAbility(int32 InputCode)
 
 void AGB_Character::InitializeHealthBar()
 {
-	if(UIHealthBar || !IsValid(AbilitySystemComponent))
+	if(UIHealthBar || !AbilitySystemComponent)
 	{
 		return;
 	}
@@ -185,111 +171,176 @@ UGB_CharacterMovementComponent* AGB_Character::GetAdvMovementComponent()
 	return CharacterMovementComponent;
 }
 
+UGB_HealthWidget* AGB_Character::GetHealthWidget()
+{
+	return UIHealthBar;
+}
+
 float AGB_Character::GetHealth() const
 {
-	return Attributes->GetHealth();
+	if(AttributeSet)
+	{
+		return AttributeSet->GetHealth();
+	}
+	else
+	{
+		return 0.f;
+	}
 }
 
 float AGB_Character::GetMaxHealth() const
 {
-	return Attributes->GetMaxHealth();
+	if(AttributeSet)
+	{
+		return AttributeSet->GetMaxHealth();
+	}
+	else
+	{
+		return 0.f;
+	}
 }
 
 float AGB_Character::GetSpeed() const
 {
-	return GetCharacterMovement()->MaxWalkSpeed;
+	//TODO: Changed this in order to test, POssibly troublesome
+	//return GetCharacterMovement()->MaxWalkSpeed;
+	if(AttributeSet)
+	{
+		return AttributeSet->GetSpeed();
+	}
+	return 0.f;
+	
 }
 
 float AGB_Character::GetMaxSpeed() const
 {
-	return Attributes->GetMaxSpeed();
+	if(AttributeSet)
+	{
+		return AttributeSet->GetMaxSpeed();
+	}
+	return 0.f;
+	
 }
 
 float AGB_Character::GetHealthRegenRate() const
 {
-	return Attributes->GetHealthRegenRate();
+	if(AttributeSet)
+	{
+		return AttributeSet->GetHealthRegenRate();
+	}
+	return 0.f;
+	
 }
 
 float AGB_Character::GetEnergy() const
 {
-	return Attributes->GetEnergy();
+	if(AttributeSet)
+	{
+		return AttributeSet->GetEnergy();
+	}
+	return 0.f;
+	
 }
 
 float AGB_Character::GetMaxEnergy() const
 {
-	return Attributes->GetMaxEnergy();
+	if(AttributeSet)
+	{
+		return AttributeSet->GetMaxEnergy();
+	}
+	return 0.f;
+	
 }
 
 float AGB_Character::GetEnergyRegenRate() const
 {
-	return Attributes->GetEnergyRecoverRate();
+	if(AttributeSet)
+	{
+		return AttributeSet->GetEnergyRecoverRate();
+	}
+	return 0.f;
+	
 }
 
 float AGB_Character::GetStamina() const
 {
-	return Attributes->GetStamina();
+	if(AttributeSet)
+	{
+		return AttributeSet->GetStamina();
+	}
+	return 0.f;
+	
 }
 
 float AGB_Character::GetMaxStamina() const
 {
-	return Attributes->GetMaxStamina();
+	if(AttributeSet)
+	{
+		return AttributeSet->GetMaxStamina();
+	}
+	return 0.f;
 }
 
 float AGB_Character::GetStaminaRegenRate() const
 {
-	return Attributes->GetStaminaRecoverRate();
+	if(AttributeSet)
+	{
+		return AttributeSet->GetStaminaRecoverRate();
+	}
+	return 0.f;
+	
 }
 
 float AGB_Character::GetHealthPercentage()
 {
-	if(Attributes)
+	if(AttributeSet)
 	{
-		return Attributes->GetHealth()/Attributes->GetMaxHealth();
+		return AttributeSet->GetHealth()/AttributeSet->GetMaxHealth();
 	}
 	return 1.f;
 }
 
 float AGB_Character::GetStaminaPercentage()
 {
-	if (Attributes)
+	if (AttributeSet)
 	{
-		return Attributes->GetStamina() / Attributes->GetMaxHealth();
+		return AttributeSet->GetStamina() / AttributeSet->GetMaxHealth();
 	}
 	return 0.f;
 }
 
 float AGB_Character::GetOverHeatPercentage()
 {
-	if (Attributes)
+	if (AttributeSet)
 	{
-		return Attributes->GetOverHeat() / Attributes->GetOverHeatMax();
+		return AttributeSet->GetOverHeat() / AttributeSet->GetOverHeatMax();
 	}
 	return 0.f;
 }
 
 float AGB_Character::GetEnergyPercentage()
 {
-	if (Attributes)
+	if (AttributeSet)
 	{
-		return Attributes->GetEnergy() / Attributes->GetMaxEnergy();
+		return AttributeSet->GetEnergy() / AttributeSet->GetMaxEnergy();
 	}
 	return 0.f;
 }
 
 float AGB_Character::GetOverHeat()
 {
-	if (Attributes)
+	if (AttributeSet)
 	{
-		return Attributes->GetOverHeat();
+		return AttributeSet->GetOverHeat();
 	}
 	return 0.f;
 }
 
 float AGB_Character::GetMaxOverHeat()
 {
-	if (Attributes)
+	if (AttributeSet)
 	{
-		return Attributes->GetOverHeatMax();
+		return AttributeSet->GetOverHeatMax();
 	}
 	return 0.f;
 }
