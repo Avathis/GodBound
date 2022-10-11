@@ -5,9 +5,11 @@
 
 #include "Components/BoxComponent.h"
 #include "GB_PlayerController.h"
+#include "Components/WidgetComponent.h"
 #include "GodBound/BaseClasses/Components/GB_CameraComponent.h"
 #include "GodBound/BaseClasses/Components/GB_CharacterMovementComponent.h"
 #include "GodBound/BaseClasses/Components/GB_SpringArmComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 AGB_PlayableCharacter::AGB_PlayableCharacter(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer.SetDefaultSubobjectClass<UGB_CharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
@@ -22,6 +24,9 @@ AGB_PlayableCharacter::AGB_PlayableCharacter(const FObjectInitializer& ObjectIni
 	CameraCollisionBox->SetupAttachment(GetRootComponent());
 	CameraCollisionBox->SetRelativeLocation(FVector(-100.000000,140.000000,30.000000));
 	CameraCollisionBox->SetBoxExtent(FVector(32.000000,32.000000,32.000000));
+
+	OverheadWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("OverheadWidget"));
+	OverheadWidget->SetupAttachment(GetRootComponent());
 }
 
 void AGB_PlayableCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -39,16 +44,8 @@ void AGB_PlayableCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 
 void AGB_PlayableCharacter::MoveForward(float Value)
 {
-	ForwardAxis = Value;
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(
-			1,
-			15.f,
-			FColor::Red,
-			FString(TEXT("MoveForward Value %d!"),Value)
-		);
-	}
+	AddMovementInput(UKismetMathLibrary::GetForwardVector(FRotator(0, GetControlRotation().Yaw, 0)), Value);
+	ForwardAxis = Value;/*
 	if ((Controller) && (Value != 0.0f))
 	{
 		// find out which way is forward
@@ -59,23 +56,16 @@ void AGB_PlayableCharacter::MoveForward(float Value)
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 		AddMovementInput(Direction, Value);
 	}
-	
+	*/
 }
 
 
 
 void AGB_PlayableCharacter::MoveRight(float Value)
 {
+	AddMovementInput(UKismetMathLibrary::GetRightVector(FRotator(0, GetControlRotation().Yaw, 0)), Value);
 	RightAxis = Value;
-	if (GEngine)
-	{
-		GEngine->AddOnScreenDebugMessage(
-			2,
-			15.f,
-			FColor::Red,
-			FString(TEXT("MoveRight Value %d!"),Value)
-		);
-	}
+	/*
 	if ( (Controller) && (Value != 0.0f) )
 	{
 		// find out which way is right
@@ -86,7 +76,7 @@ void AGB_PlayableCharacter::MoveRight(float Value)
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
-	}
+	}*/
 	
 }
 

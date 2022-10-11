@@ -4,12 +4,10 @@
 #include "GB_CharacterMovementComponent.h"
 #include "GodBound/BaseClasses/Characters/GB_Character.h"
 
-UGB_CharacterMovementComponent::UGB_CharacterMovementComponent(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+UGB_CharacterMovementComponent::UGB_CharacterMovementComponent()
 {
-	WalkMovementSpeed = 650;
-	RunMovementSpeed = 900;
-	AbilitySprintMovementSpeed = 1500;
-
+	SprintSpeedMultiplier = 1.4f;
+	ADSSpeedMultiplier = 0.5f;
 }
 
 EMovementState UGB_CharacterMovementComponent::GetMovementType()
@@ -40,8 +38,8 @@ float UGB_CharacterMovementComponent::GetMaxSpeed() const
 	{
 		return Owner->GetSpeed() * ADSSpeedMultiplier;
 	}
-
 	return Owner->GetSpeed();
+	
 }
 
 void UGB_CharacterMovementComponent::UpdateFromCompressedFlags(uint8 Flags)

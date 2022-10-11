@@ -38,5 +38,8 @@ class GODBOUND_API AGB_PlayableCharacter : public AGB_Character
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	class AGB_Weapon* ActiveWeapon;
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	UWidgetComponent* OverheadWidget;
 	
 };

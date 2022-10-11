@@ -197,7 +197,7 @@ float AGB_Character::GetMaxHealth() const
 
 float AGB_Character::GetSpeed() const
 {
-	return Attributes->GetSpeed();
+	return GetCharacterMovement()->MaxWalkSpeed;
 }
 
 float AGB_Character::GetMaxSpeed() const
@@ -309,12 +309,12 @@ void AGB_Character::MaxHealthChanged(const FOnAttributeChangeData& Data)
 
 void AGB_Character::SpeedChanged(const FOnAttributeChangeData& Data)
 {
-
+	//GetAdvMovementComponent()->MaxWalkSpeed = Data.NewValue;
 }
 
 void AGB_Character::MaxSpeedChanged(const FOnAttributeChangeData& Data)
 {
-	GetAdvMovementComponent()->MaxWalkSpeed = Data.NewValue;
+	//GetAdvMovementComponent()->MaxWalkSpeed = Data.NewValue;
 }
 
 void AGB_Character::HealthRegenRateChanged(const FOnAttributeChangeData& Data)

@@ -66,7 +66,7 @@ class GODBOUND_API UGB_CharacterMovementComponent : public UCharacterMovementCom
 	};
 
 public:
-	UGB_CharacterMovementComponent(const FObjectInitializer& ObjectInitializer);
+	UGB_CharacterMovementComponent();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	EMovementState MovementType = EMovementState::EMS_Walking;
@@ -110,4 +110,5 @@ public:
 		void StartAimDownSights();
 	UFUNCTION(BlueprintCallable, Category = "Aim Down Sights")
 		void StopAimDownSights();
+		
 };

@@ -16,14 +16,12 @@ AGB_Weapon::AGB_Weapon()
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));
 }
 
-// Called when the game starts or when spawned
 void AGB_Weapon::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
-// Called every frame
 void AGB_Weapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
