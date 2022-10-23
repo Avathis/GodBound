@@ -34,9 +34,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AddedComponents")
 	class UProjectileMovementComponent* ProjectileMovementComponent;
 
-private:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Variables", meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category ="Socket")
+	FName SocketName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Variables")
 	EWeaponState WeaponState;
+
+private:
+	
 	
 protected:
 	// Called when the game starts or when spawned

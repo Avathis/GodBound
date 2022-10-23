@@ -6,12 +6,15 @@
 #include "Components/BoxComponent.h"
 #include "GB_PlayerController.h"
 #include "Components/WidgetComponent.h"
+#include "Engine/SkeletalMeshSocket.h"
+#include "GodBound/BaseClasses/GB_Weapon.h"
 #include "GodBound/BaseClasses/Components/GB_CameraComponent.h"
 #include "GodBound/BaseClasses/Components/GB_CharacterMovementComponent.h"
 #include "GodBound/BaseClasses/Components/GB_SpringArmComponent.h"
 #include "GodBound/Player/GB_PlayerState.h"
 #include "GodBound/BaseClasses/Attributes/GB_AttributeSet.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Net/UnrealNetwork.h"
 
 AGB_PlayableCharacter::AGB_PlayableCharacter(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer.SetDefaultSubobjectClass<UGB_CharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
@@ -29,6 +32,13 @@ AGB_PlayableCharacter::AGB_PlayableCharacter(const FObjectInitializer& ObjectIni
 
 	OverheadWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("OverheadWidget"));
 	OverheadWidget->SetupAttachment(GetRootComponent());
+}
+
+void AGB_PlayableCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	//DOREPLIFETIME(AGB_PlayableCharacter, ActiveWeapon);
 }
 
 void AGB_PlayableCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -73,6 +83,8 @@ void AGB_PlayableCharacter::PossessedBy(AController* NewController)
 		}
 		AttributeSet =  PS->GetAttributeSetBase();
 
+		InitializeAbilities();
+		
 		// If we handle players disconnecting and rejoining in the future, we'll have to change this so that possession from rejoining doesn't reset attributes.
 		// For now assume possession = spawn/respawn.
 		//InitializeAttributes();
@@ -105,6 +117,7 @@ void AGB_PlayableCharacter::PossessedBy(AController* NewController)
 		InitializeFloatingStatusBar();*/
 	}
 }
+
 
 void AGB_PlayableCharacter::MoveForward(float Value)
 {
@@ -200,6 +213,53 @@ FHitResult AGB_PlayableCharacter::HitTraceFromCamera(float MaxRange)
 	return Hit;
 }
 
+void AGB_PlayableCharacter::EquipWeapon(AGB_Weapon* WeaponToEquip)
+{
+	ServerEquipWeapon(WeaponToEquip);
+	return;
+	if(HasAuthority())
+	{
+		if(WeaponToEquip)
+		{
+			WeaponToEquip->DetachFromActor(FDetachmentTransformRules(EDetachmentRule::KeepRelative, true));
+			const USkeletalMeshSocket* Socket = GetMesh()->GetSocketByName(WeaponToEquip->SocketName);
+			if(Socket)
+			{
+				Socket->AttachActor(WeaponToEquip, GetMesh());
+			}
+			//WeaponToEquip->AttachToActor(Character,FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponRef->SocketName);
+			//WeaponToEquip->WeaponState = EWeaponState::EWS_Equipped;
+			WeaponToEquip->SetOwner(this);
+		}
+	}
+	else
+	{
+		ServerEquipWeapon(WeaponToEquip);
+	}
+	//ServerEquipWeapon(WeaponToEquip);
+	
+}
+
+void AGB_PlayableCharacter::ServerEquipWeapon_Implementation(AGB_Weapon* WeaponToEquip)
+{
+	if(WeaponToEquip)
+	{
+		WeaponToEquip->DetachFromActor(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
+		const USkeletalMeshSocket* Socket = GetMesh()->GetSocketByName(WeaponToEquip->SocketName);
+		if(Socket)
+		{
+			if(Socket->AttachActor(WeaponToEquip, GetMesh()))
+			{
+				WeaponToEquip->WeaponState = EWeaponState::EWS_Equipped;
+				WeaponToEquip->SetOwner(this);
+			}
+		}
+		//WeaponToEquip->AttachToActor(this,FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponToEquip->SocketName);
+	}
+	
+}
+
+
 void AGB_PlayableCharacter::BindASCInput()
 {
 	if (!ASCInputBound && AbilitySystemComponent && IsValid(InputComponent))
@@ -231,14 +291,8 @@ void AGB_PlayableCharacter::OnRep_PlayerState()
 			PS->SetAttributeSet();
 		}
 		AttributeSet = PS->GetAttributeSetBase();
-		if(GEngine)
-		{
-			if(AttributeSet)
-			{
-				GEngine->AddOnScreenDebugMessage(3,15.f,FColor::White,FString("PlayerStateSuccessfully replicated"));
-			}
-		}
-
+		
+		
 		// If we handle players disconnecting and rejoining in the future, we'll have to change this so that posession from rejoining doesn't reset attributes.
 		// For now assume possession = spawn/respawn.
 		//InitializeAttributes();

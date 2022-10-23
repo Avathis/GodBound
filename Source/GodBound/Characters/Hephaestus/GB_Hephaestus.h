@@ -25,8 +25,9 @@ class GODBOUND_API AGB_Hephaestus : public AGB_PlayableCharacter
 	GENERATED_BODY()
 	public:
 
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat Mode")
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifeTimeProps) const override;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat Mode", Replicated)
 	EHephaestusSet CombatSet;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWRite, Category = "Combat Mode")

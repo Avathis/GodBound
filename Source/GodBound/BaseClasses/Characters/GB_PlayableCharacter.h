@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GB_Character.h"
+#include "GodBound/BaseClasses/BaseTypes.h"
 #include "GB_PlayableCharacter.generated.h"
 
 /**
@@ -20,7 +21,8 @@ class GODBOUND_API AGB_PlayableCharacter : public AGB_Character
 	AGB_PlayableCharacter(const FObjectInitializer& ObjectInitializer);
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	virtual void PossessedBy(AController* NewController) override;
-
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	
 	virtual void MoveForward(float Value);
 	virtual void MoveRight(float Value);
 	virtual void TurnRight(float Value);
@@ -39,9 +41,21 @@ class GODBOUND_API AGB_PlayableCharacter : public AGB_Character
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	class AGB_Weapon* ActiveWeapon;
+	
+	UFUNCTION()
+	void EquipWeapon(AGB_Weapon* WeaponToEquip);
+
+	UFUNCTION(NetMulticast, Reliable)
+	void ServerEquipWeapon(AGB_Weapon* WeaponToEquip);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void InitializeAbilities();
+	
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	UWidgetComponent* OverheadWidget;
+
+	
 
 protected:
 	void BindASCInput();
@@ -49,5 +63,6 @@ protected:
 	bool ASCInputBound = false;
 	
 	virtual void OnRep_PlayerState() override;
+	
 	
 };

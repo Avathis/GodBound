@@ -17,28 +17,29 @@ class GODBOUND_API UGB_AnimInstance : public UAnimInstance
 public:
 	virtual void NativeInitializeAnimation() override;
 		
-	UFUNCTION(BlueprintCallable, Category = AnimationProperties)
+	UFUNCTION(BlueprintCallable, Category = AnimationProperties, meta=(BlueprintThreadSafe))
 	void UpdateAnimationProperties();
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement)
 	float MovementSpeed;
     	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement)
 	bool bIsInAir;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement)
 	bool bDied;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement)
 	class AGB_Character* MainCharacter;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement)
 	bool bIsInCombat;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWRite, Category = Movement)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement)
 	bool bIsInSpecialSprint;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Movement)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement)
 	APawn* Pawn;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement)

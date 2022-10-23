@@ -20,6 +20,16 @@ enum class EHephaestusSet : uint8
 	EHS_F
 };
 
+UENUM(BlueprintType)
+enum class ETurningInPlace : uint8
+{
+	ETIP_Left UMETA(DisplayName = "TurningLeft"),
+	EITP_Right UMETA(DisplayName = "TurningRight"),
+	ETIP_NotTurning UMETA(DisplayName = "NotTurning"),
+
+	ETIP_MAX UMETA(DisplayName = "DefaultMAX")
+};
+
 UCLASS()
 class GODBOUND_API UBaseTypes : public UObject
 {
