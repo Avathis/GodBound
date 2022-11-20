@@ -54,7 +54,7 @@ void AGB_Character::BeginPlay()
 	}
 }
 
-
+/*
 FVector AGB_Character::TraceFromCamera()
 {
 	FHitResult Hit;
@@ -76,11 +76,11 @@ FVector AGB_Character::TraceFromCamera()
 	return End;
 	
 }
-
+*/
 
 void AGB_Character::GrantAbility(TSubclassOf<UGB_GameplayAbility> AbilityClass, int32 Level, int32 InputCode)
 {
-	if(GetLocalRole() == ROLE_Authority && AbilitySystemComponent && IsValid(AbilityClass))
+	if(GetLocalRole() == ROLE_Authority && AbilitySystemComponent.IsValid() && IsValid(AbilityClass))
 	{
 		UGB_GameplayAbility* Ability = AbilityClass->GetDefaultObject<UGB_GameplayAbility>();
 		if(IsValid(Ability))
@@ -94,7 +94,7 @@ void AGB_Character::GrantAbility(TSubclassOf<UGB_GameplayAbility> AbilityClass, 
 
 void AGB_Character::ActivateAbility(int32 InputCode)
 {
-	if(AbilitySystemComponent)
+	if(AbilitySystemComponent.IsValid())
 	{
 		AbilitySystemComponent->AbilityLocalInputPressed(InputCode);
 	}
@@ -102,7 +102,7 @@ void AGB_Character::ActivateAbility(int32 InputCode)
 
 void AGB_Character::InitializeHealthBar()
 {
-	if(UIHealthBar || !AbilitySystemComponent)
+	if(UIHealthBar || !AbilitySystemComponent.IsValid())
 	{
 		return;
 	}
@@ -176,9 +176,33 @@ UGB_HealthWidget* AGB_Character::GetHealthWidget()
 	return UIHealthBar;
 }
 
+void AGB_Character::InitializeAttributes()
+{
+	if (!AbilitySystemComponent.IsValid())
+	{
+		return;
+	}
+
+	if (!DefaultAttributes)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s() Missing DefaultAttributes for %s. Please fill in the character's Blueprint."), *FString(__FUNCTION__), *GetName());
+		return;
+	}
+
+	// Can run on Server and Client
+	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+	EffectContext.AddSourceObject(this);
+
+	FGameplayEffectSpecHandle NewHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributes, 0.f, EffectContext);
+	if (NewHandle.IsValid())
+	{
+		FActiveGameplayEffectHandle ActiveGEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), AbilitySystemComponent.Get());
+	}
+}
+
 float AGB_Character::GetHealth() const
 {
-	if(AttributeSet)
+	if(AttributeSet.IsValid())
 	{
 		return AttributeSet->GetHealth();
 	}
@@ -190,7 +214,7 @@ float AGB_Character::GetHealth() const
 
 float AGB_Character::GetMaxHealth() const
 {
-	if(AttributeSet)
+	if(AttributeSet.IsValid())
 	{
 		return AttributeSet->GetMaxHealth();
 	}
@@ -204,7 +228,7 @@ float AGB_Character::GetSpeed() const
 {
 	//TODO: Changed this in order to test, POssibly troublesome
 	//return GetCharacterMovement()->MaxWalkSpeed;
-	if(AttributeSet)
+	if(AttributeSet.IsValid())
 	{
 		return AttributeSet->GetSpeed();
 	}
@@ -214,7 +238,7 @@ float AGB_Character::GetSpeed() const
 
 float AGB_Character::GetMaxSpeed() const
 {
-	if(AttributeSet)
+	if(AttributeSet.IsValid())
 	{
 		return AttributeSet->GetMaxSpeed();
 	}
@@ -224,7 +248,7 @@ float AGB_Character::GetMaxSpeed() const
 
 float AGB_Character::GetHealthRegenRate() const
 {
-	if(AttributeSet)
+	if(AttributeSet.IsValid())
 	{
 		return AttributeSet->GetHealthRegenRate();
 	}
@@ -234,7 +258,7 @@ float AGB_Character::GetHealthRegenRate() const
 
 float AGB_Character::GetEnergy() const
 {
-	if(AttributeSet)
+	if(AttributeSet.IsValid())
 	{
 		return AttributeSet->GetEnergy();
 	}
@@ -244,7 +268,7 @@ float AGB_Character::GetEnergy() const
 
 float AGB_Character::GetMaxEnergy() const
 {
-	if(AttributeSet)
+	if(AttributeSet.IsValid())
 	{
 		return AttributeSet->GetMaxEnergy();
 	}
@@ -254,7 +278,7 @@ float AGB_Character::GetMaxEnergy() const
 
 float AGB_Character::GetEnergyRegenRate() const
 {
-	if(AttributeSet)
+	if(AttributeSet.IsValid())
 	{
 		return AttributeSet->GetEnergyRecoverRate();
 	}
@@ -264,7 +288,7 @@ float AGB_Character::GetEnergyRegenRate() const
 
 float AGB_Character::GetStamina() const
 {
-	if(AttributeSet)
+	if(AttributeSet.IsValid())
 	{
 		return AttributeSet->GetStamina();
 	}
@@ -274,7 +298,7 @@ float AGB_Character::GetStamina() const
 
 float AGB_Character::GetMaxStamina() const
 {
-	if(AttributeSet)
+	if(AttributeSet.IsValid())
 	{
 		return AttributeSet->GetMaxStamina();
 	}
@@ -283,7 +307,7 @@ float AGB_Character::GetMaxStamina() const
 
 float AGB_Character::GetStaminaRegenRate() const
 {
-	if(AttributeSet)
+	if(AttributeSet.IsValid())
 	{
 		return AttributeSet->GetStaminaRecoverRate();
 	}
@@ -293,7 +317,7 @@ float AGB_Character::GetStaminaRegenRate() const
 
 float AGB_Character::GetHealthPercentage()
 {
-	if(AttributeSet)
+	if(AttributeSet.IsValid())
 	{
 		return AttributeSet->GetHealth()/AttributeSet->GetMaxHealth();
 	}
@@ -302,7 +326,7 @@ float AGB_Character::GetHealthPercentage()
 
 float AGB_Character::GetStaminaPercentage()
 {
-	if (AttributeSet)
+	if (AttributeSet.IsValid())
 	{
 		return AttributeSet->GetStamina() / AttributeSet->GetMaxHealth();
 	}
@@ -311,7 +335,7 @@ float AGB_Character::GetStaminaPercentage()
 
 float AGB_Character::GetOverHeatPercentage()
 {
-	if (AttributeSet)
+	if (AttributeSet.IsValid())
 	{
 		return AttributeSet->GetOverHeat() / AttributeSet->GetOverHeatMax();
 	}
@@ -320,7 +344,7 @@ float AGB_Character::GetOverHeatPercentage()
 
 float AGB_Character::GetEnergyPercentage()
 {
-	if (AttributeSet)
+	if (AttributeSet.IsValid())
 	{
 		return AttributeSet->GetEnergy() / AttributeSet->GetMaxEnergy();
 	}
@@ -329,7 +353,7 @@ float AGB_Character::GetEnergyPercentage()
 
 float AGB_Character::GetOverHeat()
 {
-	if (AttributeSet)
+	if (AttributeSet.IsValid())
 	{
 		return AttributeSet->GetOverHeat();
 	}
@@ -338,7 +362,7 @@ float AGB_Character::GetOverHeat()
 
 float AGB_Character::GetMaxOverHeat()
 {
-	if (AttributeSet)
+	if (AttributeSet.IsValid())
 	{
 		return AttributeSet->GetOverHeatMax();
 	}

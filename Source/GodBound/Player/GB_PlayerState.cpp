@@ -12,8 +12,17 @@ AGB_PlayerState::AGB_PlayerState()
 	AbilitySystemComponent->SetIsReplicated(true);
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 	NetUpdateFrequency = 100.0f;
-	AttributeSet = AbilitySystemComponent->GetSet<UGB_AttributeSet>();
 	
+	AttributeSet = CreateDefaultSubobject<UGB_AttributeSet>(TEXT("BaseAttributeSet"));
+	AbilitySystemComponent->AddAttributeSetSubobject(AttributeSet);
+	//AttributeSet = AbilitySystemComponent->GetSet<UGB_AttributeSet>();
+	
+}
+
+void AGB_PlayerState::PostInitializeComponents()
+{
+
+	Super::PostInitializeComponents();
 }
 
 UAbilitySystemComponent* AGB_PlayerState::GetAbilitySystemComponent() const
@@ -21,14 +30,14 @@ UAbilitySystemComponent* AGB_PlayerState::GetAbilitySystemComponent() const
 	return AbilitySystemComponent;
 }
 
-const UGB_AttributeSet* AGB_PlayerState::GetAttributeSetBase() const
+UGB_AttributeSet* AGB_PlayerState::GetAttributeSetBase() const
 {
 	return AttributeSet;
 }
 
 void AGB_PlayerState::SetAttributeSet()
 {
-	AttributeSet = AbilitySystemComponent->GetSet<UGB_AttributeSet>();
+	//AttributeSet = AbilitySystemComponent->GetSet<UGB_AttributeSet>();
 }
 
 bool AGB_PlayerState::IsAlive() const
@@ -127,7 +136,7 @@ void AGB_PlayerState::BeginPlay()
 	if(IsValid(AbilitySystemComponent))
 	{
 		
-
+		
 		HealthChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetHealthAttribute()).AddUObject(this, &AGB_PlayerState::HealthChanged);
 		MaxHealthChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMaxHealthAttribute()).AddUObject(this, &AGB_PlayerState::MaxHealthChanged);
 		SpeedChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetSpeedAttribute()).AddUObject(this, &AGB_PlayerState::SpeedChanged);

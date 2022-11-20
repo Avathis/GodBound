@@ -33,6 +33,7 @@ UAbilitySystemComponent* AGB_GASActor::GetAbilitySystemComponent() const
 void AGB_GASActor::BeginPlay()
 {
 	Super::BeginPlay();
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	
 }
 

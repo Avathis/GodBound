@@ -25,11 +25,12 @@ AGB_PlayableCharacter::AGB_PlayableCharacter(const FObjectInitializer& ObjectIni
 	Camera = CreateDefaultSubobject<UGB_CameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraBoom, UGB_SpringArmComponent::SocketName);
 
+	/*
 	CameraCollisionBox = CreateDefaultSubobject<UBoxComponent>("CameraCollisionBox");
 	CameraCollisionBox->SetupAttachment(GetRootComponent());
 	CameraCollisionBox->SetRelativeLocation(FVector(-100.000000,140.000000,30.000000));
 	CameraCollisionBox->SetBoxExtent(FVector(32.000000,32.000000,32.000000));
-
+	*/
 	OverheadWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("OverheadWidget"));
 	OverheadWidget->SetupAttachment(GetRootComponent());
 }
@@ -64,30 +65,24 @@ void AGB_PlayableCharacter::PossessedBy(AController* NewController)
 	{
 		// Set the ASC on the Server. Clients do this in OnRep_PlayerState()
 		AbilitySystemComponent = Cast<UGB_AbilitySystemComponent>(PS->GetAbilitySystemComponent());
-
-		if(AbilitySystemComponent)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("ABILITY COMPONENT IS VALID"))
-		}
-		else
-		{
-			UE_LOG(LogTemp, Error, TEXT("ABILITY COMPONENT IS NOT VALID"))
-		}
+		
 		// AI won't have PlayerControllers so we can init again here just to be sure. No harm in initing twice for heroes that have PlayerControllers.
 		PS->GetAbilitySystemComponent()->InitAbilityActorInfo(PS, this);
 
 		// Set the AttributeSetBase for convenience attribute functions
+		/*
 		if(!AttributeSet && !PS->GetAttributeSetBase())
 		{
 			PS->SetAttributeSet();
 		}
+		*/
 		AttributeSet =  PS->GetAttributeSetBase();
 
 		InitializeAbilities();
 		
 		// If we handle players disconnecting and rejoining in the future, we'll have to change this so that possession from rejoining doesn't reset attributes.
 		// For now assume possession = spawn/respawn.
-		//InitializeAttributes();
+		InitializeAttributes();
 
 		
 		// Respawn specific things that won't affect first possession.
@@ -189,7 +184,7 @@ void AGB_PlayableCharacter::Interact()
 {
 	
 }
-
+/*
 FHitResult AGB_PlayableCharacter::HitTraceFromCamera(float MaxRange)
 {
 	FHitResult Hit;
@@ -212,7 +207,7 @@ FHitResult AGB_PlayableCharacter::HitTraceFromCamera(float MaxRange)
 	}
 	return Hit;
 }
-
+*/
 void AGB_PlayableCharacter::EquipWeapon(AGB_Weapon* WeaponToEquip)
 {
 	ServerEquipWeapon(WeaponToEquip);
@@ -262,7 +257,7 @@ void AGB_PlayableCharacter::ServerEquipWeapon_Implementation(AGB_Weapon* WeaponT
 
 void AGB_PlayableCharacter::BindASCInput()
 {
-	if (!ASCInputBound && AbilitySystemComponent && IsValid(InputComponent))
+	if (!ASCInputBound && AbilitySystemComponent.IsValid() && IsValid(InputComponent))
 	{
 		AbilitySystemComponent->BindAbilityActivationToInputComponent(InputComponent,FGameplayAbilityInputBinds(FString("ConfirmTarget"), FString("CancelTarget"), FString("GBAbilityInputID"), static_cast<int32>(GBAbilityInputID::Confirm), static_cast<int32>(GBAbilityInputID::Cancel)));
 
@@ -286,16 +281,18 @@ void AGB_PlayableCharacter::OnRep_PlayerState()
 		BindASCInput();
 
 		// Set the AttributeSetBase for convenience attribute functions
+		/*
 		if(!AttributeSet && !PS->GetAttributeSetBase())
 		{
 			PS->SetAttributeSet();
 		}
+		*/
 		AttributeSet = PS->GetAttributeSetBase();
 		
 		
 		// If we handle players disconnecting and rejoining in the future, we'll have to change this so that posession from rejoining doesn't reset attributes.
 		// For now assume possession = spawn/respawn.
-		//InitializeAttributes();
+		InitializeAttributes();
 		/*
 		AGB_PlayerController* PC = Cast<AGB_PlayerController>(GetController());
 		if (PC)

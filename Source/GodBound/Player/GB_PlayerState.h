@@ -18,10 +18,18 @@ class GODBOUND_API AGB_PlayerState : public APlayerState, public IAbilitySystemI
 	GENERATED_BODY()
 public:
 	AGB_PlayerState();
+
+	virtual void PostInitializeComponents() override;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AbilitySystemComponent")
+	UGB_AbilitySystemComponent* AbilitySystemComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AbilitySystemComponent")
+	class UGB_AttributeSet* AttributeSet;
 	
 	UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
-	const class UGB_AttributeSet* GetAttributeSetBase() const;
+	class UGB_AttributeSet* GetAttributeSetBase() const;
 
 	void SetAttributeSet();
 
@@ -81,11 +89,7 @@ public:
 
 
 protected:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AbilitySystemComponent")
-	UGB_AbilitySystemComponent* AbilitySystemComponent;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AbilitySystemComponent")
-	const class UGB_AttributeSet* AttributeSet;
+	
 
 	FDelegateHandle HealthChangedDelegateHandle;
 	FDelegateHandle MaxHealthChangedDelegateHandle;

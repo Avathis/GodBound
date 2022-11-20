@@ -22,6 +22,8 @@ class GODBOUND_API AGB_PlayableCharacter : public AGB_Character
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	
 	
 	virtual void MoveForward(float Value);
 	virtual void MoveRight(float Value);
@@ -36,8 +38,8 @@ class GODBOUND_API AGB_PlayableCharacter : public AGB_Character
 
 	virtual void ExitCombat() override;
 
-	UFUNCTION(Blueprintcallable)
-	FHitResult HitTraceFromCamera(float MaxRange = 4000.f);
+	/*UFUNCTION(Blueprintcallable)
+	FHitResult HitTraceFromCamera(float MaxRange = 4000.f);*/
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapon")
 	class AGB_Weapon* ActiveWeapon;

@@ -51,8 +51,8 @@ public:
 	// Sets default values for this character's properties
 	AGB_Character(const FObjectInitializer& ObjectInitializer);
 
-	UFUNCTION(BlueprintCallable)
-	FVector TraceFromCamera();
+	/*UFUNCTION(BlueprintCallable)
+	FVector TraceFromCamera();*/
 
 	UFUNCTION(BlueprintCallable)
 	virtual void EnterCombat();
@@ -79,8 +79,8 @@ public:
 	class UGB_CameraComponent* Camera;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Controller", meta = (AllowPrivateAccess = "true"))
 	class AGB_PlayerController* PlayerController;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VisionBlocker", meta = (AllowPrivateAccess = "true"))
-	class UBoxComponent* CameraCollisionBox;
+	/*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "VisionBlocker", meta = (AllowPrivateAccess = "true"))
+	class UBoxComponent* CameraCollisionBox;*/
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", meta = (AllowPrivateAccess = "true"))
 	UGB_CharacterMovementComponent* CharacterMovementComponent;
@@ -152,21 +152,29 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	/*
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attributes", meta = (AllowPrivateAccess = "true"))
 	const class UGB_AttributeSet* AttributeSet ;
-
+*/
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadWrite, Category = "Abilities", meta = (AllowPrivateAccess = "true"))
-	UGB_AbilitySystemComponent* AbilitySystemComponent;
+	TWeakObjectPtr<class UGB_AbilitySystemComponent> AbilitySystemComponent;
+
+	TWeakObjectPtr<class UGB_AttributeSet> AttributeSet;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AbilitySets")
 	TArray<UGB_AbilitySet*> CombatAbilitySets;
 
 	virtual UGB_AbilitySystemComponent* GetAbilitySystemComponent() const override
 	{
-		return AbilitySystemComponent;
+		return AbilitySystemComponent.Get();
 	}
 
 	UGB_HealthWidget* GetHealthWidget();
+
+	void InitializeAttributes();
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "GASDocumentation|Abilities")
+	TSubclassOf<UGameplayEffect> DefaultAttributes;
 	
 	
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
