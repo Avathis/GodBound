@@ -5,6 +5,7 @@
 #include "GodBound/BaseClasses/Attributes/GB_AttributeSet.h"
 #include "GodBound/BaseClasses/Characters/GB_Character.h"
 #include "GodBound/BaseClasses/UI/GB_HealthWidget.h"
+#include "Kismet/GameplayStatics.h"
 
 AGB_PlayerState::AGB_PlayerState()
 {
@@ -16,6 +17,9 @@ AGB_PlayerState::AGB_PlayerState()
 	AttributeSet = CreateDefaultSubobject<UGB_AttributeSet>(TEXT("BaseAttributeSet"));
 	AbilitySystemComponent->AddAttributeSetSubobject(AttributeSet);
 	//AttributeSet = AbilitySystemComponent->GetSet<UGB_AttributeSet>();
+
+	FallenTag = FGameplayTag::RequestGameplayTag(FName("State.Fallen"));
+	DeadTag = FGameplayTag::RequestGameplayTag(FName("State.Dead"));
 	
 }
 
@@ -117,7 +121,7 @@ float AGB_PlayerState::GetMaxOverHeat()
 
 float AGB_PlayerState::GetOverHeatPercentage()
 {
-	return AttributeSet->GetOverHeatMax()/AttributeSet->GetOverHeat();
+	return AttributeSet->GetOverHeat()/AttributeSet->GetOverHeatMax();
 }
 
 float AGB_PlayerState::GetStaminaPercentage()
@@ -146,6 +150,7 @@ void AGB_PlayerState::BeginPlay()
 		EnergyChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetEnergyAttribute()).AddUObject(this, &AGB_PlayerState::EnergyChanged);
 		MaxEnergyChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMaxEnergyAttribute()).AddUObject(this, &AGB_PlayerState::MaxEnergyChanged);
 		//AbilitySystemComponent->InitAbilityActorInfo(this, this); // Possibly change to InitializeComponent();
+		OverHeatChangedDelegateHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetOverHeatAttribute()).AddUObject(this, &AGB_PlayerState::OverHeatChanged);
 	}
 }
 
@@ -160,7 +165,16 @@ void AGB_PlayerState::HealthChanged(const FOnAttributeChangeData& Data)
 		UGB_HealthWidget* HealthWidget = Hero->GetHealthWidget();
 		if (HealthWidget)
 		{
-			HealthWidget->SetHealthPercentage(GetHealthPercentage());
+			HealthWidget->SetHealthPercentage(Health/GetMaxHealth());
+			if(!Hero->IsLocallyControlled()&&UGameplayStatics::GetPlayerController(GetWorld(),0)->IsLocalController())
+			{
+				Hero->ShowHealthBar();
+			}
+		}
+
+		if(Health <=0 && !AbilitySystemComponent->HasMatchingGameplayTag(FallenTag))
+		{
+			Hero->Fall();
 		}
 	}
 }
@@ -203,4 +217,20 @@ void AGB_PlayerState::MaxStaminaChanged(const FOnAttributeChangeData& Data)
 
 void AGB_PlayerState::StaminaRegenRateChanged(const FOnAttributeChangeData& Data)
 {
+}
+
+void AGB_PlayerState::OverHeatChanged(const FOnAttributeChangeData& Data)
+{
+	float OverHeat = Data.NewValue;
+
+	// Update floating status bar
+	AGB_Character* Hero = Cast<AGB_Character>(GetPawn());
+	if (Hero)
+	{
+		UGB_HealthWidget* StatusWidget = Hero->GetHealthWidget();
+		if (StatusWidget)
+		{
+			StatusWidget->SetOverHeatPercentage(OverHeat/GetMaxOverHeat());
+		}
+	}
 }

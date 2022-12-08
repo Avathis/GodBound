@@ -4,6 +4,9 @@
 #include "GB_FireDamageExec.h"
 #include "GodBound/BaseClasses/GB_GameplayAbility.h"
 #include "GodBound/BaseClasses/Attributes/GB_AttributeSet.h"
+#include "GameplayTagContainer.h"
+#include "Kismet/KismetMathLibrary.h"
+
 struct FFireDamageStatics
 {
     DECLARE_ATTRIBUTE_CAPTUREDEF(OverHeat);
@@ -48,6 +51,14 @@ void UGB_FireDamageExec::Execute_Implementation(const FGameplayEffectCustomExecu
 	AActor* TargetActor = TargetAbilitySystemComponent ? TargetAbilitySystemComponent->GetAvatarActor() : nullptr;
 
 	const FGameplayEffectSpec& Spec = ExecutionParams.GetOwningSpec();
+	
+	
+
+	FVector TargetForwardVector = TargetActor->GetActorForwardVector();
+	FVector SourceForwardVector;
+	
+	
+	
 
 	// Gather the tags from the source and target as that can affect which buffs should be used
 	const FGameplayTagContainer* SourceTags = Spec.CapturedSourceTags.GetAggregatedTags();
@@ -56,8 +67,34 @@ void UGB_FireDamageExec::Execute_Implementation(const FGameplayEffectCustomExecu
 	FAggregatorEvaluateParameters EvaluationParameters;
 	EvaluationParameters.SourceTags = SourceTags;
 	EvaluationParameters.TargetTags = TargetTags;
+	
+	if(TargetTags->HasTagExact(FGameplayTag::RequestGameplayTag(FName("State.Blocking"))))
+	{
+		return;
+	}
+	if(TargetTags->HasTagExact(FGameplayTag::RequestGameplayTag(FName("State.Blocking.Frontal"))))
+	{
+		if(SourceTags->HasTagExact(FGameplayTag::RequestGameplayTag(FName("GameplayEffect.Melee"))))
+		{
+			SourceForwardVector = UKismetMathLibrary::FindLookAtRotation(SourceActor->GetActorLocation(),TargetActor->GetActorLocation()).Quaternion().GetForwardVector();
+		}
+		else if(Spec.GetContext().HasOrigin())
+		{
+		
+			SourceForwardVector = UKismetMathLibrary::FindLookAtRotation(Spec.GetContext().GetOrigin(),TargetActor->GetActorLocation()).Quaternion().GetForwardVector();
+		}
+		else
+		{
+			SourceForwardVector = UKismetMathLibrary::FindLookAtRotation(SourceActor->GetActorLocation(),TargetActor->GetActorLocation()).Quaternion().GetForwardVector();
+		}
+		if(FVector::DotProduct(TargetForwardVector, SourceForwardVector)<=0)
+		{
+			return;
+		}
+	}
+	
 
-	float Armor = 0.0f;
+    float Armor = 0.0f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(FireDamageStatics().ArmorDef, EvaluationParameters, Armor);
 	Armor = FMath::Max<float>(Armor, 0.0f);
 
@@ -75,8 +112,13 @@ void UGB_FireDamageExec::Execute_Implementation(const FGameplayEffectCustomExecu
 	// Add SetByCaller damage if it exists
 	Damage += FMath::Max<float>(Spec.GetSetByCallerMagnitude(FGameplayTag::RequestGameplayTag(FName("Damage")), false, -1.0f), 0.0f);
 
+	
 	float UnmitigatedDamage = Damage; // Can multiply any damage boosters here
 
+	if(SourceTags->HasTag(FGameplayTag::RequestGameplayTag(FName("Abilities.Hephaestus.F.ArmsOfAshes"))))
+	{
+		UnmitigatedDamage*=1.15;
+	}
 	if (OverHeat > 100.f)
 	{
 		UnmitigatedDamage *= 1.5f;

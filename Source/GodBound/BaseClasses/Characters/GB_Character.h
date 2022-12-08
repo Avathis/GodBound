@@ -53,6 +53,18 @@ public:
 
 	/*UFUNCTION(BlueprintCallable)
 	FVector TraceFromCamera();*/
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void ShowHealthBar();
+
+	UFUNCTION(BlueprintCallable)
+	void Fall();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void Die();
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "GeneralEffects")
+	TSubclassOf<UGameplayEffect> FallenEffect;
 
 	UFUNCTION(BlueprintCallable)
 	virtual void EnterCombat();
@@ -109,6 +121,7 @@ private:
 	void ActivateAbility(int32 InputCode);
 	/*UPROPERTIES*/
 	
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -130,7 +143,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "EnemyHealthBar")
 	TSubclassOf<class UGB_HealthWidget> UIHealthBarClass;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UGB_HealthWidget* UIHealthBar;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "EnemyHealthBar")

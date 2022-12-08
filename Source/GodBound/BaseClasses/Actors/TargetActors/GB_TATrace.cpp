@@ -128,7 +128,7 @@ void AGB_TATrace::CancelTargeting()
 	}
 	else
 	{
-		ABILITY_LOG(Warning, TEXT("AGameplayAbilityTargetActor::CancelTargeting called with null ASC! Actor %s"), *GetName());
+		UE_LOG(LogTemp, Warning, TEXT("AGameplayAbilityTargetActor::CancelTargeting called with null ASC! Actor %s"), *GetName());
 	}
 
 	CanceledDelegate.Broadcast(FGameplayAbilityTargetDataHandle());

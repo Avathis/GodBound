@@ -20,5 +20,8 @@ class GODBOUND_API UGB_HealthWidget : public UUserWidget
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void SetManaPercentage(float ManaPercentage);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetOverHeatPercentage(float OverHeatPercentage);
 	
 };

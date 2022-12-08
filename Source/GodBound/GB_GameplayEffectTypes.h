@@ -19,6 +19,7 @@ public:
 
 	void SetEffectStrength(float EffectStrengthToSet) { EffectStrength = EffectStrengthToSet; };
 protected:
+	UPROPERTY()
 	float EffectStrength;
 
 public:

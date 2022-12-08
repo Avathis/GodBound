@@ -47,11 +47,7 @@ void AGB_Character::BeginPlay()
 	PlayerController = Cast<AGB_PlayerController>(GetController());
 	
 	
-	InitializeHealthBar();
-	if(this == Cast<AGB_Character>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0))&& UIHealthBar)
-	{
-		UIHealthBar->SetVisibility(ESlateVisibility::Hidden);
-	}
+	//InitializeHealthBar();
 }
 
 /*
@@ -108,7 +104,7 @@ void AGB_Character::InitializeHealthBar()
 	}
 	AGB_PlayerController* MainController = Cast<AGB_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(),0));
 
-	if(MainController)
+	if(MainController && MainController->IsLocalPlayerController())
 	{
 		if(UIHealthBarClass)
 		{
@@ -116,8 +112,9 @@ void AGB_Character::InitializeHealthBar()
 			if(UIHealthBar && UIHealthBarComponent)
 			{
 				UIHealthBarComponent->SetWidget(UIHealthBar);
-
+				
 				UIHealthBar->SetHealthPercentage(GetHealth() / GetMaxHealth());
+				UIHealthBar->SetVisibility(ESlateVisibility::Hidden);
 			}
 		}
 	}
@@ -135,6 +132,18 @@ void AGB_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	
+}
+
+void AGB_Character::Fall()
+{
+	if(FallenEffect)
+	{
+		AbilitySystemComponent->ApplyGameplayEffectToSelf(FallenEffect.GetDefaultObject(),1, FGameplayEffectContextHandle());
+	}
+	else
+	{
+		Die();
+	}
 }
 
 void AGB_Character::EnterCombat()
@@ -376,6 +385,11 @@ void AGB_Character::HealthChanged(const FOnAttributeChangeData& Data)
 	{
 		UIHealthBar->SetHealthPercentage(Health/GetMaxHealth());
 	}
+	if(!IsLocallyControlled()&&UGameplayStatics::GetPlayerController(GetWorld(),0)->IsLocalController())
+	{
+		ShowHealthBar();
+	}
+	
 }
 
 void AGB_Character::MaxHealthChanged(const FOnAttributeChangeData& Data)

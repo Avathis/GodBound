@@ -42,7 +42,7 @@ bool FGB_GameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, boo
         }
     }
 
-    Ar.SerializeBits(&RepBits, 7);
+    Ar.SerializeBits(&RepBits, 8);
 
     if (RepBits & (1 << 0))
     {

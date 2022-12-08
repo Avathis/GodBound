@@ -23,7 +23,11 @@ class GODBOUND_API AGB_PlayableCharacter : public AGB_Character
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bCanManuallyMove = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bCanManuallyLookAround = true;
 	
 	virtual void MoveForward(float Value);
 	virtual void MoveRight(float Value);
@@ -52,6 +56,9 @@ class GODBOUND_API AGB_PlayableCharacter : public AGB_Character
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void InitializeAbilities();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void InitializeHealthBarAttributes();
 	
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))

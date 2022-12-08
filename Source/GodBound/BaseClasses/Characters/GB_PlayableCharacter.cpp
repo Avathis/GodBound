@@ -84,6 +84,9 @@ void AGB_PlayableCharacter::PossessedBy(AController* NewController)
 		// For now assume possession = spawn/respawn.
 		InitializeAttributes();
 
+		InitializeHealthBar();
+		
+		InitializeHealthBarAttributes();
 		
 		// Respawn specific things that won't affect first possession.
 
@@ -91,31 +94,33 @@ void AGB_PlayableCharacter::PossessedBy(AController* NewController)
 		/*
 		AbilitySystemComponent->SetTagMapCount(DeadTag, 0);
 
-		// Set Health/Mana/Stamina to their max. This is only necessary for *Respawn*.
-		SetHealth(GetMaxHealth());
-		SetMana(GetMaxMana());
-		SetStamina(GetMaxStamina());
-
-		// End respawn specific things
+		
 
 
 		AddStartupEffects();
 
 		AddCharacterAbilities();
-
-		AGDPlayerController* PC = Cast<AGDPlayerController>(GetController());
+*/
+		AGB_PlayerController* PC = Cast<AGB_PlayerController>(GetController());
 		if (PC)
 		{
 			PC->CreateHUD();
 		}
-
-		InitializeFloatingStatusBar();*/
+		// Set Health/Mana/Stamina to their max. This is only necessary for *Respawn*.
+		/*
+		SetHealth(GetMaxHealth());
+		SetMana(GetMaxMana());
+		SetStamina(GetMaxStamina());
+*/
+		// End respawn specific things
+		
 	}
 }
 
 
 void AGB_PlayableCharacter::MoveForward(float Value)
 {
+	if(!bCanManuallyMove) return;
 	AddMovementInput(UKismetMathLibrary::GetForwardVector(FRotator(0, GetControlRotation().Yaw, 0)), Value);
 	ForwardAxis = Value;/*
 	if ((Controller) && (Value != 0.0f))
@@ -135,6 +140,7 @@ void AGB_PlayableCharacter::MoveForward(float Value)
 
 void AGB_PlayableCharacter::MoveRight(float Value)
 {
+	if(!bCanManuallyMove) return;
 	AddMovementInput(UKismetMathLibrary::GetRightVector(FRotator(0, GetControlRotation().Yaw, 0)), Value);
 	RightAxis = Value;
 	/*
@@ -154,7 +160,7 @@ void AGB_PlayableCharacter::MoveRight(float Value)
 
 void AGB_PlayableCharacter::TurnRight(float Value)
 {
-	if (Value != 0.f && Controller && Controller->IsLocalPlayerController())
+	if (Value != 0.f && Controller && Controller->IsLocalPlayerController() && bCanManuallyLookAround)
 	{
 		APlayerController* const PC = CastChecked<APlayerController>(Controller);
 		PC->AddYawInput(Value);
@@ -163,12 +169,13 @@ void AGB_PlayableCharacter::TurnRight(float Value)
 
 void AGB_PlayableCharacter::TurnRightAtRate(float Value)
 {
+	if(bCanManuallyLookAround)
 	AddControllerYawInput(Value * BaseTurnRate * GetWorld()->GetDeltaSeconds());
 }
 
 void AGB_PlayableCharacter::LookUp(float Value)
 {
-	if (Value != 0.f && Controller && Controller->IsLocalPlayerController())
+	if (Value != 0.f && Controller && Controller->IsLocalPlayerController() && bCanManuallyLookAround)
 	{
 		APlayerController* const PC = CastChecked<APlayerController>(Controller);
 		PC->AddPitchInput(Value);
@@ -177,6 +184,7 @@ void AGB_PlayableCharacter::LookUp(float Value)
 
 void AGB_PlayableCharacter::LookUpAtRate(float Value)
 {
+	if(bCanManuallyLookAround)
 	AddControllerPitchInput(Value * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
@@ -293,13 +301,15 @@ void AGB_PlayableCharacter::OnRep_PlayerState()
 		// If we handle players disconnecting and rejoining in the future, we'll have to change this so that posession from rejoining doesn't reset attributes.
 		// For now assume possession = spawn/respawn.
 		InitializeAttributes();
-		/*
+		InitializeHealthBar();
+		InitializeHealthBarAttributes();
+		
 		AGB_PlayerController* PC = Cast<AGB_PlayerController>(GetController());
 		if (PC)
 		{
 			PC->CreateHUD();
 		}
-		*/
+		
 		// Simulated on proxies don't have their PlayerStates yet when BeginPlay is called so we call it again here
 		//InitializeFloatingStatusBar();
 

@@ -15,6 +15,10 @@ class GODBOUND_API UGB_HUDWidget : public UUserWidget
 	GENERATED_BODY()
 
 	public:
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void ShowInteractText(bool bShowText);
+	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
     void SetMaxHealth(float MaxHealth);
 
@@ -27,6 +31,15 @@ class GODBOUND_API UGB_HUDWidget : public UUserWidget
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
     void SetHealthRegenRate(float HealthRegenRate);
 
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetOverHeat(float OverHeat);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetMaxOverHeat(float MaxOverHeat);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetOverHeatPercentage(float OverHeatPercentage);
+	
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
     void SetMaxStamina(float MaxStamina);
 

@@ -89,6 +89,9 @@ public:
 
 
 protected:
+
+	FGameplayTag FallenTag;
+	FGameplayTag DeadTag;
 	
 
 	FDelegateHandle HealthChangedDelegateHandle;
@@ -102,6 +105,7 @@ protected:
 	FDelegateHandle StaminaChangedDelegateHandle;
 	FDelegateHandle MaxStaminaChangedDelegateHandle;
 	FDelegateHandle StaminaRegenRateChangedDelegateHandle;
+	FDelegateHandle OverHeatChangedDelegateHandle;
 
 	virtual void BeginPlay() override;
 
@@ -116,4 +120,5 @@ protected:
 	virtual void StaminaChanged(const FOnAttributeChangeData& Data);
 	virtual void MaxStaminaChanged(const FOnAttributeChangeData& Data);
 	virtual void StaminaRegenRateChanged(const FOnAttributeChangeData& Data);
+	virtual void OverHeatChanged(const FOnAttributeChangeData& Data);
 };
