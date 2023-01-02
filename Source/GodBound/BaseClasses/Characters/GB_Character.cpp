@@ -2,242 +2,55 @@
 
 
 #include "GB_Character.h"
-#include "GodBound/BaseClasses/Characters/Attributes/GB_AttributeSet.h"
+#include "GodBound/BaseClasses/Attributes/GB_AttributeSet.h"
 #include "GodBound/BaseClasses/GB_GameplayAbility.h"
-#include "Components/GB_SpringArmComponent.h"
-#include "Components/GB_CameraComponent.h"
-#include "Components/GB_CharacterMovementComponent.h"
+#include "GodBound/BaseClasses/Components/GB_CharacterMovementComponent.h"
 #include "GB_PlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "DrawDebugHelpers.h"
+#include "Blueprint/UserWidget.h"
 #include "Components/BoxComponent.h"
+#include "Components/WidgetComponent.h"
+#include "GodBound/BaseClasses/UI/GB_HealthWidget.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
-AGB_Character::AGB_Character()
+AGB_Character::AGB_Character(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer.SetDefaultSubobjectClass<UGB_CharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	
-	CameraBoom = CreateDefaultSubobject<UGB_SpringArmComponent>(TEXT("CameraBoom"));
-	CameraBoom->SetupAttachment(RootComponent);
-	CameraBoom->bUsePawnControlRotation = false;
-	
-	Camera = CreateDefaultSubobject<UGB_CameraComponent>(TEXT("Camera"));
-	Camera->SetupAttachment(CameraBoom, UGB_SpringArmComponent::SocketName);
 
-	CameraCollisionBox = CreateDefaultSubobject<UBoxComponent>("CameraCollisionBox");
-	CameraCollisionBox->SetupAttachment(GetRootComponent());
-	CameraCollisionBox->SetRelativeLocation(FVector(-100.000000,140.000000,30.000000));
-	CameraCollisionBox->SetBoxExtent(FVector(32.000000,32.000000,32.000000));
 	//CameraCollisionBox->SetScale
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
 	GetCharacterMovement()->bOrientRotationToMovement = false;
+
+	//Movement
 	
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = true;
 	bUseControllerRotationRoll = false;
 
-	AbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	UIHealthBarComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("UIHealthBar"));
+	UIHealthBarComponent->SetupAttachment(RootComponent);
+	UIHealthBarComponent->SetRelativeLocation(FVector(0, 0, 120));
+	UIHealthBarComponent->SetWidgetSpace(EWidgetSpace::Screen);
+	UIHealthBarComponent->SetDrawSize(FVector2D(500, 500));
+	
 }
 
 // Called when the game starts or when spawned
 void AGB_Character::BeginPlay()
 {
 	Super::BeginPlay();
+	CharacterMovementComponent = Cast<UGB_CharacterMovementComponent>(GetMovementComponent());
 	PlayerController = Cast<AGB_PlayerController>(GetController());
-	if(IsValid(AbilitySystemComponent))
-	{
-		Attributes = AbilitySystemComponent->GetSet<UGB_AttributeSet>();
-	}
-}
-
-void AGB_Character::MoveForward(float Value)
-{
-	if(PlayerController && Value != 0)
-	{
-		// find out which way is forward
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0, Rotation.Yaw, 0);
-
-		// get forward vector
-		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-		AddMovementInput(Direction, Value);
-	}
-}
-
-void AGB_Character::MoveRight(float Value)
-{
-	if(PlayerController && Value != 0)
-	{
-		// find out which way is right
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0, Rotation.Yaw, 0);
 	
-		// get right vector 
-		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-		// add movement in that direction
-		AddMovementInput(Direction, Value);
-	}
-}
-
-void AGB_Character::TurnRight(float Value)
-{
-	if (Value != 0.f && Controller && Controller->IsLocalPlayerController())
-	{
-		APlayerController* const PC = CastChecked<APlayerController>(Controller);
-		PC->AddYawInput(Value);
-	}
-}
-
-void AGB_Character::TurnRightAtRate(float Value)
-{
 	
+	//InitializeHealthBar();
 }
 
-void AGB_Character::LookUp(float Value)
-{
-	if (Value != 0.f && Controller && Controller->IsLocalPlayerController())
-	{
-		APlayerController* const PC = CastChecked<APlayerController>(Controller);
-		PC->AddPitchInput(Value);
-	}
-}
-
-void AGB_Character::LookUpAtRate(float Value)
-{
-	
-}
-
-void AGB_Character::Interact()
-{
-	
-}
-
-void AGB_Character::PressSpace()
-{
-	bSpacePressed = true;
-}
-
-void AGB_Character::ReleaseSpace()
-{
-	bSpacePressed = false;
-}
-
-void AGB_Character::PressLMB()
-{
-	bLMBPressed = true;
-}
-
-void AGB_Character::ReleaseLMB()
-{
-	bLMBPressed = false;
-}
-
-void AGB_Character::PressRMB()
-{
-	bRMBPressed = true;
-}
-
-void AGB_Character::ReleaseRMB()
-{
-	bRMBPressed = false;
-}
-
-void AGB_Character::PressShift()
-{
-	bShiftPressed = true;
-}
-
-void AGB_Character::ReleaseShift()
-{
-	bShiftPressed = false;
-}
-
-void AGB_Character::PressCtrl()
-{
-	bCtrlPressed = true;
-	GetCharacterMovement()->bOrientRotationToMovement = !GetCharacterMovement()->bOrientRotationToMovement;
-	bUseControllerRotationYaw = !bUseControllerRotationYaw;
-	//CameraBoom->bUsePawnControlRotation = !CameraBoom->bUsePawnControlRotation;
-}
-
-void AGB_Character::ReleaseCtrl()
-{
-	bCtrlPressed = false;
-	//GetCharacterMovement()->bOrientRotationToMovement = false;
-}
-
-FHitResult AGB_Character::FireDebugBeam()
-{
-	if(IsValid(PlayerController))
-	{
-		FVector PlayerLocation;
-		FRotator PlayerRotation;
-
-		PlayerController->GetPlayerViewPoint(PlayerLocation, PlayerRotation);
-		FVector SocketLocation = GetMesh()->GetSocketLocation(FName("HandSocket"));
-		FVector ShotDirection = -PlayerRotation.Vector();
-
-		//DrawDebugCamera(GetWorld(), PlayerLocation, PlayerRotation, 90, 2, FColor::Red, true);
-
-		FVector End = PlayerLocation + PlayerRotation.Vector() * 2000.f;
-		
-		FHitResult Hit;
-		
-		FCollisionQueryParams TraceParams;
-		FCollisionQueryParams TraceParamsSocket;
-		TArray<AActor*> ActorsToIgnore;
-		CameraCollisionBox->GetOverlappingActors(ActorsToIgnore);
-		/*
-		for(AActor* Debug : ActorsToIgnore)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s"), *Debug->GetName());
-		}
-		
-		if(ActorsToIgnore.IsEmpty())
-		{
-			UE_LOG(LogTemp,Warning,TEXT("Its Empty")); 
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("It's not empty"));
-		}
-		*/
-		TraceParams.AddIgnoredActors(ActorsToIgnore);
-		TraceParams.AddIgnoredActor(this);
-		
-		TraceParamsSocket.AddIgnoredActor(this);
-		
-		if(GetWorld()->LineTraceSingleByChannel(Hit,PlayerLocation, End, ECC_Visibility, TraceParams))
-		{
-			DrawDebugLine(GetWorld(),PlayerLocation, Hit.Location,FColor::Green,false,5,0,1);
-			FHitResult Hit2;
-			
-			if(GetWorld()->LineTraceSingleByChannel(Hit2, SocketLocation, Hit.Location + UKismetMathLibrary::FindLookAtRotation(SocketLocation,Hit.Location).Vector()*10.f, ECC_Visibility, TraceParamsSocket))
-			{
-				//DrawDebugLine(GetWorld(),SocketLocation, End, FColor::Purple,false,5,0,1);
-				DrawDebugLine(GetWorld(), SocketLocation, Hit2.Location + UKismetMathLibrary::FindLookAtRotation(SocketLocation,Hit.Location).Vector()*10.f, FColor::Silver, false, 5, 0, 1);
-				UE_LOG(LogTemp, Warning,TEXT("%s"), *Hit2.GetActor()->GetName());
-				
-				return Hit2;
-			}
-			else
-			{
-				DrawDebugLine(GetWorld(), SocketLocation, Hit.Location, FColor::Red, false, 5, 0, 1);
-			}
-		}
-		else
-		{
-			
-			//DrawDebugLine(GetWorld(),SocketLocation, Hit.Location,FColor::Red,false,5,0,1);
-			//DrawDebugLine(GetWorld(), PlayerLocation, Hit.Location, FColor::Green, false, 5,0,1);
-		}
-	}
-	FHitResult Hit;
-	return Hit;
-}
-
+/*
 FVector AGB_Character::TraceFromCamera()
 {
 	FHitResult Hit;
@@ -259,11 +72,11 @@ FVector AGB_Character::TraceFromCamera()
 	return End;
 	
 }
-
+*/
 
 void AGB_Character::GrantAbility(TSubclassOf<UGB_GameplayAbility> AbilityClass, int32 Level, int32 InputCode)
 {
-	if(GetLocalRole() == ROLE_Authority && IsValid(AbilitySystemComponent) && IsValid(AbilityClass))
+	if(GetLocalRole() == ROLE_Authority && AbilitySystemComponent.IsValid() && IsValid(AbilityClass))
 	{
 		UGB_GameplayAbility* Ability = AbilityClass->GetDefaultObject<UGB_GameplayAbility>();
 		if(IsValid(Ability))
@@ -277,9 +90,33 @@ void AGB_Character::GrantAbility(TSubclassOf<UGB_GameplayAbility> AbilityClass, 
 
 void AGB_Character::ActivateAbility(int32 InputCode)
 {
-	if(IsValid(AbilitySystemComponent))
+	if(AbilitySystemComponent.IsValid())
 	{
 		AbilitySystemComponent->AbilityLocalInputPressed(InputCode);
+	}
+}
+
+void AGB_Character::InitializeHealthBar()
+{
+	if(UIHealthBar || !AbilitySystemComponent.IsValid())
+	{
+		return;
+	}
+	AGB_PlayerController* MainController = Cast<AGB_PlayerController>(UGameplayStatics::GetPlayerController(GetWorld(),0));
+
+	if(MainController && MainController->IsLocalPlayerController())
+	{
+		if(UIHealthBarClass)
+		{
+			UIHealthBar = CreateWidget<UGB_HealthWidget>(MainController, UIHealthBarClass);
+			if(UIHealthBar && UIHealthBarComponent)
+			{
+				UIHealthBarComponent->SetWidget(UIHealthBar);
+				
+				UIHealthBar->SetHealthPercentage(GetHealth() / GetMaxHealth());
+				UIHealthBar->SetVisibility(ESlateVisibility::Hidden);
+			}
+		}
 	}
 }
 
@@ -294,28 +131,306 @@ void AGB_Character::Tick(float DeltaTime)
 void AGB_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	AbilitySystemComponent->BindAbilityActivationToInputComponent(PlayerInputComponent,FGameplayAbilityInputBinds(FString("ConfirmTarget"), FString("CancelTarget"), FString("GBAbilityInputID"), static_cast<int32>(GBAbilityInputID::Confirm), static_cast<int32>(GBAbilityInputID::Cancel)));
-	PlayerInputComponent->BindAxis(FName("MoveForward"),this, &AGB_Character::MoveForward);
-	PlayerInputComponent->BindAxis(FName("MoveRight"),this, &AGB_Character::MoveRight);
 	
-	PlayerInputComponent->BindAxis(FName("LookUp"), this, &AGB_Character::LookUp);
-	PlayerInputComponent->BindAxis(FName("LookUpAR"),this, &AGB_Character::LookUpAtRate);
-	PlayerInputComponent->BindAxis(FName("Turn"),this, &AGB_Character::TurnRight);
-	PlayerInputComponent->BindAxis(FName("TurnAR"),this, &AGB_Character::TurnRightAtRate);
+}
 
-	
-	PlayerInputComponent->BindAction(FName("Shift"),IE_Pressed,this,&AGB_Character::PressShift);
-	PlayerInputComponent->BindAction(FName("ReShift"),IE_Pressed,this,&AGB_Character::ReleaseShift);
-	
-	PlayerInputComponent->BindAction(FName("Space"),IE_Pressed,this,&AGB_Character::PressSpace);
-	PlayerInputComponent->BindAction(FName("ReSpace"),IE_Pressed,this,&AGB_Character::ReleaseSpace);
-	
-	PlayerInputComponent->BindAction(FName("LMB"),IE_Pressed,this,&AGB_Character::PressLMB);
-	PlayerInputComponent->BindAction(FName("ReLMB"),IE_Pressed,this,&AGB_Character::ReleaseLMB);
-	
-	PlayerInputComponent->BindAction(FName("RMB"),IE_Pressed,this,&AGB_Character::PressRMB);
-	PlayerInputComponent->BindAction(FName("ReRMB"),IE_Pressed,this,&AGB_Character::ReleaseRMB);
+void AGB_Character::Fall()
+{
+	if(FallenEffect)
+	{
+		AbilitySystemComponent->ApplyGameplayEffectToSelf(FallenEffect.GetDefaultObject(),1, FGameplayEffectContextHandle());
+	}
+	else
+	{
+		Die();
+	}
+}
 
-	PlayerInputComponent->BindAction(FName("Control"), IE_Pressed, this, &AGB_Character::PressCtrl);
+void AGB_Character::EnterCombat()
+{
+
+}
+
+void AGB_Character::ExitCombat()
+{
+
+}
+
+void AGB_Character::UnequipAbilitySet(FGBAbilitySet_GrantedHandles AbilitySetHandle)
+{
+	if (AbilitySetHandle.IsValid())
+	{
+		UGB_AbilitySet::TakeAbilitySet(AbilitySetHandle);
+	}
+}
+
+FGBAbilitySet_GrantedHandles AGB_Character::ChangeAbilitySet(UGB_AbilitySystemComponent* GBASC, const UGB_AbilitySet* AbilitySet, UObject* SourceObject, FGBAbilitySet_GrantedHandles FormerAbilitySet)
+{
+	UnequipAbilitySet(FormerAbilitySet);
+	return EquipAbilitySet(GBASC,AbilitySet, SourceObject);
+}
+
+FGBAbilitySet_GrantedHandles AGB_Character::EquipAbilitySet(UGB_AbilitySystemComponent* GBASC, const UGB_AbilitySet* AbilitySet, UObject* SourceObject)
+{
+	return AbilitySet->GiveToAbilitySystem(GBASC, SourceObject);
+}
+
+UGB_CharacterMovementComponent* AGB_Character::GetAdvMovementComponent()
+{
+	return CharacterMovementComponent;
+}
+
+UGB_HealthWidget* AGB_Character::GetHealthWidget()
+{
+	return UIHealthBar;
+}
+
+void AGB_Character::InitializeAttributes()
+{
+	if (!AbilitySystemComponent.IsValid())
+	{
+		return;
+	}
+
+	if (!DefaultAttributes)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s() Missing DefaultAttributes for %s. Please fill in the character's Blueprint."), *FString(__FUNCTION__), *GetName());
+		return;
+	}
+
+	// Can run on Server and Client
+	FGameplayEffectContextHandle EffectContext = AbilitySystemComponent->MakeEffectContext();
+	EffectContext.AddSourceObject(this);
+
+	FGameplayEffectSpecHandle NewHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributes, 0.f, EffectContext);
+	if (NewHandle.IsValid())
+	{
+		FActiveGameplayEffectHandle ActiveGEHandle = AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*NewHandle.Data.Get(), AbilitySystemComponent.Get());
+	}
+}
+
+float AGB_Character::GetHealth() const
+{
+	if(AttributeSet.IsValid())
+	{
+		return AttributeSet->GetHealth();
+	}
+	else
+	{
+		return 0.f;
+	}
+}
+
+float AGB_Character::GetMaxHealth() const
+{
+	if(AttributeSet.IsValid())
+	{
+		return AttributeSet->GetMaxHealth();
+	}
+	else
+	{
+		return 0.f;
+	}
+}
+
+float AGB_Character::GetSpeed() const
+{
+	//TODO: Changed this in order to test, POssibly troublesome
+	//return GetCharacterMovement()->MaxWalkSpeed;
+	if(AttributeSet.IsValid())
+	{
+		return AttributeSet->GetSpeed();
+	}
+	return 0.f;
+	
+}
+
+float AGB_Character::GetMaxSpeed() const
+{
+	if(AttributeSet.IsValid())
+	{
+		return AttributeSet->GetMaxSpeed();
+	}
+	return 0.f;
+	
+}
+
+float AGB_Character::GetHealthRegenRate() const
+{
+	if(AttributeSet.IsValid())
+	{
+		return AttributeSet->GetHealthRegenRate();
+	}
+	return 0.f;
+	
+}
+
+float AGB_Character::GetEnergy() const
+{
+	if(AttributeSet.IsValid())
+	{
+		return AttributeSet->GetEnergy();
+	}
+	return 0.f;
+	
+}
+
+float AGB_Character::GetMaxEnergy() const
+{
+	if(AttributeSet.IsValid())
+	{
+		return AttributeSet->GetMaxEnergy();
+	}
+	return 0.f;
+	
+}
+
+float AGB_Character::GetEnergyRegenRate() const
+{
+	if(AttributeSet.IsValid())
+	{
+		return AttributeSet->GetEnergyRecoverRate();
+	}
+	return 0.f;
+	
+}
+
+float AGB_Character::GetStamina() const
+{
+	if(AttributeSet.IsValid())
+	{
+		return AttributeSet->GetStamina();
+	}
+	return 0.f;
+	
+}
+
+float AGB_Character::GetMaxStamina() const
+{
+	if(AttributeSet.IsValid())
+	{
+		return AttributeSet->GetMaxStamina();
+	}
+	return 0.f;
+}
+
+float AGB_Character::GetStaminaRegenRate() const
+{
+	if(AttributeSet.IsValid())
+	{
+		return AttributeSet->GetStaminaRecoverRate();
+	}
+	return 0.f;
+	
+}
+
+float AGB_Character::GetHealthPercentage()
+{
+	if(AttributeSet.IsValid())
+	{
+		return AttributeSet->GetHealth()/AttributeSet->GetMaxHealth();
+	}
+	return 1.f;
+}
+
+float AGB_Character::GetStaminaPercentage()
+{
+	if (AttributeSet.IsValid())
+	{
+		return AttributeSet->GetStamina() / AttributeSet->GetMaxHealth();
+	}
+	return 0.f;
+}
+
+float AGB_Character::GetOverHeatPercentage()
+{
+	if (AttributeSet.IsValid())
+	{
+		return AttributeSet->GetOverHeat() / AttributeSet->GetOverHeatMax();
+	}
+	return 0.f;
+}
+
+float AGB_Character::GetEnergyPercentage()
+{
+	if (AttributeSet.IsValid())
+	{
+		return AttributeSet->GetEnergy() / AttributeSet->GetMaxEnergy();
+	}
+	return 0.f;
+}
+
+float AGB_Character::GetOverHeat()
+{
+	if (AttributeSet.IsValid())
+	{
+		return AttributeSet->GetOverHeat();
+	}
+	return 0.f;
+}
+
+float AGB_Character::GetMaxOverHeat()
+{
+	if (AttributeSet.IsValid())
+	{
+		return AttributeSet->GetOverHeatMax();
+	}
+	return 0.f;
+}
+
+void AGB_Character::HealthChanged(const FOnAttributeChangeData& Data)
+{
+	float Health = Data.NewValue;
+	if(UIHealthBar)
+	{
+		UIHealthBar->SetHealthPercentage(Health/GetMaxHealth());
+	}
+	if(!IsLocallyControlled()&&UGameplayStatics::GetPlayerController(GetWorld(),0)->IsLocalController())
+	{
+		ShowHealthBar();
+	}
+	
+}
+
+void AGB_Character::MaxHealthChanged(const FOnAttributeChangeData& Data)
+{
+}
+
+void AGB_Character::SpeedChanged(const FOnAttributeChangeData& Data)
+{
+	//GetAdvMovementComponent()->MaxWalkSpeed = Data.NewValue;
+}
+
+void AGB_Character::MaxSpeedChanged(const FOnAttributeChangeData& Data)
+{
+	//GetAdvMovementComponent()->MaxWalkSpeed = Data.NewValue;
+}
+
+void AGB_Character::HealthRegenRateChanged(const FOnAttributeChangeData& Data)
+{
+}
+
+void AGB_Character::EnergyChanged(const FOnAttributeChangeData& Data)
+{
+}
+
+void AGB_Character::MaxEnergyChanged(const FOnAttributeChangeData& Data)
+{
+}
+
+void AGB_Character::EnergyRegenRateChanged(const FOnAttributeChangeData& Data)
+{
+}
+
+void AGB_Character::StaminaChanged(const FOnAttributeChangeData& Data)
+{
+}
+
+void AGB_Character::MaxStaminaChanged(const FOnAttributeChangeData& Data)
+{
+}
+
+void AGB_Character::StaminaRegenRateChanged(const FOnAttributeChangeData& Data)
+{
 }
 

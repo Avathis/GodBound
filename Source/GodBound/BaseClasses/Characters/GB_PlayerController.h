@@ -13,5 +13,21 @@ UCLASS()
 class GODBOUND_API AGB_PlayerController : public APlayerController
 {
 	GENERATED_BODY()
+public:
+
+	void CreateHUD();
+
+	class UGB_HUDWidget* GetHUD();
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD")
+		TSubclassOf<class UUserWidget> HUDOverlayAsset;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD")
+		UGB_HUDWidget* HUDOverlay;
+
+protected:
+	virtual void BeginPlay() override;
+
+	virtual void OnPossess(APawn* InPawn) override;
+
+	virtual void OnRep_PlayerState() override;
 };
