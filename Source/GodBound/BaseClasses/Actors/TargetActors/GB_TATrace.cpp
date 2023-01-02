@@ -218,9 +218,9 @@ void AGB_TATrace::AimWithPlayerController(const AActor* InSourceActor, FCollisio
 	FVector ViewStart = TraceStart;
 	FRotator ViewRot = StartLocation.GetTargetingTransform().GetRotation().Rotator();
 
-	if (MasterPC)
+	if (PrimaryPC)
 	{
-		MasterPC->GetPlayerViewPoint(ViewStart, ViewRot);
+		PrimaryPC->GetPlayerViewPoint(ViewStart, ViewRot);
 	}
 
 	const FVector ViewDir = ViewRot.Vector();
@@ -337,11 +337,11 @@ TArray<FHitResult> AGB_TATrace::PerformTrace(AActor* InSourceActor)
 	FVector TraceStart = StartLocation.GetTargetingTransform().GetLocation();
 	FVector TraceEnd;
 
-	if (MasterPC)
+	if (PrimaryPC)
 	{
 		FVector ViewStart;
 		FRotator ViewRot;
-		MasterPC->GetPlayerViewPoint(ViewStart, ViewRot);
+		PrimaryPC->GetPlayerViewPoint(ViewStart, ViewRot);
 
 		TraceStart = bTraceFromPlayerViewPoint ? ViewStart : TraceStart;
 	}
@@ -543,7 +543,7 @@ AGameplayAbilityWorldReticle* AGB_TATrace::SpawnReticleActor(FVector Location, F
 		AGameplayAbilityWorldReticle* SpawnedReticleActor = GetWorld()->SpawnActor<AGameplayAbilityWorldReticle>(ReticleClass, Location, Rotation);
 		if (SpawnedReticleActor)
 		{
-			SpawnedReticleActor->InitializeReticle(this, MasterPC, ReticleParams);
+			SpawnedReticleActor->InitializeReticle(this, PrimaryPC, ReticleParams);
 			SpawnedReticleActor->SetActorHiddenInGame(true);
 			ReticleActors.Add(SpawnedReticleActor);
 

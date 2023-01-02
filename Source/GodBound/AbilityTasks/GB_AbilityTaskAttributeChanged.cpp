@@ -53,7 +53,7 @@ void UGB_AbilityTaskAttributeChanged::EndTask()
 	}
 
 	SetReadyToDestroy();
-	MarkPendingKill();
+	MarkAsGarbage();
 }
 
 void UGB_AbilityTaskAttributeChanged::AttributeChanged(const FOnAttributeChangeData & Data)
