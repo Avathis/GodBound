@@ -26,8 +26,11 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AbilitySystemComponent")
 	class UGB_AttributeSet* AttributeSet;
-	
+
+	UFUNCTION(BlueprintCallable, Category = "AbilitySystemComponent")
+	UGB_AbilitySystemComponent* GetGBAbilitySystemComponent() const{return AbilitySystemComponent;};
 	UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	
 
 	class UGB_AttributeSet* GetAttributeSetBase() const;
 

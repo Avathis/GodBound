@@ -12,7 +12,8 @@
 				"Engine",
 				"GameplayAbilities",
 				"UMG",
-				"CoreUObject"
+				"CoreUObject",
+				"EnhancedInput"
 			]
 		}
 	],
@@ -31,10 +32,6 @@
 			"Enabled": true
 		},
 		{
-			"Name": "RiderSourceCodeAccess",
-			"Enabled": false
-		},
-		{
 			"Name": "AnimationLocomotionLibrary",
 			"Enabled": true
 		},
@@ -48,6 +45,10 @@
 		},
 		{
 			"Name": "CascadeToNiagaraConverter",
+			"Enabled": true
+		},
+		{
+			"Name": "DidItHit",
 			"Enabled": true
 		}
 	]

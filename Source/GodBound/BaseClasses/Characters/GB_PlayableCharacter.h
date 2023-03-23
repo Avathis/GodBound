@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GB_Character.h"
+#include "InputActionValue.h"
 #include "GodBound/BaseClasses/BaseTypes.h"
 #include "GB_PlayableCharacter.generated.h"
 
@@ -22,6 +23,10 @@ class GODBOUND_API AGB_PlayableCharacter : public AGB_Character
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void BeginPlay() override;
+
+	UPROPERTY(EditAnywhere,BlueprintReadOnly)
+	class UGB_InputConfig* InputConfig;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bCanManuallyMove = true;
@@ -70,6 +75,22 @@ protected:
 	void BindASCInput();
 
 	bool ASCInputBound = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	class UInputMappingContext* DefaultMappingContext;
+
+	void Input_AbilityInputTagPressed(FGameplayTag InputTag);
+	void Input_AbilityInputTagReleased(FGameplayTag InputTag);
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	class UInputAction* MoveAction;
+
+	void Move(const FInputActionValue& Value);
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	class UInputAction*LookAction;
+
+	void Look(const FInputActionValue& Value);
 	
 	virtual void OnRep_PlayerState() override;
 	

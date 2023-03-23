@@ -13,8 +13,12 @@
 #include "GodBound/BaseClasses/Components/GB_SpringArmComponent.h"
 #include "GodBound/Player/GB_PlayerState.h"
 #include "GodBound/BaseClasses/Attributes/GB_AttributeSet.h"
+#include "GodBound/GameMode/GB_GameMode.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "GodBound/BaseClasses/GB_InputComponent.h"
 
 AGB_PlayableCharacter::AGB_PlayableCharacter(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer.SetDefaultSubobjectClass<UGB_CharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
@@ -42,9 +46,34 @@ void AGB_PlayableCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	//DOREPLIFETIME(AGB_PlayableCharacter, ActiveWeapon);
 }
 
+void AGB_PlayableCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	if(PlayerController)
+	{
+		if(UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(DefaultMappingContext, 0);
+		}
+	}
+}
+
 void AGB_PlayableCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	
+	if( UGB_InputComponent* EnhancedInputComponent = CastChecked<UGB_InputComponent>(PlayerInputComponent))
+	{
+		if(InputConfig)
+		{
+			EnhancedInputComponent->BindNativeAction(InputConfig, FGameplayTag::RequestGameplayTag(FName("Input.Move")),ETriggerEvent::Triggered,this,&ThisClass::Move, false);
+			EnhancedInputComponent->BindNativeAction(InputConfig, FGameplayTag::RequestGameplayTag(FName("Input.Look")), ETriggerEvent::Triggered, this, &ThisClass::Look, false);
+			TArray<uint32> BindHandle;
+			EnhancedInputComponent->BindAbilityActions(InputConfig,this,&ThisClass::Input_AbilityInputTagPressed, &ThisClass::Input_AbilityInputTagReleased, BindHandle);
+		}
+		//EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AGB_PlayableCharacter::Move);
+		//EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AGB_PlayableCharacter::Look);
+	}
 	//AbilitySystemComponent->BindAbilityActivationToInputComponent(PlayerInputComponent,FGameplayAbilityInputBinds(FString("ConfirmTarget"), FString("CancelTarget"), FString("GBAbilityInputID"), static_cast<int32>(GBAbilityInputID::Confirm), static_cast<int32>(GBAbilityInputID::Cancel)));
 	PlayerInputComponent->BindAxis(FName("MoveForward"),this, &AGB_PlayableCharacter::MoveForward);
 	PlayerInputComponent->BindAxis(FName("MoveRight"),this, &AGB_PlayableCharacter::MoveRight);
@@ -267,9 +296,50 @@ void AGB_PlayableCharacter::BindASCInput()
 {
 	if (!ASCInputBound && AbilitySystemComponent.IsValid() && IsValid(InputComponent))
 	{
-		AbilitySystemComponent->BindAbilityActivationToInputComponent(InputComponent,FGameplayAbilityInputBinds(FString("ConfirmTarget"), FString("CancelTarget"), FString("GBAbilityInputID"), static_cast<int32>(GBAbilityInputID::Confirm), static_cast<int32>(GBAbilityInputID::Cancel)));
+		//AbilitySystemComponent->BindAbilityActivationToInputComponent(InputComponent,FGameplayAbilityInputBinds(FString("ConfirmTarget"), FString("CancelTarget"), FString("GBAbilityInputID"), static_cast<int32>(GBAbilityInputID::Confirm), static_cast<int32>(GBAbilityInputID::Cancel)));
 
 		ASCInputBound = true;
+	}
+}
+
+void AGB_PlayableCharacter::Input_AbilityInputTagPressed(FGameplayTag InputTag)
+{
+	if (UGB_AbilitySystemComponent* ASC = GetAbilitySystemComponent())
+	{
+		ASC->AbilityInputTagPressed(InputTag);
+		UE_LOG(LogTemp, Error, TEXT("Input_AbilityInputTagPressed"));
+	}
+}
+
+void AGB_PlayableCharacter::Input_AbilityInputTagReleased(FGameplayTag InputTag)
+{
+	if (UGB_AbilitySystemComponent* ASC = GetAbilitySystemComponent())
+	{
+		ASC->AbilityInputTagReleased(InputTag);
+	}
+}
+
+
+
+void AGB_PlayableCharacter::Move(const FInputActionValue& Value)
+{
+	const FVector2d CurrentValue = Value.Get<FVector2d>();
+	const FRotator Rotation = PlayerController->GetControlRotation();
+	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
+
+	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+	AddMovementInput(ForwardDirection, CurrentValue.Y);
+	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+	AddMovementInput(RightDirection, CurrentValue.X);
+}
+
+void AGB_PlayableCharacter::Look(const FInputActionValue& Value)
+{
+	const FVector2d LookAxisValue = Value.Get<FVector2d>();
+	if(PlayerController)
+	{
+		AddControllerYawInput(LookAxisValue.X);
+		AddControllerPitchInput(LookAxisValue.Y);
 	}
 }
 

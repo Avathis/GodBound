@@ -11,6 +11,28 @@
  * 
  */
 
+UENUM(BlueprintType)
+enum class EGB_AbilityActivationPolicy : uint8
+{
+	OnInputTriggered,
+	
+	WhileInputActive,
+	
+	OnSpawn
+};
+
+UENUM(BlueprintType)
+enum class EGB_AbilityActivationGroup : uint8
+{
+	Independent,
+	
+	Exclusive_Replaceable,
+	
+	Exclusive_Blocking,
+
+	MAX	UMETA(Hidden)
+};
+
 
 UENUM(BlueprintType)
 enum class AbilityUpgrades : uint8
@@ -31,6 +53,8 @@ class GODBOUND_API UGB_GameplayAbility : public UGameplayAbility
 	UFUNCTION(BlueprintCallable)
 	FGameplayEffectSpecHandle SetContextEffectStrength(float EffectStrength, FGameplayEffectSpecHandle GameplayEffectSpec);
 
+	EGB_AbilityActivationPolicy GetActivationPolicy() const { return ActivationPolicy; }
+	EGB_AbilityActivationGroup GetActivationGroup() const { return ActivationGroup; }
 	
 	UGB_GameplayAbility();
 	
@@ -57,4 +81,22 @@ class GODBOUND_API UGB_GameplayAbility : public UGameplayAbility
 
 	UFUNCTION(BlueprintCallable)
 		float GetGameplayEffectSpecHandle();
+
+	void OnAbilityFailedToActivate(const FGameplayTagContainer& FailedReason) const
+	{
+		NativeOnAbilityFailedToActivate(FailedReason);
+		ScriptOnAbilityFailedToActivate(FailedReason);
+	}
+
+protected:
+	virtual void NativeOnAbilityFailedToActivate(const FGameplayTagContainer& FailedReason) const;
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void ScriptOnAbilityFailedToActivate(const FGameplayTagContainer& FailedReason) const;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	EGB_AbilityActivationPolicy ActivationPolicy;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	EGB_AbilityActivationGroup ActivationGroup;
 };

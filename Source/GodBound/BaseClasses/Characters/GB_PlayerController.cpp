@@ -4,6 +4,7 @@
 #include "GB_PlayerController.h"
 
 #include "AbilitySystemComponent.h"
+#include "GodBound/BaseClasses/Components/GB_AbilitySystemComponent.h"
 #include "GodBound/BaseClasses/UI/GB_HUDWidget.h"
 #include "GodBound/Player/GB_PlayerState.h"
 
@@ -43,6 +44,17 @@ UGB_HUDWidget* AGB_PlayerController::GetHUD()
 	return HUDOverlay;
 }
 
+AGB_PlayerState* AGB_PlayerController::GetGBPlayerState() const
+{
+	return CastChecked<AGB_PlayerState>(PlayerState, ECastCheckedType::NullAllowed);
+}
+
+UGB_AbilitySystemComponent* AGB_PlayerController::GetGBAbilitySystemComponent() const
+{
+	const AGB_PlayerState* GBPS = GetGBPlayerState();
+	return (GBPS ? GBPS->GetGBAbilitySystemComponent() : nullptr);
+}
+
 void AGB_PlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -75,4 +87,13 @@ void AGB_PlayerController::OnRep_PlayerState()
 
 	Super::OnRep_PlayerState();
 	CreateHUD();
+}
+
+void AGB_PlayerController::PostProcessInput(const float DeltaTime, const bool bGamePaused)
+{
+	if (UGB_AbilitySystemComponent* GBASC = GetGBAbilitySystemComponent())
+	{
+		GBASC->ProcessAbilityInput(DeltaTime, bGamePaused);
+	}
+	Super::PostProcessInput(DeltaTime, bGamePaused);
 }

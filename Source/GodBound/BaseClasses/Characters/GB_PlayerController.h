@@ -9,6 +9,7 @@
 /**
  * 
  */
+class UGB_AbilitySystemComponent;
 UCLASS()
 class GODBOUND_API AGB_PlayerController : public APlayerController
 {
@@ -18,6 +19,12 @@ public:
 	void CreateHUD();
 
 	class UGB_HUDWidget* GetHUD();
+
+	UFUNCTION(BlueprintCallable, Category = "PlayerController")
+	AGB_PlayerState* GetGBPlayerState() const;
+	
+	UFUNCTION(BlueprintCallable, Category = "PlayerController")
+	UGB_AbilitySystemComponent* GetGBAbilitySystemComponent() const;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD")
 		TSubclassOf<class UUserWidget> HUDOverlayAsset;
@@ -30,4 +37,6 @@ protected:
 	virtual void OnPossess(APawn* InPawn) override;
 
 	virtual void OnRep_PlayerState() override;
+
+	virtual void PostProcessInput(const float DeltaTime, const bool bGamePaused) override;
 };

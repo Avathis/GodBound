@@ -61,7 +61,13 @@ public:
 	void Fall();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	bool IsFallen();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void Die();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	bool IsDead();
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "GeneralEffects")
 	TSubclassOf<UGameplayEffect> FallenEffect;
