@@ -23,8 +23,8 @@ struct FGB_InputAction
 
 public:
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TObjectPtr<const UInputAction> InputAction = nullptr;
+	UPROPERTY(EditDefaultsOnly)
+	const UInputAction* InputAction = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Meta = (Categories = "InputTag"))
 	FGameplayTag InputTag;
@@ -42,6 +42,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Lyra|Pawn")
 	const UInputAction* FindAbilityInputActionForTag(const FGameplayTag& InputTag, bool bLogNotFound = true) const;
+
+	FGameplayTag FindInputTagForNativeInputAction(const UInputAction* InputAction, bool bLogNotFound = true) const;
+	FGameplayTag FindInputTagForAbilityInputAction(const UInputAction* InputAction, bool bLogNotFound = true) const;
 
 public:
 	// List of input actions used by the owner.  These input actions are mapped to a gameplay tag and must be manually bound.

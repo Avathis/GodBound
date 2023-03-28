@@ -33,9 +33,12 @@ public:
 	template<class UserClass, typename FuncType>
 	void BindNativeAction(const UGB_InputConfig* InputConfig, const FGameplayTag& InputTag, ETriggerEvent TriggerEvent, UserClass* Object, FuncType Func, bool bLogIfNotFound);
 
-	template<class UserClass, typename PressedFuncType, typename ReleasedFuncType>
-	void BindAbilityActions(const UGB_InputConfig* InputConfig, UserClass* Object, PressedFuncType PressedFunc, ReleasedFuncType ReleasedFunc, TArray<uint32>& BindHandles);
-
+	template<class UserClass, typename TriggeredFuncType>
+	void BindAbilityActions(const UGB_InputConfig* InputConfig, UserClass* Object, TriggeredFuncType TriggeredFunc,TArray<uint32>& BindHandles);
+	/*
+	 *template<class UserClass, typename PressedFuncType, typename ReleasedFuncType>
+	 *void BindAbilityActions(const UGB_InputConfig* InputConfig, UserClass* Object, PressedFuncType PressedFunc, ReleasedFuncType ReleasedFunc, TArray<uint32>& BindHandles);
+	*/
 	void RemoveBinds(TArray<uint32>& BindHandles);
 	
 };
@@ -50,7 +53,23 @@ void UGB_InputComponent::BindNativeAction(const UGB_InputConfig* InputConfig, co
 	}
 }
 
-template<class UserClass, typename PressedFuncType, typename ReleasedFuncType>
+template<class UserClass, typename TriggeredFuncType>
+void UGB_InputComponent::BindAbilityActions(const UGB_InputConfig* InputConfig, UserClass* Object, TriggeredFuncType TriggeredFunc, TArray<uint32>& BindHandles)
+{
+	check(InputConfig);
+
+	for (const FGB_InputAction& Action : InputConfig->AbilityInputActions)
+	{
+		if (Action.InputAction && Action.InputTag.IsValid())
+		{
+			if (TriggeredFunc)
+			{
+				BindHandles.Add(BindAction(Action.InputAction, ETriggerEvent::Triggered, Object, TriggeredFunc).GetHandle());
+			}
+		}
+	}
+}
+/*template<class UserClass, typename PressedFuncType, typename ReleasedFuncType>
 void UGB_InputComponent::BindAbilityActions(const UGB_InputConfig* InputConfig, UserClass* Object, PressedFuncType PressedFunc, ReleasedFuncType ReleasedFunc, TArray<uint32>& BindHandles)
 {
 	check(InputConfig);
@@ -70,4 +89,4 @@ void UGB_InputComponent::BindAbilityActions(const UGB_InputConfig* InputConfig, 
 			}
 		}
 	}
-}
+}*/

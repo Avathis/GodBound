@@ -121,7 +121,7 @@ private:
 	float Speed = 0.f;
 
 	UFUNCTION(BlueprintCallable, Category = "Abilities")
-	void GrantAbility(TSubclassOf<class UGB_GameplayAbility> AbilityClass, int32 Level, int32 InputCode);
+	void GrantAbility(TSubclassOf<class UGB_GameplayAbility> AbilityClass, int32 Level, int32 InputCode, FGameplayTag InputTag);
 
 	UFUNCTION(BlueprintCallable, Category = "Abilities")
 	void ActivateAbility(int32 InputCode);

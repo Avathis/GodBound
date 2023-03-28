@@ -42,3 +42,42 @@ const UInputAction* UGB_InputConfig::FindAbilityInputActionForTag(const FGamepla
 
 	return nullptr;
 }
+
+FGameplayTag UGB_InputConfig::FindInputTagForNativeInputAction(const UInputAction* InputAction, bool bLogNotFound) const
+{
+	for (const FGB_InputAction& Action : NativeInputActions)
+	{
+		if(Action.InputAction)
+		{
+			if(Action.InputAction==InputAction)
+			{
+				return Action.InputTag;
+			}
+		}
+	}
+	if (bLogNotFound)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Can't find AbilityInputTag for Action on InputConfig [%s]."),*GetNameSafe(this));
+	}
+	return FGameplayTag::RequestGameplayTag("");
+}
+
+FGameplayTag UGB_InputConfig::FindInputTagForAbilityInputAction(const UInputAction* InputAction,
+	bool bLogNotFound) const
+{
+	for (const FGB_InputAction& Action : AbilityInputActions)
+	{
+		if(Action.InputAction)
+		{
+			if(Action.InputAction==InputAction)
+			{
+				return Action.InputTag;
+			}
+		}
+	}
+	if (bLogNotFound)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Can't find AbilityInputTag for Action on InputConfig [%s]."),*GetNameSafe(this));
+	}
+	return FGameplayTag::RequestGameplayTag("");
+}

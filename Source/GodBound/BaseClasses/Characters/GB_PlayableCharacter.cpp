@@ -69,7 +69,8 @@ void AGB_PlayableCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 			EnhancedInputComponent->BindNativeAction(InputConfig, FGameplayTag::RequestGameplayTag(FName("Input.Move")),ETriggerEvent::Triggered,this,&ThisClass::Move, false);
 			EnhancedInputComponent->BindNativeAction(InputConfig, FGameplayTag::RequestGameplayTag(FName("Input.Look")), ETriggerEvent::Triggered, this, &ThisClass::Look, false);
 			TArray<uint32> BindHandle;
-			EnhancedInputComponent->BindAbilityActions(InputConfig,this,&ThisClass::Input_AbilityInputTagPressed, &ThisClass::Input_AbilityInputTagReleased, BindHandle);
+			//EnhancedInputComponent->BindAbilityActions(InputConfig,this,&ThisClass::Input_AbilityInputTagPressed,&ThisClass::Input_AbilityInputTagReleased, BindHandle);
+			EnhancedInputComponent->BindAbilityActions(InputConfig,this,&ThisClass::Input_AbilityInputTagTriggered,BindHandle);
 		}
 		//EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AGB_PlayableCharacter::Move);
 		//EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AGB_PlayableCharacter::Look);
@@ -307,8 +308,30 @@ void AGB_PlayableCharacter::Input_AbilityInputTagPressed(FGameplayTag InputTag)
 	if (UGB_AbilitySystemComponent* ASC = GetAbilitySystemComponent())
 	{
 		ASC->AbilityInputTagPressed(InputTag);
+		
 		UE_LOG(LogTemp, Error, TEXT("Input_AbilityInputTagPressed"));
 	}
+	/*
+	if (UGB_AbilitySystemComponent* AbilitySystemComponent = GetAbilitySystemComponent())
+	{
+		const UInputAction* InputAction = Cast<UInputAction>(InputActionInstance.GetSourceAction());
+
+		const FGameplayTag InputTag = InputConfig->FindInputTagForAbilityInputAction(InputAction);
+
+		if (InputTag.IsValid())
+		{
+			const FInputActionValue InputActionValue = InputActionInstance.GetValue();
+			if (InputActionValue.Get<bool>())
+			{
+				AbilitySystemComponent->AbilityInputTagPressed(InputTag);
+			}
+			else
+			{
+				AbilitySystemComponent->AbilityInputTagReleased(InputTag);
+			}
+		}
+	}
+	*/
 }
 
 void AGB_PlayableCharacter::Input_AbilityInputTagReleased(FGameplayTag InputTag)
@@ -319,6 +342,28 @@ void AGB_PlayableCharacter::Input_AbilityInputTagReleased(FGameplayTag InputTag)
 	}
 }
 
+void AGB_PlayableCharacter::Input_AbilityInputTagTriggered(const FInputActionInstance& InputActionInstance)
+{
+	if (UGB_AbilitySystemComponent* ASC = GetAbilitySystemComponent())
+	{
+		const UInputAction* InputAction = Cast<UInputAction>(InputActionInstance.GetSourceAction());
+
+		const FGameplayTag InputTag = InputConfig->FindInputTagForAbilityInputAction(InputAction);
+
+		if (InputTag.IsValid())
+		{
+			const FInputActionValue InputActionValue = InputActionInstance.GetValue();
+			if (InputActionValue.Get<bool>())
+			{
+				ASC->AbilityInputTagPressed(InputTag);
+			}
+			else
+			{
+				ASC->AbilityInputTagReleased(InputTag);
+			}
+		}
+	}
+}
 
 
 void AGB_PlayableCharacter::Move(const FInputActionValue& Value)

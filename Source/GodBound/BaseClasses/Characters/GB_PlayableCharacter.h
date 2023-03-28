@@ -11,6 +11,7 @@
 /**
  * 
  */
+struct FInputActionInstance;
 UCLASS()
 class GODBOUND_API AGB_PlayableCharacter : public AGB_Character
 {
@@ -81,6 +82,7 @@ protected:
 
 	void Input_AbilityInputTagPressed(FGameplayTag InputTag);
 	void Input_AbilityInputTagReleased(FGameplayTag InputTag);
+	void Input_AbilityInputTagTriggered(const FInputActionInstance& InputActionInstance);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	class UInputAction* MoveAction;

@@ -13,5 +13,11 @@ UCLASS()
 class GODBOUND_API UGB_GameplayEffect : public UGameplayEffect
 {
 	GENERATED_BODY()
+
+public:
+	UGB_GameplayEffect();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Granted Abilities")
+	TArray<FGameplayTag> GrantedAbilitiesInputTags;
 	
 };

@@ -74,7 +74,7 @@ FVector AGB_Character::TraceFromCamera()
 }
 */
 
-void AGB_Character::GrantAbility(TSubclassOf<UGB_GameplayAbility> AbilityClass, int32 Level, int32 InputCode)
+void AGB_Character::GrantAbility(TSubclassOf<UGB_GameplayAbility> AbilityClass, int32 Level, int32 InputCode, FGameplayTag InputTag)
 {
 	if(GetLocalRole() == ROLE_Authority && AbilitySystemComponent.IsValid() && IsValid(AbilityClass))
 	{
@@ -82,6 +82,10 @@ void AGB_Character::GrantAbility(TSubclassOf<UGB_GameplayAbility> AbilityClass, 
 		if(IsValid(Ability))
 		{
 			FGameplayAbilitySpec AbilitySpec(Ability,Level,InputCode);
+			if(InputTag.IsValid())
+			{
+				AbilitySpec.DynamicAbilityTags.AddTag(InputTag);
+			}
 			AbilitySystemComponent->GiveAbility(AbilitySpec);
 		}
 		

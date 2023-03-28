@@ -40,7 +40,11 @@ public:
 	void RemoveAbilityFromActivationGroup(EGB_AbilityActivationGroup Group, UGB_GameplayAbility* Ability);
 	void CancelActivationGroupAbilities(EGB_AbilityActivationGroup Group, UGB_GameplayAbility* IgnoreAbility, bool bReplicateCancelAbility);
 
+	virtual void OnGiveAbility(FGameplayAbilitySpec& AbilitySpec) override;
+
 protected:
+
+	
 
 	void TryActivateAbilitiesOnSpawn();
 

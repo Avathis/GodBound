@@ -260,6 +260,24 @@ void UGB_AbilitySystemComponent::CancelActivationGroupAbilities(EGB_AbilityActiv
 	CancelAbilitiesByFunc(ShouldCancelFunc, bReplicateCancelAbility);
 }
 
+void UGB_AbilitySystemComponent::OnGiveAbility(FGameplayAbilitySpec& AbilitySpec)
+{
+	switch (AbilitySpec.InputID)
+	{
+		case 0: break;
+		case 10: AbilitySpec.DynamicAbilityTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Input.Primary")));break;
+		case 11: AbilitySpec.DynamicAbilityTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Input.Secondary")));break;
+		case 12: AbilitySpec.DynamicAbilityTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Input.Ability.1")));break;
+		case 13: AbilitySpec.DynamicAbilityTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Input.Ability.2")));break;
+		case 14: AbilitySpec.DynamicAbilityTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Input.Ability.3")));break;
+		case 15: AbilitySpec.DynamicAbilityTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Input.Ability.4")));break;
+		case 16: AbilitySpec.DynamicAbilityTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Input.Ability.5")));break;
+		default: break;
+	}
+	
+	Super::OnGiveAbility(AbilitySpec);
+}
+
 void UGB_AbilitySystemComponent::TryActivateAbilitiesOnSpawn()
 {
 }
@@ -267,6 +285,11 @@ void UGB_AbilitySystemComponent::TryActivateAbilitiesOnSpawn()
 void UGB_AbilitySystemComponent::AbilitySpecInputPressed(FGameplayAbilitySpec& Spec)
 {
 	Super::AbilitySpecInputPressed(Spec);
+	if (Spec.IsActive())
+	{
+		// Invoke the InputPressed event. This is not replicated here. If someone is listening, they may replicate the InputPressed event to the server.
+		InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputPressed, Spec.Handle, Spec.ActivationInfo.GetActivationPredictionKey());
+	}
 }
 
 void UGB_AbilitySystemComponent::AbilitySpecInputReleased(FGameplayAbilitySpec& Spec)
