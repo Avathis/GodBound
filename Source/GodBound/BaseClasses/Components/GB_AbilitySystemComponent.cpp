@@ -295,6 +295,10 @@ void UGB_AbilitySystemComponent::AbilitySpecInputPressed(FGameplayAbilitySpec& S
 void UGB_AbilitySystemComponent::AbilitySpecInputReleased(FGameplayAbilitySpec& Spec)
 {
 	Super::AbilitySpecInputReleased(Spec);
+	if(Spec.IsActive())
+	{
+		InvokeReplicatedEvent(EAbilityGenericReplicatedEvent::InputReleased, Spec.Handle, Spec.ActivationInfo.GetActivationPredictionKey());
+	}
 }
 
 void UGB_AbilitySystemComponent::NotifyAbilityActivated(const FGameplayAbilitySpecHandle Handle,

@@ -22,9 +22,17 @@ class GODBOUND_API AGB_EnemyCharacter : public AGB_Character
 	
 	virtual void Tick(float DeltaSeconds) override;
 
-	
+	virtual UGB_AbilitySystemComponent* GetAbilitySystemComponent() const override
+	{
+		return ASC;
+	}
 
 	FDelegateHandle HealthChangedDelegateHandle;
 	//FDelegateHandle ;
+private:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Components", meta = (AllowPrivateAccess = true))
+	UGB_AbilitySystemComponent* ASC;
+
+	virtual void GrantAbility(TSubclassOf<class UGB_GameplayAbility> AbilityClass, int32 Level, int32 InputCode, FGameplayTag InputTag) override;
 	
 };
