@@ -167,7 +167,7 @@ void FGBAbilitySet_GrantedHandles::TakeFromAbilitySystem(UGB_AbilitySystemCompon
 
 	for (UAttributeSet* Set : GrantedAttributeSets)
 	{
-		GB_ASC->GetSpawnedAttributes_Mutable().Remove(Set);
+		GB_ASC->RemoveSpawnedAttribute(Set);
 	}
 
 	AbilitySpecHandles.Reset();
