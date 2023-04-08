@@ -84,6 +84,9 @@ protected:
 	void Input_AbilityInputTagReleased(FGameplayTag InputTag);
 	void Input_AbilityInputTagTriggered(const FInputActionInstance& InputActionInstance);
 
+	void Input_Confirm(const FInputActionInstance& InputActionInstance);
+	void Input_Cancel(const FInputActionInstance& InputActionInstance);
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	class UInputAction* MoveAction;
 

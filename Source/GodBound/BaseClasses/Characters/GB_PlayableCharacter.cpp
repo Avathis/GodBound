@@ -68,6 +68,8 @@ void AGB_PlayableCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 		{
 			EnhancedInputComponent->BindNativeAction(InputConfig, FGameplayTag::RequestGameplayTag(FName("Input.Move")),ETriggerEvent::Triggered,this,&ThisClass::Move, false);
 			EnhancedInputComponent->BindNativeAction(InputConfig, FGameplayTag::RequestGameplayTag(FName("Input.Look")), ETriggerEvent::Triggered, this, &ThisClass::Look, false);
+			EnhancedInputComponent->BindNativeAction(InputConfig, FGameplayTag::RequestGameplayTag(FName("Input.Ability.Confirm")), ETriggerEvent::Triggered, this, &ThisClass::Input_Confirm, false);
+			EnhancedInputComponent->BindNativeAction(InputConfig, FGameplayTag::RequestGameplayTag(FName("Input.Ability.Cancel")), ETriggerEvent::Triggered, this, &ThisClass::Input_Cancel, false);
 			TArray<uint32> BindHandle;
 			//EnhancedInputComponent->BindAbilityActions(InputConfig,this,&ThisClass::Input_AbilityInputTagPressed,&ThisClass::Input_AbilityInputTagReleased, BindHandle);
 			EnhancedInputComponent->BindAbilityActions(InputConfig,this,&ThisClass::Input_AbilityInputTagTriggered,BindHandle);
@@ -365,6 +367,21 @@ void AGB_PlayableCharacter::Input_AbilityInputTagTriggered(const FInputActionIns
 	}
 }
 
+void AGB_PlayableCharacter::Input_Confirm(const FInputActionInstance& InputActionInstance)
+{
+	if(UGB_AbilitySystemComponent* ASC = GetAbilitySystemComponent())
+	{
+		ASC->LocalInputConfirm();
+	}
+}
+
+void AGB_PlayableCharacter::Input_Cancel(const FInputActionInstance& InputActionInstance)
+{
+	if(UGB_AbilitySystemComponent* ASC = GetAbilitySystemComponent())
+	{
+		ASC->LocalInputCancel();
+	}
+}
 
 void AGB_PlayableCharacter::Move(const FInputActionValue& Value)
 {
