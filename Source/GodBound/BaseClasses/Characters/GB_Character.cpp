@@ -36,6 +36,7 @@ AGB_Character::AGB_Character(const FObjectInitializer& ObjectInitializer) : Supe
 	UIHealthBarComponent->SetRelativeLocation(FVector(0, 0, 120));
 	UIHealthBarComponent->SetWidgetSpace(EWidgetSpace::Screen);
 	UIHealthBarComponent->SetDrawSize(FVector2D(500, 500));
+	UIHealthBarComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	
 }
 

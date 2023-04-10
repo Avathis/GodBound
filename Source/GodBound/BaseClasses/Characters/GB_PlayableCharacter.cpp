@@ -37,6 +37,7 @@ AGB_PlayableCharacter::AGB_PlayableCharacter(const FObjectInitializer& ObjectIni
 	*/
 	OverheadWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("OverheadWidget"));
 	OverheadWidget->SetupAttachment(GetRootComponent());
+	OverheadWidget->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 }
 
 void AGB_PlayableCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

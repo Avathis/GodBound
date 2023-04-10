@@ -205,7 +205,7 @@ void AGB_TATrace::LineTraceWithFilter(TArray<FHitResult>& OutHitResults, const U
 	OutHitResults = FilteredHitResults;
 
 	return;
-}
+}	
 
 void AGB_TATrace::AimWithPlayerController(const AActor* InSourceActor, FCollisionQueryParams Params, const FVector& TraceStart, FVector& OutTraceEnd, bool bIgnorePitch)
 {

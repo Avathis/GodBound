@@ -9,6 +9,16 @@
 /**
  * 
  */
+
+UENUM(BlueprintType)
+enum class AnimDirection : uint8
+{
+	Forward,
+	Right,
+	Left,
+	BackWards
+};
+
 UCLASS()
 class GODBOUND_API UGB_AnimInstance : public UAnimInstance
 {
