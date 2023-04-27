@@ -15,6 +15,19 @@ Nikola Tesla (Currently playable)
 - Midrange Tesla coil abuser
 - Defensive character utilizing structures (Tesla coils) to empower his playstyle
 
+Revenant (Currently playable) - Paragon Character
+- Long range Carry
+- Jhin/Kai'sa/Mordekaiser abomination
+
+Grux (Currently playable)  - Paragon Character
+-(Missing animations Smash&Grab and Proper Ultimate, Epic hasn't responded yet)*INCOMPLETE*
+
+Steel(Currently playable)  - Paragon Character
+- Shield wielding tank
+
+Crunch(Currently unplayable)  - Paragon Character
+- Combo-centric bruiser
+
 Alexander the Great (Currently unplayable)
 - Meele tank
 - Conquering the battleground grants him and his teammates stacks of vigor, improving deffensive stats for the conquests duration
