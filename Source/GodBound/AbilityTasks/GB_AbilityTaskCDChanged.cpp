@@ -71,23 +71,18 @@ void UGB_AbilityTaskCDChanged::OnActiveGameplayEffectAddedCallback(UAbilitySyste
 
 			if (ASC->GetOwnerRole() == ROLE_Authority)
 			{
-				// Player is Server
 				OnCooldownBegin.Broadcast(CooldownTag, TimeRemaining, Duration);
 			}
 			else if (!UseServerCooldown && SpecApplied.GetContext().GetAbilityInstance_NotReplicated())
 			{
-				// Client using predicted cooldown
 				OnCooldownBegin.Broadcast(CooldownTag, TimeRemaining, Duration);
 			}
 			else if (UseServerCooldown && SpecApplied.GetContext().GetAbilityInstance_NotReplicated() == nullptr)
 			{
-				// Client using Server's cooldown. This is Server's corrective cooldown GE.
 				OnCooldownBegin.Broadcast(CooldownTag, TimeRemaining, Duration);
 			}
 			else if (UseServerCooldown && SpecApplied.GetContext().GetAbilityInstance_NotReplicated())
 			{
-				// Client using Server's cooldown but this is predicted cooldown GE.
-				// This can be useful to gray out abilities until Server's cooldown comes in.
 				OnCooldownBegin.Broadcast(CooldownTag, -1.0f, -1.0f);
 			}
 		}
@@ -123,13 +118,10 @@ bool UGB_AbilityTaskCDChanged::GetCooldownRemainingForTag(FGameplayTagContainer 
 					BestIdx = Idx;
 				}
 			}
-
 			TimeRemaining = DurationAndTimeRemaining[BestIdx].Key;
 			CooldownDuration = DurationAndTimeRemaining[BestIdx].Value;
-
 			return true;
 		}
 	}
-
 	return false;
 }

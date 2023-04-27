@@ -155,7 +155,8 @@ void AGB_PlayableCharacter::MoveForward(float Value)
 {
 	if(!bCanManuallyMove) return;
 	AddMovementInput(UKismetMathLibrary::GetForwardVector(FRotator(0, GetControlRotation().Yaw, 0)), Value);
-	ForwardAxis = Value;/*
+	ForwardAxis = Value;
+	/*
 	if ((Controller) && (Value != 0.0f))
 	{
 		// find out which way is forward

@@ -57,6 +57,9 @@ class GODBOUND_API UGB_GameplayAbility : public UGameplayAbility
 	EGB_AbilityActivationGroup GetActivationGroup() const { return ActivationGroup; }
 	
 	UGB_GameplayAbility();
+
+	UFUNCTION(BlueprintCallable, Category = "")
+	AController* GetControllerFromActorInfo() const;
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Cooldown", meta = (AllowPrivateAccess = "true"))
 	FScalableFloat CooldownDuration;

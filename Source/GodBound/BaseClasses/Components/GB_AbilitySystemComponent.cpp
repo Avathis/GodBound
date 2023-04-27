@@ -333,8 +333,6 @@ void UGB_AbilitySystemComponent::NotifyAbilityEnded(FGameplayAbilitySpecHandle H
 {
 	Super::NotifyAbilityEnded(Handle, Ability, bWasCancelled);
 
-	Super::NotifyAbilityEnded(Handle, Ability, bWasCancelled);
-
 	UGB_GameplayAbility* CastAbility = CastChecked<UGB_GameplayAbility>(Ability);
 
 	RemoveAbilityFromActivationGroup(CastAbility->GetActivationGroup(), CastAbility);

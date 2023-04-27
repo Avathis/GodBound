@@ -13,7 +13,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnCooldownChanged, FGameplayTag,
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType, meta = (ExposedAsyncProxy = AsyncTask))
 class GODBOUND_API UGB_AbilityTaskCDChanged : public UBlueprintAsyncActionBase
 {
 	GENERATED_BODY()
@@ -23,15 +23,10 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnCooldownChanged OnCooldownEnd;
-
-	// Listens for changes (Begin and End) to cooldown GameplayEffects based on the cooldown tag.
-	// UseServerCooldown determines if the Sever's cooldown is returned in addition to the local predicted cooldown.
-	// If using ServerCooldown, TimeRemaining and Duration will return -1 to signal local predicted cooldown has begun.
+	
 	UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true"))
 	static UGB_AbilityTaskCDChanged* ListenForCooldownChange(UAbilitySystemComponent* AbilitySystemComponent, FGameplayTagContainer CooldownTags, bool UseServerCooldown);
-
-	// You must call this function manually when you want the AsyncTask to end.
-	// For UMG Widgets, you would call it in the Widget's Destruct event.
+	
 	UFUNCTION(BlueprintCallable)
 	void EndTask();
 
