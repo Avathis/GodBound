@@ -2,6 +2,8 @@
 
 
 #include "GB_GameplayAbility.h"
+
+#include "Characters/GB_PlayableCharacter.h"
 #include "GodBound/BaseClasses/Characters/GB_Character.h"
 
 
@@ -56,6 +58,15 @@ AController* UGB_GameplayAbility::GetControllerFromActorInfo() const
 		}
 	}
 
+	return nullptr;
+}
+
+AGB_PlayableCharacter* UGB_GameplayAbility::GetPlayerCharFromActorInfo()
+{
+	if(AGB_PlayableCharacter* PlayerCharacter = Cast<AGB_PlayableCharacter>(GetActorInfo().AvatarActor))
+	{
+		return PlayerCharacter;
+	}
 	return nullptr;
 }
 

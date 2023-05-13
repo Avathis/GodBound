@@ -11,6 +11,7 @@
  * 
  */
 
+class AGB_PlayableCharacter;
 UENUM(BlueprintType)
 enum class EGB_AbilityActivationPolicy : uint8
 {
@@ -60,6 +61,9 @@ class GODBOUND_API UGB_GameplayAbility : public UGameplayAbility
 
 	UFUNCTION(BlueprintCallable, Category = "")
 	AController* GetControllerFromActorInfo() const;
+
+	UFUNCTION(BlueprintCallable, Category = "")
+	AGB_PlayableCharacter* GetPlayerCharFromActorInfo();
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Cooldown", meta = (AllowPrivateAccess = "true"))
 	FScalableFloat CooldownDuration;

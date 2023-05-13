@@ -20,7 +20,7 @@ public:
 	void SetEffectStrength(float EffectStrengthToSet) { EffectStrength = EffectStrengthToSet; };
 protected:
 	UPROPERTY()
-	float EffectStrength;
+	float EffectStrength = 0.f;
 
 public:
 	virtual UScriptStruct* GetScriptStruct() const override

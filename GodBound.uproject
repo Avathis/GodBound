@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "5.1",
+	"EngineAssociation": "5.2",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -49,6 +49,10 @@
 		},
 		{
 			"Name": "DidItHit",
+			"Enabled": false
+		},
+		{
+			"Name": "TargetingSystem",
 			"Enabled": true
 		}
 	]
