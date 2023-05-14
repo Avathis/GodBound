@@ -7,7 +7,18 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "GB_MeleeTraceComponent.generated.h"
 
+UENUM(BlueprintType)
+enum class EKismetTraceType : uint8
+{
+	LineTrace			UMETA(DisplayName = "Line Trace"),
+	BoxTrace			UMETA(DisplayName = "Box Trace"),
+	CapsuleTrace		UMETA(DisplayName = "Capsule Trace"),
+	SphereTrace			UMETA(DisplayName = "Sphere Trace")
+};
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnItemAdded, FHitResult, LastItem);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnItemAddedAbility, FHitResult, LastItem);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class GODBOUND_API UGB_MeleeTraceComponent : public UActorComponent
@@ -18,7 +29,9 @@ public:
 	
 	UPROPERTY(BlueprintAssignable, Category = "Trace")
 	FOnItemAdded OnItemAdded;
-	
+
+	UPROPERTY(BlueprintAssignable, Category = "Trace")
+	FOnItemAddedAbility OnAbilityItemAdded;
 	UGB_MeleeTraceComponent();
 
 	UFUNCTION(BlueprintCallable, Category = "Trace")
@@ -44,13 +57,25 @@ public:
 	void StartTrace(bool bIsRight);
 
 	UFUNCTION(BlueprintCallable)
+	void StartAbilityTrace(TArray<FName> AbilitySocketNamesIN);
+
+	UFUNCTION(BlueprintCallable)
 	void EndTrace(bool bIsRight);
+
+	UFUNCTION(BlueprintCallable)
+	void EndAbilityTrace();
 
 	UFUNCTION()
 	void ActorsToBeAdded(TArray<FHitResult> HitArrayToAdd);
+
+	UFUNCTION()
+	void ActorsToBeAddedAbility(TArray<FHitResult> HitArrayToAddAbility);
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Trace")
 	TArray<FName> SocketNames;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Trace")
+	TArray<FName> AbilitySocketNames;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Trace")
 	TArray<FName> SocketNamesRight;
@@ -70,11 +95,17 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Trace")
 	TMap<FName, FVector> LastKnownSocketLocationLeft;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Trace")
+	TMap<FName, FVector> LastKnownSocketLocationAbility;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Trace")
 	USkeletalMeshComponent* OwnerMesh;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TraceSettings")
 	bool bIsTraceActive = false;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TraceSettings")
+	bool bIsAbilityTraceActive = false;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "TraceSettings")
 	bool bIsTraceActiveRight = false;
@@ -84,6 +115,18 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TraceSettings")
 	bool ShouldIgnoreSelf = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = KismetTraceSettings, meta = (Tooltip = "In case you use SphereTrace"))
+	float SphereRadius;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = KismetTraceSettings, meta = (Tooltip = "In case you use SphereTrace"))
+	float AbilitySphereRadius;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = KismetTraceSettings, meta = (Tooltip = "Allows to change from the regular line trace."))
+	EKismetTraceType MeleeTraceType = EKismetTraceType::LineTrace;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = KismetTraceSettings, meta = (Tooltip = "Allows to change from the regular line trace."))
+	EKismetTraceType AbilityTraceType = EKismetTraceType::SphereTrace;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TraceSettings")
 	TEnumAsByte<ETraceTypeQuery> MyTraceChannel = UEngineTypes::ConvertToTraceType(ECC_Visibility);

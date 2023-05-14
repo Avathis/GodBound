@@ -26,7 +26,6 @@ void UGB_MeleeTraceComponent::SetupMeleeTrace(USkeletalMeshComponent* MeshCompon
 
 void UGB_MeleeTraceComponent::DoTheTrace()
 {
-	
 	if(bIsTraceActiveRight)
 	{
 		if(!LastKnownSocketLocationRight.IsEmpty())
@@ -36,7 +35,21 @@ void UGB_MeleeTraceComponent::DoTheTrace()
 				const FVector* Start = LastKnownSocketLocationRight.Find(Socket);
 				const FVector End = OwnerMesh->GetSocketLocation(Socket);
 				TArray<FHitResult> OutHits;
-				UKismetSystemLibrary::LineTraceMultiForObjects(GetWorld(), *Start, End, MyObjectTypesToHit, ShouldTraceComplex, ActorsHit, MyDrawDebugType, OutHits, ShouldIgnoreSelf, MyTraceColor, MyTraceHitColor, MyDrawTime);
+				switch (MeleeTraceType) {
+				case EKismetTraceType::LineTrace:
+					{
+						UKismetSystemLibrary::LineTraceMultiForObjects(GetWorld(), *Start, End, MyObjectTypesToHit, ShouldTraceComplex, ActorsHit, MyDrawDebugType, OutHits, ShouldIgnoreSelf, MyTraceColor, MyTraceHitColor, MyDrawTime);
+						break;
+					}
+				case EKismetTraceType::BoxTrace: break;
+				case EKismetTraceType::CapsuleTrace: break;
+				case EKismetTraceType::SphereTrace:
+					{
+						UKismetSystemLibrary::SphereTraceMulti(GetWorld(), *Start, End, SphereRadius, MyTraceChannel, ShouldTraceComplex, ActorsHit, MyDrawDebugType, OutHits, ShouldIgnoreSelf, MyTraceColor, MyTraceHitColor, MyDrawTime);
+						break;
+					}
+				default: ;
+				}
 				ActorsToBeAdded(OutHits);
 			}
 		}
@@ -48,14 +61,55 @@ void UGB_MeleeTraceComponent::DoTheTrace()
 		{
 			for (const auto Socket : SocketNamesLeft)
 			{
-				const FVector* Start = LastKnownSocketLocationLeft.Find(Socket);
+				const FVector* Start = LastKnownSocketLocationRight.Find(Socket);
 				const FVector End = OwnerMesh->GetSocketLocation(Socket);
 				TArray<FHitResult> OutHits;
-				UKismetSystemLibrary::LineTraceMultiForObjects(GetWorld(), *Start, End, MyObjectTypesToHit, ShouldTraceComplex, ActorsHit, MyDrawDebugType, OutHits, ShouldIgnoreSelf, MyTraceColor, MyTraceHitColor, MyDrawTime);
+				switch (MeleeTraceType) {
+				case EKismetTraceType::LineTrace:
+					{
+						UKismetSystemLibrary::LineTraceMultiForObjects(GetWorld(), *Start, End, MyObjectTypesToHit, ShouldTraceComplex, ActorsHit, MyDrawDebugType, OutHits, ShouldIgnoreSelf, MyTraceColor, MyTraceHitColor, MyDrawTime);
+						break;
+					}
+				case EKismetTraceType::BoxTrace: break;
+				case EKismetTraceType::CapsuleTrace: break;
+				case EKismetTraceType::SphereTrace:
+					{
+						UKismetSystemLibrary::SphereTraceMulti(GetWorld(), *Start, End, SphereRadius, MyTraceChannel, ShouldTraceComplex, ActorsHit, MyDrawDebugType, OutHits, ShouldIgnoreSelf, MyTraceColor, MyTraceHitColor, MyDrawTime);
+						break;
+					}
+				default: ;
+				}
 				ActorsToBeAdded(OutHits);
 			}
 		}
-		
+	}
+	if(bIsAbilityTraceActive)
+	{
+		if(!LastKnownSocketLocationAbility.IsEmpty())
+		{
+			for(const auto Socket : AbilitySocketNames)
+			{
+				const FVector* Start = LastKnownSocketLocationAbility.Find(Socket);
+				const FVector End = OwnerMesh->GetSocketLocation(Socket);
+				TArray<FHitResult> OutHits;
+				switch (AbilityTraceType) {
+				case EKismetTraceType::LineTrace:
+					{
+						UKismetSystemLibrary::LineTraceMultiForObjects(GetWorld(), *Start, End, MyObjectTypesToHit, ShouldTraceComplex, ActorsHit, MyDrawDebugType, OutHits, ShouldIgnoreSelf, MyTraceColor, MyTraceHitColor, MyDrawTime);
+						break;
+					}
+				case EKismetTraceType::BoxTrace: break;
+				case EKismetTraceType::CapsuleTrace: break;
+				case EKismetTraceType::SphereTrace:
+					{
+						UKismetSystemLibrary::SphereTraceMulti(GetWorld(), *Start, End, SphereRadius, MyTraceChannel, ShouldTraceComplex, ActorsHit, MyDrawDebugType, OutHits, ShouldIgnoreSelf, MyTraceColor, MyTraceHitColor, MyDrawTime);
+						break;
+					}
+				default: ;
+				}
+				ActorsToBeAdded(OutHits);
+			}
+		}
 	}
 	UpdateSocketLocations();
 }
@@ -78,6 +132,14 @@ void UGB_MeleeTraceComponent::UpdateSocketLocations()
 			LastKnownSocketLocationLeft.Add(SocketName,OwnerMesh->GetSocketLocation(SocketName));
 		}
 	}
+	if(bIsAbilityTraceActive)
+	{
+		for(FName SocketName : AbilitySocketNames)
+		{
+			LastKnownSocketLocationAbility.Remove(SocketName);
+			LastKnownSocketLocationAbility.Add(SocketName, OwnerMesh->GetSocketLocation(SocketName));
+		}
+	}
 }
 
 
@@ -96,7 +158,7 @@ void UGB_MeleeTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if(bIsTraceActiveRight || bIsTraceActiveLeft)
+	if(bIsTraceActiveRight || bIsTraceActiveLeft || bIsAbilityTraceActive)
 	{
 		DoTheTrace();
 	}
@@ -115,6 +177,16 @@ void UGB_MeleeTraceComponent::StartTrace(bool bIsRight)
 	bIsTraceActive = true;
 	
 }
+
+void UGB_MeleeTraceComponent::StartAbilityTrace(TArray<FName> AbilitySocketNamesIN)
+{
+	for (FName AbilitySocketName : AbilitySocketNamesIN)
+	{
+		AbilitySocketNames.Add(AbilitySocketName);
+	}
+	bIsAbilityTraceActive = true;
+}
+
 
 void UGB_MeleeTraceComponent::EndTrace(bool bIsRight)
 {
@@ -135,6 +207,14 @@ void UGB_MeleeTraceComponent::EndTrace(bool bIsRight)
 	ActorsHit.Empty();
 }
 
+void UGB_MeleeTraceComponent::EndAbilityTrace()
+{
+	AbilitySocketNames.Empty();
+	LastKnownSocketLocationAbility.Empty();
+	bIsAbilityTraceActive = false;
+}
+
+
 void UGB_MeleeTraceComponent::ActorsToBeAdded(TArray<FHitResult> HitArrayToAdd)
 {
 	for (auto Hit : HitArrayToAdd)
@@ -143,6 +223,18 @@ void UGB_MeleeTraceComponent::ActorsToBeAdded(TArray<FHitResult> HitArrayToAdd)
 		{
 			ActorsHit.AddUnique(Hit.GetActor());
 			OnItemAdded.Broadcast(Hit);
+		}
+	}
+}
+
+void UGB_MeleeTraceComponent::ActorsToBeAddedAbility(TArray<FHitResult> HitArrayToAddAbility)
+{
+	for (auto Hit : HitArrayToAddAbility)
+	{
+		if(Hit.GetActor() && Hit.GetActor()!=GetOwner())
+		{
+			ActorsHit.AddUnique(Hit.GetActor());
+			OnAbilityItemAdded.Broadcast(Hit);
 		}
 	}
 }
