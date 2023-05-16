@@ -45,7 +45,7 @@ void UGB_MeleeTraceComponent::DoTheTrace()
 				case EKismetTraceType::CapsuleTrace: break;
 				case EKismetTraceType::SphereTrace:
 					{
-						UKismetSystemLibrary::SphereTraceMulti(GetWorld(), *Start, End, SphereRadius, MyTraceChannel, ShouldTraceComplex, ActorsHit, MyDrawDebugType, OutHits, ShouldIgnoreSelf, MyTraceColor, MyTraceHitColor, MyDrawTime);
+						UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), *Start, End, SphereRadius, MyObjectTypesToHit, ShouldTraceComplex, ActorsHit, MyDrawDebugType, OutHits, ShouldIgnoreSelf, MyTraceColor, MyTraceHitColor, MyDrawTime);
 						break;
 					}
 				default: ;
@@ -61,7 +61,7 @@ void UGB_MeleeTraceComponent::DoTheTrace()
 		{
 			for (const auto Socket : SocketNamesLeft)
 			{
-				const FVector* Start = LastKnownSocketLocationRight.Find(Socket);
+				const FVector* Start = LastKnownSocketLocationLeft.Find(Socket);
 				const FVector End = OwnerMesh->GetSocketLocation(Socket);
 				TArray<FHitResult> OutHits;
 				switch (MeleeTraceType) {
@@ -74,7 +74,7 @@ void UGB_MeleeTraceComponent::DoTheTrace()
 				case EKismetTraceType::CapsuleTrace: break;
 				case EKismetTraceType::SphereTrace:
 					{
-						UKismetSystemLibrary::SphereTraceMulti(GetWorld(), *Start, End, SphereRadius, MyTraceChannel, ShouldTraceComplex, ActorsHit, MyDrawDebugType, OutHits, ShouldIgnoreSelf, MyTraceColor, MyTraceHitColor, MyDrawTime);
+						UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), *Start, End, SphereRadius, MyObjectTypesToHit, ShouldTraceComplex, ActorsHit, MyDrawDebugType, OutHits, ShouldIgnoreSelf, MyTraceColor, MyTraceHitColor, MyDrawTime);
 						break;
 					}
 				default: ;
@@ -102,7 +102,7 @@ void UGB_MeleeTraceComponent::DoTheTrace()
 				case EKismetTraceType::CapsuleTrace: break;
 				case EKismetTraceType::SphereTrace:
 					{
-						UKismetSystemLibrary::SphereTraceMulti(GetWorld(), *Start, End, SphereRadius, MyTraceChannel, ShouldTraceComplex, ActorsHit, MyDrawDebugType, OutHits, ShouldIgnoreSelf, MyTraceColor, MyTraceHitColor, MyDrawTime);
+						UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), *Start, End, AbilitySphereRadius, MyObjectTypesToHit, ShouldTraceComplex, ActorsHit, MyDrawDebugType, OutHits, ShouldIgnoreSelf, MyTraceColor, MyTraceHitColor, MyDrawTime);
 						break;
 					}
 				default: ;

@@ -6,6 +6,25 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GB_CharacterMovementComponent.generated.h"
 
+USTRUCT(BlueprintType)
+struct FGB_CharacterGroundInfo
+{
+	GENERATED_BODY()
+
+	FGB_CharacterGroundInfo()
+		: LastUpdateFrame(0)
+		, GroundDistance(0.0f)
+	{}
+
+	uint64 LastUpdateFrame;
+
+	UPROPERTY(BlueprintReadOnly)
+	FHitResult GroundHitResult;
+
+	UPROPERTY(BlueprintReadOnly)
+	float GroundDistance;
+};
+
 
 UENUM(BlueprintType)
 enum class EMovementState : uint8
@@ -96,6 +115,10 @@ public:
 	uint8 RequestToStartADS : 1;
 
 	virtual float GetMaxSpeed() const override;
+
+	UFUNCTION(BlueprintCallable, Category = "Lyra|CharacterMovement")
+	const FGB_CharacterGroundInfo& GetGroundInfo();
+	
 	virtual void UpdateFromCompressedFlags(uint8 Flags) override;
 	virtual class FNetworkPredictionData_Client* GetPredictionData_Client() const override;
 
@@ -110,5 +133,7 @@ public:
 		void StartAimDownSights();
 	UFUNCTION(BlueprintCallable, Category = "Aim Down Sights")
 		void StopAimDownSights();
+protected:
+	FGB_CharacterGroundInfo CachedGroundInfo;
 		
 };

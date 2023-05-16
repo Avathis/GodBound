@@ -4,6 +4,7 @@
 #include "GB_AnimInstance.h"
 #include "GodBound/BaseClasses/Characters/GB_Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GodBound/BaseClasses/Components/GB_CharacterMovementComponent.h"
 
 void UGB_AnimInstance::NativeInitializeAnimation()
 {
@@ -20,6 +21,20 @@ void UGB_AnimInstance::NativeInitializeAnimation()
 			}
 		}
 	}
+}
+
+void UGB_AnimInstance::NativeUpdateAnimation(float DeltaSeconds)
+{
+	Super::NativeUpdateAnimation(DeltaSeconds);
+	const AGB_Character* Character = Cast<AGB_Character>(GetOwningActor());
+	if (!Character)
+	{
+		return;
+	}
+
+	UGB_CharacterMovementComponent* CharMoveComp = CastChecked<UGB_CharacterMovementComponent>(Character->GetCharacterMovement());
+	const FGB_CharacterGroundInfo& GroundInfo = CharMoveComp->GetGroundInfo();
+	GroundDistance = GroundInfo.GroundDistance;
 }
 
 void UGB_AnimInstance::UpdateAnimationProperties()

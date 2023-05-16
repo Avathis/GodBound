@@ -26,6 +26,8 @@ class GODBOUND_API UGB_AnimInstance : public UAnimInstance
 
 public:
 	virtual void NativeInitializeAnimation() override;
+
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 		
 	UFUNCTION(BlueprintCallable, Category = AnimationProperties, meta=(BlueprintThreadSafe))
 	void UpdateAnimationProperties();
@@ -60,5 +62,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Movement)
 	float Direction;
+
+protected:
+	UPROPERTY(BlueprintReadOnly, Category = "Movement")
+	float GroundDistance = -1.0f;
 	
 };
