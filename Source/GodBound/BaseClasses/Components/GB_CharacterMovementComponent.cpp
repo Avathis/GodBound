@@ -14,7 +14,7 @@ namespace GodBoundCharacter
 
 UGB_CharacterMovementComponent::UGB_CharacterMovementComponent()
 {
-	SprintSpeedMultiplier = 1.4f;
+	SprintSpeedMultiplier = 2.5f;
 	ADSSpeedMultiplier = 0.5f;
 }
 
