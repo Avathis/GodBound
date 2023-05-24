@@ -70,8 +70,6 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	UWidgetComponent* OverheadWidget;
 
-	
-
 protected:
 	void BindASCInput();
 

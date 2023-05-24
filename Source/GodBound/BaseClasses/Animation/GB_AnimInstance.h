@@ -11,6 +11,14 @@
  */
 
 UENUM(BlueprintType)
+enum class RootYawOffsetType : uint8
+{
+	Accumulate,
+	BlendOut,
+	Hold
+};
+
+UENUM(BlueprintType)
 enum class AnimDirection : uint8
 {
 	Forward,
