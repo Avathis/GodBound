@@ -5,6 +5,7 @@
 
 #include "AbilitySystemLog.h"
 #include "GodBound/BaseClasses/Characters/GB_PlayableCharacter.h"
+#include "Kismet/KismetMathLibrary.h"
 
 
 FDistanceTraceResult::FDistanceTraceResult()
@@ -65,14 +66,43 @@ bool UGB_JumpAbility::StartTraceForDistance()
 	return true;
 }
 
+bool UGB_JumpAbility::StartClimbTraceForDistance(float FV, float RV)
+{
+	if(FV==0&&RV==0)
+	{
+		FVector TraceStart = GetAvatarActorFromActorInfo()->GetActorLocation();
+		TraceStart+= FVector(0.f,0.f,100);
+		FVector TraceEnd = TraceStart+GetAvatarActorFromActorInfo()->GetActorForwardVector()*50;
+		TArray<AActor*> ActorsToIgnoreLocal;
+		FHitResult OutHit;
+		if(UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(),TraceStart,TraceEnd, 5.f, { UEngineTypes::ConvertToObjectType(ECC_WorldStatic) ,
+				UEngineTypes::ConvertToObjectType(ECC_WorldDynamic) },false, ActorsToIgnore, EDrawDebugTrace::ForDuration,OutHit,
+				true))
+		{
+			FHitResult DepthOutHit;
+			FVector CurrentStartTrace = OutHit.Location+FVector(0.f,0.f,100.f);
+			FVector CurrentEndTrace = CurrentStartTrace-FVector(0.f,0.f,100);
+			WallRotation = ReverseRotationZ(OutHit.ImpactNormal);
+			if(UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(),CurrentStartTrace,CurrentEndTrace, DepthTraceRadius,TraceObjectTypesToHit,false,ActorsToIgnore,TraceDebugType,DepthOutHit,true,DebugTraceColor,DebugTraceHitColor,DebugTraceDuration))
+			{
+				ObstacleLedgePoint = DepthOutHit.Location;
+			}
+			return true;
+		}
+	}
+	return false;
+;}
+
 FVector UGB_JumpAbility::TraceForHeight()
 {
 	FHitResult HighestHit;
 	FHitResult CurrentHighestHit;
+	
 	FVector CurrentHeightTraceStart = JumpInitialPosition;
 	CurrentHeightTraceStart.Z-=HeightTraceOffset*2;
 	FVector CurrentHeightTraceEnd = JumpInitialPosition+JumpDirection* (bIsRunning ? HeightTraceLengthRunning : HeightTraceLengthWalking);
 	CurrentHeightTraceEnd.Z-=HeightTraceOffset*2;
+	float VectorLengthDelta = 0.f;
 	ActorsToIgnore.AddUnique(GetAvatarActorFromActorInfo());
 
 	for(int32 i = 0; i <= HeightTracesNum; i++)
@@ -81,27 +111,61 @@ FVector UGB_JumpAbility::TraceForHeight()
 		//GetWorld()->SweepSingleByObjectType(CurrentHit,CurrentHeightTraceStart, CurrentHeightTraceEnd, JumpDirection.ToOrientationQuat(),TraceObjectTypesToHit, FCollisionShape::MakeSphere(HeightTraceRadius));
 		if(UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(),CurrentHeightTraceStart,CurrentHeightTraceEnd, HeightTraceRadius,TraceObjectTypesToHit,false,ActorsToIgnore,TraceDebugType,CurrentHit,true,DebugTraceColor,DebugTraceHitColor,DebugTraceDuration))
 		{
+			VectorLengthDelta = CurrentHighestHit.Distance - CurrentHit.Distance;
 			CurrentHighestHit = CurrentHit;
 			CurrentHeightTraceStart.Z+=HeightTraceOffset;
 			CurrentHeightTraceEnd.Z+=HeightTraceOffset;
+			if(HeightTracesNum == i)
+			{
+				HeightIndex = i;
+				if(VectorLengthDelta>20||CurrentHighestHit.Distance==0)
+				{
+					ActionType = EDistanceTraceType::EDTT_HandFree;
+				}
+				else
+				{
+					ActionType = EDistanceTraceType::EDTT_HangBraced;
+				}
+				
+			}
+			WallRotation = ReverseRotationZ(CurrentHighestHit.ImpactNormal);
 		}
-		else if(i==1)
+		else if(i==1&&CurrentHighestHit.IsValidBlockingHit())
 		{
 			ActionType = EDistanceTraceType::EDTT_MantleLow;
 			HeightIndex = i;
 			return CurrentHighestHit.Location;
 		}
-		else if(i>1&&i<5)
+		else if(i>1&&i<5&&CurrentHighestHit.IsValidBlockingHit())
 		{
 			ActionType = EDistanceTraceType::EDTT_Vault;
 			HeightIndex = i;
 			return CurrentHighestHit.Location;
 		}
-		else if(i>=5)
+		else if(i>=5&&i<7&&CurrentHighestHit.IsValidBlockingHit())
 		{
 			HeightIndex = i;
 			ActionType = EDistanceTraceType::EDTT_MantleHigh;
 			return CurrentHighestHit.Location;
+		}
+		else if (i>=7&&CurrentHighestHit.IsValidBlockingHit())
+		{
+			HeightIndex = i;
+			if(VectorLengthDelta>20)
+			{
+				ActionType = EDistanceTraceType::EDTT_HandFree;
+			}
+			else
+			{
+				ActionType = EDistanceTraceType::EDTT_HangBraced;
+			}
+			ActionType = EDistanceTraceType::EDTT_HangBraced;
+			return CurrentHighestHit.Location;
+		}
+		else if(!CurrentHighestHit.IsValidBlockingHit()&&!i != HeightTracesNum)
+		{
+			CurrentHeightTraceStart.Z+=HeightTraceOffset;
+			CurrentHeightTraceEnd.Z+=HeightTraceOffset;
 		}
 		else
 		{
@@ -109,7 +173,7 @@ FVector UGB_JumpAbility::TraceForHeight()
 		}
 		
 	}
-	return FVector::ZeroVector;
+	return CurrentHighestHit.Location;
 }
 
 FVector UGB_JumpAbility::TraceForDepth(FVector HighestHit)
@@ -157,10 +221,18 @@ FVector UGB_JumpAbility::TraceForDepth(FVector HighestHit)
 	return FVector::ZeroVector;
 }
 
-FVector UGB_JumpAbility::ApplyWarpOffset(FVector Point, float X, float Z)
+FVector UGB_JumpAbility::ApplyWarpOffset(FVector Point, float X, float Y, float Z)
 {
-	const FVector HelperVector = Point+JumpDirection*X;;
+	const FVector HelperVector = Point+JumpDirection*X+JumpDirectionRight*Y;
+	
 	return HelperVector+FVector(0.f,0.f,Z);
 	//return Point+Direction
+}
+
+FRotator UGB_JumpAbility::ReverseRotationZ(FVector NormalImpactZ)
+{
+	FRotator ReversRotation = UKismetMathLibrary::MakeRotFromX(NormalImpactZ);
+	FRotator ReversRotator = UKismetMathLibrary::NormalizedDeltaRotator(ReversRotation, FRotator(0.f,180.f,0.f));
+	return FRotator(0.f,ReversRotator.Yaw, 0.f);
 }
 

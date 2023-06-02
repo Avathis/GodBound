@@ -15,7 +15,8 @@ enum class EDistanceTraceType : uint8
 	EDTT_MantleHigh,
 	EDTT_Vault,
 	EDTT_Climb,
-	EDTT_Hang,
+	EDTT_HangBraced,
+	EDTT_HandFree,
 	EDTT_MAX
 	
 };
@@ -26,7 +27,7 @@ struct FDistanceTraceResult
 	GENERATED_BODY()
 	FDistanceTraceResult();
 
-	EDistanceTraceType Action = EDistanceTraceType::EDTT_MAX;
+	EDistanceTraceType Action = EDistanceTraceType::EDTT_NormalJump;
 	
 	FVector ObstacleLedgePoint;
 	
@@ -58,6 +59,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool StartTraceForDistance();
 
+	UFUNCTION(BlueprintCallable)
+	bool StartClimbTraceForDistance(float FV, float RV);
+
 	FVector TraceForHeight();
 
 	FVector TraceForDepth(FVector HighestHit);
@@ -69,13 +73,13 @@ public:
 	bool bIsRunning = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TraceSettings")
-	int32 HeightTracesNum = 4;
+	int32 HeightTracesNum = 8;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TraceSettings")
-	int32 HeightTraceRadius = 50;
+	int32 HeightTraceRadius = 5;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TraceSettings")
-	int32 HeightTraceOffset = 75;
+	int32 HeightTraceOffset = 30;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TraceSettings")
 	int32 HeightTraceLength = 150;
@@ -93,7 +97,7 @@ public:
 	int32 DepthTracesOffset = 75;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TraceSettings")
-	int32 DepthTraceRadius = 50;
+	int32 DepthTraceRadius = 10;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TraceSettings")
 	int32 DepthTraceLength = 75;
@@ -102,12 +106,12 @@ public:
 	int32 DepthEndTraceOffset = DepthTracesOffset;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TraceSettings")
-	int32 EndOffsetRunning = 2*DepthTracesOffset;
+	int32 EndOffsetRunning = 125;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TraceSettings")
-	int32 EndOffsetWalking = DepthTracesOffset;
+	int32 EndOffsetWalking = 40;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category= "TraceSettings")
-	float FinalEndTraceSubtract = 150;
+	float FinalEndTraceSubtract = 300;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TraceSettings")
 	TArray<TEnumAsByte<EObjectTypeQuery>> TraceObjectTypesToHit = { UEngineTypes::ConvertToObjectType(ECC_WorldStatic) , UEngineTypes::ConvertToObjectType(ECC_WorldDynamic) };
@@ -126,7 +130,6 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "TraceSettings")
 	TArray<AActor*> ActorsToIgnore;
-
 	
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "JumpProperties")
@@ -134,6 +137,9 @@ public:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "JumpProperties")
 	FVector JumpDirection;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "JumpProperties")
+	FVector JumpDirectionRight;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "JumpProperties")
 	int32 HeightIndex = 0;
@@ -162,8 +168,14 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "JumpProperties")
 	EDistanceTraceType ActionType = EDistanceTraceType::EDTT_NormalJump;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "JumpProperties")
+	FRotator WallRotation;
+
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FVector ApplyWarpOffset(FVector Point, float X, float Z);
+	FVector ApplyWarpOffset(FVector Point, float X, float Y, float Z);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FRotator ReverseRotationZ(FVector NormalImpactZ);
 	
 private:
 	FDelegateHandle OnTraceReadyDelegateHandle;

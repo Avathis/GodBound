@@ -19,6 +19,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "GodBound/BaseClasses/GB_InputComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 AGB_PlayableCharacter::AGB_PlayableCharacter(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer.SetDefaultSubobjectClass<UGB_CharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
@@ -390,11 +391,55 @@ void AGB_PlayableCharacter::Move(const FInputActionValue& Value)
 	const FVector2d CurrentValue = Value.Get<FVector2d>();
 	const FRotator Rotation = PlayerController->GetControlRotation();
 	const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
-
-	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	AddMovementInput(ForwardDirection, CurrentValue.Y);
-	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-	AddMovementInput(RightDirection, CurrentValue.X);
+	MoveRightValue = CurrentValue.X;
+	MoveForwardValue = CurrentValue.Y;
+	
+	if(!CharacterMovementComponent->bIsClimbing)
+	{
+		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+		AddMovementInput(ForwardDirection, CurrentValue.Y);
+		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+		AddMovementInput(RightDirection, CurrentValue.X);
+	}
+	else
+	{
+		if(CurrentValue.Y>0||CurrentValue.Y<0)
+		{
+			
+		}
+		if(CurrentValue.X>0||CurrentValue.X<0)
+		{
+			FVector TraceStart = GetActorLocation()+GetActorRightVector()*50*CurrentValue.X;
+			TraceStart+= FVector(0.f,0.f,100);
+			FVector TraceEnd = TraceStart+GetActorForwardVector()*50;
+			TArray<AActor*> ActorsToIgnore;
+			TArray<FHitResult> OutHits;
+			ActorsToIgnore.Add(this);
+			if(UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(),TraceStart,TraceEnd, 10.f, { UEngineTypes::ConvertToObjectType(ECC_WorldStatic) ,
+				UEngineTypes::ConvertToObjectType(ECC_WorldDynamic) },false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame,OutHits,
+				true))
+			{
+				const FVector RightDirection = GetActorRightVector();
+				AddMovementInput(RightDirection, CurrentValue.X);
+			}
+			else
+			{
+				FVector SideTraceStart = GetActorLocation()+GetActorForwardVector()*75+GetActorRightVector()*100*CurrentValue.X;
+				SideTraceStart+= FVector(0.f,0.f,100);
+				FVector SideTraceEnd = SideTraceStart-GetActorRightVector()*100*CurrentValue.X;
+				TArray<AActor*> SideActorsToIgnore;
+				FHitResult SideOutHit;
+				ActorsToIgnore.Add(this);
+				if(UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(),SideTraceStart,SideTraceEnd, 5.f, { UEngineTypes::ConvertToObjectType(ECC_WorldStatic) ,
+					UEngineTypes::ConvertToObjectType(ECC_WorldDynamic) },false, SideActorsToIgnore, EDrawDebugTrace::ForOneFrame,SideOutHit,
+					true))
+				{
+					ParkourTransition(SideOutHit, CurrentValue.X,FGameplayTag::RequestGameplayTag("State.Movement.Climb.Transition.Hop"));
+				}
+			}
+		}
+	}
+	
 }
 
 void AGB_PlayableCharacter::Look(const FInputActionValue& Value)

@@ -37,17 +37,39 @@ float UGB_CharacterMovementComponent::GetMaxSpeed() const
 		return Super::GetMaxSpeed();
 	}
 
-	if (RequestToStartSprinting)
+	switch(MovementMode)
 	{
-		return Owner->GetSpeed() * SprintSpeedMultiplier;
-	}
+	case MOVE_Walking:
+	case MOVE_NavWalking:
+		{
+			if(IsCrouching())
+			{
+				return MaxWalkSpeedCrouched;
+			}
+			if (RequestToStartSprinting)
+			{
+				return Owner->GetSpeed() * SprintSpeedMultiplier;
+			}
 
-	if (RequestToStartADS)
-	{
-		return Owner->GetSpeed() * ADSSpeedMultiplier;
+			if (RequestToStartADS)
+			{
+				return Owner->GetSpeed() * ADSSpeedMultiplier;
+			}
+			return Owner->GetSpeed();
+		}
+	case MOVE_Falling:
+		return Owner->GetSpeed();
+	case MOVE_Swimming:
+		return MaxSwimSpeed;
+	case MOVE_Flying:
+		return MaxFlySpeed;
+	case MOVE_Custom:
+		return MaxCustomMovementSpeed;
+	case MOVE_None:
+	default:
+		break;
 	}
-	return Owner->GetSpeed();
-	
+	return Super::GetMaxSpeed();
 }
 
 const FGB_CharacterGroundInfo& UGB_CharacterMovementComponent::GetGroundInfo()
@@ -128,11 +150,13 @@ FNetworkPredictionData_Client* UGB_CharacterMovementComponent::GetPredictionData
 void UGB_CharacterMovementComponent::StartSprinting()
 {
 	RequestToStartSprinting = true;
+	bIsRunning = true;
 }
 
 void UGB_CharacterMovementComponent::StopSprinting()
 {
 	RequestToStartSprinting = false;
+	bIsRunning = false;
 }
 
 void UGB_CharacterMovementComponent::StartAimDownSights()

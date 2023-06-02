@@ -90,6 +90,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	EMovementState MovementType = EMovementState::EMS_Walking;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	bool bIsClimbing = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	bool bIsBracedClimbing = false;
+
 	UFUNCTION(BlueprintCallable)
 	EMovementState GetMovementType();
 
@@ -128,6 +134,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Sprint")
 		void StopSprinting();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sprint")
+	bool bIsRunning = false;
+	
 	// Aim Down Sights
 	UFUNCTION(BlueprintCallable, Category = "Aim Down Sights")
 		void StartAimDownSights();

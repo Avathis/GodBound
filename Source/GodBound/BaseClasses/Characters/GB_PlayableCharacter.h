@@ -65,6 +65,9 @@ class GODBOUND_API AGB_PlayableCharacter : public AGB_Character
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void InitializeHealthBarAttributes();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ParkourTransition(FHitResult Target, float RightValue, FGameplayTag EventTag);
 	
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
@@ -89,6 +92,11 @@ protected:
 	class UInputAction* MoveAction;
 
 	void Move(const FInputActionValue& Value);
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
+	float MoveRightValue = 0.f;
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
+	float MoveForwardValue = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	class UInputAction*LookAction;
