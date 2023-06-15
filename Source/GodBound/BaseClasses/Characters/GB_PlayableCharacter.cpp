@@ -416,7 +416,7 @@ void AGB_PlayableCharacter::Move(const FInputActionValue& Value)
 			TArray<FHitResult> OutHits;
 			ActorsToIgnore.Add(this);
 			if(UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(),TraceStart,TraceEnd, 10.f, { UEngineTypes::ConvertToObjectType(ECC_WorldStatic) ,
-				UEngineTypes::ConvertToObjectType(ECC_WorldDynamic) },false, ActorsToIgnore, EDrawDebugTrace::ForOneFrame,OutHits,
+				UEngineTypes::ConvertToObjectType(ECC_WorldDynamic) },false, ActorsToIgnore, EDrawDebugTrace::None,OutHits,
 				true))
 			{
 				const FVector RightDirection = GetActorRightVector();
@@ -431,7 +431,7 @@ void AGB_PlayableCharacter::Move(const FInputActionValue& Value)
 				FHitResult SideOutHit;
 				ActorsToIgnore.Add(this);
 				if(UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(),SideTraceStart,SideTraceEnd, 5.f, { UEngineTypes::ConvertToObjectType(ECC_WorldStatic) ,
-					UEngineTypes::ConvertToObjectType(ECC_WorldDynamic) },false, SideActorsToIgnore, EDrawDebugTrace::ForOneFrame,SideOutHit,
+					UEngineTypes::ConvertToObjectType(ECC_WorldDynamic) },false, SideActorsToIgnore, EDrawDebugTrace::None,SideOutHit,
 					true))
 				{
 					ParkourTransition(SideOutHit, CurrentValue.X,FGameplayTag::RequestGameplayTag("State.Movement.Climb.Transition.Hop"));

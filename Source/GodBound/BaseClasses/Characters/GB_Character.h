@@ -87,9 +87,25 @@ public:
 	UFUNCTION(BlueprintCallable)
 	static FGBAbilitySet_GrantedHandles EquipAbilitySet(UGB_AbilitySystemComponent* GBASC, const UGB_AbilitySet* AbilitySet, UObject* SourceObject);
 
-
 	UFUNCTION(BlueprintCallable)
 	virtual UGB_CharacterMovementComponent* GetAdvMovementComponent();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "IK")
+	class AGB_Interactable* InteractActor;
+
+	void SetInteractActor(AGB_Interactable* ActorToSet)
+	{
+		InteractActor = ActorToSet;
+	}
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "IK")
+	FVector RightHandIK;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "IK")
+	FVector RightLegIK;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "IK")
+	FVector LeftHandIK;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "IK")
+	FVector LeftLegIK;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CameraBoom", meta = (AllowPrivateAccess = "true"))
 	class UGB_SpringArmComponent* CameraBoom;

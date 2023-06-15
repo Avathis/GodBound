@@ -272,6 +272,7 @@ void UGB_AbilitySystemComponent::OnGiveAbility(FGameplayAbilitySpec& AbilitySpec
 		case 14: AbilitySpec.DynamicAbilityTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Input.Ability.3")));break;
 		case 15: AbilitySpec.DynamicAbilityTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Input.Ability.4")));break;
 		case 16: AbilitySpec.DynamicAbilityTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Input.Ability.5")));break;
+		case 17: AbilitySpec.DynamicAbilityTags.AddTag(FGameplayTag::RequestGameplayTag(FName("Input.Interact")));break;
 		default: break;
 	}
 	

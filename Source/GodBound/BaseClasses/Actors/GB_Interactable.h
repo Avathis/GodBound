@@ -51,6 +51,24 @@ public:
 
 	UFUNCTION(Blueprintcallable)
 	virtual void Interact(AActor* Character);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void InteractAction();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	FVector GetLeftHandIK();
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	FVector GetRightHandIK();
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AddedComponents")
+	FVector RightHandPosition;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AddedComponents")
+	FRotator RightHandRotation;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AddedComponents")
+	FVector LeftHandPosition;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AddedComponents")
+	FRotator LefttHandRotation;
 	
 	virtual void OnEndInteract();
 

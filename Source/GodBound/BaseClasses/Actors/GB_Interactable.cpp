@@ -71,6 +71,7 @@ void AGB_Interactable::OnEnterInteract(UPrimitiveComponent* OverlappedComp, AAct
 	{
 		InteractEffectHandle = AbilitySystemComponent->ApplyGameplayEffectToTarget(GE.GetDefaultObject(),PlayerCharacter->GetAbilitySystemComponent(),0, FGameplayEffectContextHandle(new FGameplayEffectContext(this, this)));
 		WidgetSetVisible(true, PlayerCharacter);
+		PlayerCharacter->SetInteractActor(this);
 	}
 }
 
@@ -85,6 +86,7 @@ void AGB_Interactable::OnExitInteract(UPrimitiveComponent* OverlappedComp, AActo
 		{
 			PlayerCharacter->GetAbilitySystemComponent()->RemoveActiveGameplayEffect(InteractEffectHandle);
 			WidgetSetVisible(false, PlayerCharacter);
+			PlayerCharacter->SetInteractActor(nullptr);
 		}
 	}
 	
@@ -104,6 +106,7 @@ void AGB_Interactable::Interact(AActor* Character)
 	{
 		GEngine->AddOnScreenDebugMessage(3,15.f,FColor::White,FString("SUCCESSFULLY INTERACTED"));
 	}
+	
 }
 
 void AGB_Interactable::OnEndInteract()
